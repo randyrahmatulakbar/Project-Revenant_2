@@ -1,0 +1,293 @@
+[gd_scene format=3 uid="uid://bfmadw44yutfr"]
+
+[ext_resource type="Script" uid="uid://b28dh78stckjw" path="res://main menu/control.gd" id="1_tgl0h"]
+[ext_resource type="Texture2D" uid="uid://d4e2q3ab3nf6j" path="res://main menu/ChatGPT Image Aug 19, 2026, 10_10_04 PM.png" id="2_27q1e"]
+[ext_resource type="AudioStream" uid="uid://b0jd4t3m2a64c" path="res://main menu/preview.mp3" id="3_so7jt"]
+[ext_resource type="FontFile" uid="uid://dongvbki7wr5m" path="res://main menu/Impact.ttf" id="4_vlol7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e1n45"]
+texture = ExtResource("2_27q1e")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1n45"]
+bg_color = Color(0.16470589, 0.18039216, 0.2, 1)
+
+[sub_resource type="Theme" id="Theme_gwcng"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwcng"]
+bg_color = Color(0, 0, 0, 0.7058824)
+
+[node name="Main Menu" type="Control" unique_id=1954230717]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tgl0h")
+
+[node name="Background" type="Panel" parent="." unique_id=1718657064]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_e1n45")
+
+[node name="Label" type="Label" parent="Background" unique_id=749064376]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -313.0
+offset_top = 90.0
+offset_right = -25.5
+offset_bottom = 199.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 57
+text = "PROJECT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Background" unique_id=1897237413]
+modulate = Color(0.53244907, 2.4065375e-07, 0.028894044, 1)
+self_modulate = Color(0.8132577, 0.8132577, 0.81325763, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -231.0
+offset_top = 153.0
+offset_right = 234.0
+offset_bottom = 277.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 90
+text = "REVENANT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=593936644]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(300, -1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.776
+anchor_right = 0.5
+anchor_bottom = 0.78000003
+offset_left = -150.0
+offset_top = -126.84802
+offset_right = 150.0
+offset_bottom = 81.55997
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 5
+
+[node name="Play" type="Button" parent="VBoxContainer" unique_id=18646432]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
+text = "PLAY"
+
+[node name="Settings" type="Button" parent="VBoxContainer" unique_id=628636482]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
+text = "SETTINGS"
+
+[node name="Credit" type="Button" parent="VBoxContainer" unique_id=132610437]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
+text = "CREDIT"
+
+[node name="Exit" type="Button" parent="VBoxContainer" unique_id=97394790]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
+text = "EXIT"
+
+[node name="Options" type="Panel" parent="." unique_id=764971772]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -352.0
+offset_top = -163.0
+offset_right = 347.0
+offset_bottom = 269.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Options" unique_id=973280790]
+custom_minimum_size = Vector2(500, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Options/MarginContainer" unique_id=50575072]
+layout_mode = 2
+theme = SubResource("Theme_gwcng")
+
+[node name="TitleLabel" type="Label" parent="Options/MarginContainer/VBoxContainer" unique_id=1506011030]
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer2" type="Control" parent="Options/MarginContainer/VBoxContainer" unique_id=1590948240]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Options/MarginContainer/VBoxContainer" unique_id=641746226]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="Options/MarginContainer/VBoxContainer/HBoxContainer" unique_id=409225821]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="Options/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1331567085]
+custom_minimum_size = Vector2(250, 30)
+custom_maximum_size = Vector2(250, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Options/MarginContainer/VBoxContainer" unique_id=1460875548]
+layout_mode = 2
+
+[node name="SensLabel" type="Label" parent="Options/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=471117152]
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="SensSlider" type="HSlider" parent="Options/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1798419438]
+custom_minimum_size = Vector2(250, 30)
+custom_maximum_size = Vector2(250, 30)
+layout_mode = 2
+min_value = 0.1
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Options/MarginContainer/VBoxContainer" unique_id=324667921]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="Options/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1194258589]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="Options/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=962066165]
+layout_mode = 2
+button_pressed = true
+
+[node name="Spacer" type="Control" parent="Options/MarginContainer/VBoxContainer" unique_id=453776876]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackButton" type="Button" parent="Options/MarginContainer/VBoxContainer" unique_id=678314425]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Back"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=518245590]
+stream = ExtResource("3_so7jt")
+autoplay = true
+
+[node name="CreditPanel" type="Panel" parent="." unique_id=1134158603]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gwcng")
+
+[node name="MarginContainer" type="MarginContainer" parent="CreditPanel" unique_id=1025006704]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CreditPanel/MarginContainer" unique_id=952581758]
+layout_mode = 2
+
+[node name="CreditTitle" type="Label" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=1638337279]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_vlol7")
+theme_override_font_sizes/font_size = 48
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=1301719794]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=1879225200]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CreditText" type="Label" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=294776693]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "PROJECT REVENANT
+PROGRAMMER & GAMEPLAY
+RANDY RAHMATUL AKBAR
+
+LEVEL DESIGNER & MAP
+M. RENO ALFIAN
+
+ASSET, UI/UX & AUDIO
+RAEVAN FADHILLAH
+
+STORY
+LAURA APRILIANZA"
+horizontal_alignment = 1
+
+[node name="Spacer2" type="Control" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=147396784]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackButtonCredit" type="Button" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=913617682]
+custom_minimum_size = Vector2(320, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "BACK"
+
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/Credit" to="." method="_on_credit_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="value_changed" from="Options/MarginContainer/VBoxContainer/HBoxContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="Options/MarginContainer/VBoxContainer/HBoxContainer2/SensSlider" to="." method="_on_sens_slider_value_changed"]
+[connection signal="toggled" from="Options/MarginContainer/VBoxContainer/HBoxContainer3/FullscreenCheckBox" to="." method="_on_fullscreen_check_box_toggled"]
+[connection signal="pressed" from="Options/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CreditPanel/MarginContainer/VBoxContainer/BackButtonCredit" to="." method="_on_back_button_credit_pressed"]

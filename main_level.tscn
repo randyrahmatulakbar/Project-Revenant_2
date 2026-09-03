@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cyfjb540l6fdx"]
 
+[ext_resource type="PackedScene" uid="uid://dqrk6j0ovycnc" path="res://pause_menu.tscn" id="1_6614m"]
 [ext_resource type="Script" uid="uid://v7wef55kv4pf" path="res://player.gd" id="1_a202f"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_noarx"]
@@ -26,6 +27,8 @@ albedo_color = Color(0.97566444, 4.5724214e-06, 1.540184e-06, 1)
 albedo_color = Color(0, 0, 1, 1)
 
 [node name="main_level" type="Node3D" unique_id=561111073]
+
+[node name="PauseMenu" parent="." unique_id=1832307124 instance=ExtResource("1_6614m")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=847912605]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)

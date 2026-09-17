@@ -46,7 +46,6 @@ func _ready():
 	head_start_position = head.position
 	
 	interaction_label.visible = false
-<<<<<<< HEAD
 	
 	$Health.health_changed.connect(_on_health_changed)
 	$Health.died.connect(_on_died)
@@ -58,8 +57,6 @@ func _on_health_changed(current: float, max: float) -> void:
 func _on_died() -> void:
 	print("Player mati!")
 	get_tree().reload_current_scene()
-=======
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 
 
 func _unhandled_input(event):
@@ -224,12 +221,9 @@ func shoot():
 
 	if result:
 		print("Kena: ", result.collider.name)
-<<<<<<< HEAD
 
 		if result.collider.has_method("take_damage"):
 			result.collider.take_damage(1)
-=======
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 	else:
 		print("Tembakan tidak kena apa-apa")
 

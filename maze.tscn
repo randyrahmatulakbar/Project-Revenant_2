@@ -4,11 +4,8 @@
 [ext_resource type="Script" uid="uid://civtbfx2q7ui4" path="res://enemy.gd" id="2_h41xc"]
 [ext_resource type="Script" uid="uid://d1dyq3j7vk87q" path="res://button.gd" id="3_u11kd"]
 [ext_resource type="Script" uid="uid://bcq2nkahhaycl" path="res://enemy_2.gd" id="4_1nuxl"]
-<<<<<<< HEAD
 [ext_resource type="PackedScene" uid="uid://dqrk6j0ovycnc" path="res://pause_menu.tscn" id="5_ugm30"]
 [ext_resource type="Script" uid="uid://1fodf0k0sjd0" path="res://health.gd" id="6_pgab2"]
-=======
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_51fql"]
 vertices = PackedVector3Array(-7.007337, -0.56253433, -20.539482, -7.007337, -0.56253433, -7.539482, 6.992663, -0.56253433, -7.539482, 6.992663, -0.56253433, -20.539482, -2.007337, -3.5625343, -17.289482, -2.007337, -3.5625343, -15.039482, -0.5073371, -3.5625343, -15.039482, -0.5073371, -3.5625343, -20.289482, -6.507337, -3.5625343, -7.789482, -3.507337, -3.5625343, -7.789482, -3.257337, -3.5625343, -17.539482, -6.507337, -3.5625343, -20.289482, 0.9926629, -3.5625343, -12.789482, 0.2426629, -3.5625343, -12.539482, 0.4926629, -3.5625343, -11.289482, 0.9926629, -3.5625343, -20.289482, 0.9926629, -3.5625343, -17.539482, 4.742663, -3.5625343, -17.539482, 6.492663, -3.5625343, -20.289482, 6.492663, -3.5625343, -11.289482, 4.992663, -3.5625343, -16.289482, 0.9926629, -3.5625343, -16.039482, -0.2573371, -3.5625343, -11.039482, -0.5073371, -3.5625343, -12.789482, -0.0073370934, -3.5625343, -9.789482, -2.007337, -3.5625343, -7.789482, 6.492663, -3.5625343, -7.789482, 6.492663, -3.5625343, -9.789482)
@@ -78,7 +75,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9572244, -0.40185547, -1.15
 use_collision = true
 size = Vector3(3.3388586, 0.19628906, 1.7075195)
 
-<<<<<<< HEAD
 [node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=1085895913]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.846138, 0.26203144, 1.874433)
 use_collision = true
@@ -94,8 +90,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.846138, 2.1171036, 7.345740
 use_collision = true
 size = Vector3(1.5610309, 0.19628906, 1.7075195)
 
-=======
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 [node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1265794871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.009674072, -0.40185547, 0.080566406)
 use_collision = true
@@ -244,10 +238,7 @@ environment = SubResource("Environment_1nuxl")
 [node name="enemy2" type="CharacterBody3D" parent="eye tracking" unique_id=464335544]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.057434, 0.67647004, 4.4774394)
 script = ExtResource("4_1nuxl")
-<<<<<<< HEAD
 waypoint_paths = Array[NodePath]([NodePath("../Waypoint1"), NodePath("../Waypoint2"), NodePath("../Waypoint3"), NodePath("../Waypoint4")])
-=======
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="eye tracking/enemy2" unique_id=1319925654]
 mesh = SubResource("CapsuleMesh_fvach")
@@ -257,11 +248,8 @@ shape = SubResource("ConvexPolygonShape3D_dj01w")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="eye tracking/enemy2" unique_id=779944794]
 
-<<<<<<< HEAD
 [node name="EyePoint" type="Node3D" parent="eye tracking/enemy2" unique_id=1799296100]
 
-=======
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="eye tracking" unique_id=610842645]
 navigation_mesh = SubResource("NavigationMesh_1nuxl")
 
@@ -320,17 +308,12 @@ size = Vector3(14.921448, 2.9301758, 0.21322632)
 material = SubResource("StandardMaterial3D_u11kd")
 
 [node name="Waypoint1" type="Marker3D" parent="eye tracking" unique_id=282067654]
-<<<<<<< HEAD
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.254984, 0, 1.8192732)
-=======
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.703, 0, 1.4016993)
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 
 [node name="Waypoint2" type="Marker3D" parent="eye tracking" unique_id=891151668]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.321, 0, 8.686)
 
 [node name="Waypoint3" type="Marker3D" parent="eye tracking" unique_id=386487254]
-<<<<<<< HEAD
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.228332, 0, -1.4928777)
 
 [node name="Waypoint4" type="Marker3D" parent="eye tracking" unique_id=406351405]
@@ -345,17 +328,6 @@ script = ExtResource("1_dj01w")
 [node name="Health" type="Node" parent="CharacterBody3D" unique_id=905217480]
 script = ExtResource("6_pgab2")
 
-=======
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.43, 0, 1.901)
-
-[node name="Waypoint4" type="Marker3D" parent="eye tracking" unique_id=406351405]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.322, 0, 8.739)
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=263233189]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8195336, 0)
-script = ExtResource("1_dj01w")
-
->>>>>>> 753456d60b4f7b21aa26053926be2ef0644aaf5b
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=491318302]
 mesh = SubResource("CapsuleMesh_mq8aq")
 

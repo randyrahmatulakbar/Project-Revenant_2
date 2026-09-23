@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqrk6j0ovycnc" path="res://pause_menu.tscn" id="1_6614m"]
 [ext_resource type="Script" uid="uid://v7wef55kv4pf" path="res://player.gd" id="1_a202f"]
+[ext_resource type="PackedScene" uid="uid://p0ogwovbcp42" path="res://hud.tscn" id="2_bhu08"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_noarx"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -37,8 +38,9 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=604626884]
 environment = SubResource("Environment_r3fl7")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=577056316]
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=577056316 node_paths=PackedStringArray("hud")]
 script = ExtResource("1_a202f")
+hud = NodePath("../HUD")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=278801636]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2250624, 0)
@@ -118,21 +120,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076455235, -0.28935122, 0.0
 use_collision = true
 size = Vector3(36.039764, 0.28564453, 35.935425)
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=727292961]
-
-[node name="crosshair" type="Label" parent="CanvasLayer2" unique_id=2120304677]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -17.0
-offset_right = 20.0
-offset_bottom = 17.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "+"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="HUD" parent="." unique_id=1785908157 instance=ExtResource("2_bhu08")]

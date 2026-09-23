@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b6cwo5ijm44oy" path="res://pause_menu.gd" id="1_hdmo1"]
 
+[sub_resource type="Theme" id="Theme_hdmo1"]
+
 [node name="PauseMenu" type="CanvasLayer" unique_id=1832307124]
 process_mode = 3
 script = ExtResource("1_hdmo1")
@@ -25,6 +27,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.47058824)
 
 [node name="MenuContainer" type="VBoxContainer" parent="PanelControl/ColorRect" unique_id=498072519]
+visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -69,3 +72,101 @@ custom_minimum_size = Vector2(200, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Exit Game"
+
+[node name="Panel" type="Panel" parent="." unique_id=1997734482]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -352.0
+offset_top = -163.0
+offset_right = 347.0
+offset_bottom = 269.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1469270022]
+custom_minimum_size = Vector2(500, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=1008432503]
+layout_mode = 2
+theme = SubResource("Theme_hdmo1")
+
+[node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=1207809938]
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer2" type="Control" parent="Panel/MarginContainer/VBoxContainer" unique_id=766637216]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1639223995]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=409430750]
+layout_mode = 2
+text = "Master Volume    "
+
+[node name="MasterSlider" type="HSlider" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1468178207]
+custom_minimum_size = Vector2(250, 30)
+custom_maximum_size = Vector2(250, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=739356618]
+layout_mode = 2
+
+[node name="SensLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1082780294]
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="SensSlider" type="HSlider" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=37316501]
+custom_minimum_size = Vector2(250, 30)
+custom_maximum_size = Vector2(250, 30)
+layout_mode = 2
+min_value = 0.1
+max_value = 3.0
+step = 0.1
+value = 0.1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1175118870]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=250148254]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1791056134]
+layout_mode = 2
+button_pressed = true
+
+[node name="Spacer" type="Control" parent="Panel/MarginContainer/VBoxContainer" unique_id=1148957818]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackButton" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=2063316818]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Back"

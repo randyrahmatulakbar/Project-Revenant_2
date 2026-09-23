@@ -16,7 +16,20 @@ const GROUND_FRICTION = 15.0
 const AIR_FRICTION = 2.0
 const AIR_CONTROL = 8.0
 
-#slide
+# --- PROPERTI STATISTIK PLAYER & AMMO ---
+@export var hud: CanvasLayer  # Drag node HUD di Inspector
+
+@export_group("Player Stats")
+@export var max_health: int = 100
+var current_health: int = 100
+
+@export_group("Weapon Stats")
+@export var max_ammo: int = 30
+@export var max_reserve_ammo: int = 90
+var current_ammo: int = 30
+var reserve_ammo: int = 90
+
+# slide
 var is_sliding = false
 var slide_timer = 0.0
 var slide_direction = Vector3.ZERO
@@ -43,6 +56,14 @@ func _ready():
 	camera_start_position = camera.position
 	head_start_position = head.position
 
+	# Inisialisasi statistik awal
+	current_health = max_health
+	current_ammo = max_ammo
+	reserve_ammo = max_reserve_ammo
+	
+	# Update HUD di awal game
+	update_hud()
+
 
 func _unhandled_input(event):
 	# Mouse look
@@ -63,14 +84,11 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-
 	# Jump
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-
-
-# Crouch / Slide
+	# Crouch / Slide
 	if Input.is_action_just_pressed("crouch"):
 		if Input.is_action_pressed("sprint") and is_on_floor() and velocity.length() > 0.1:
 			start_slide()
@@ -85,7 +103,6 @@ func _physics_process(delta: float) -> void:
 		
 	handle_crouch(delta)
 
-
 	# Movement
 	var input_dir := Input.get_vector(
 		"left",
@@ -99,7 +116,6 @@ func _physics_process(delta: float) -> void:
 		Vector3(input_dir.x, 0, input_dir.y)
 	).normalized()
 
-
 	# Speed
 	var current_speed = SPEED
 
@@ -109,7 +125,6 @@ func _physics_process(delta: float) -> void:
 		current_speed = CROUCH_SPEED
 	elif Input.is_action_pressed("sprint"):
 		current_speed = SPRINT_SPEED
-
 
 	# Move
 	if is_sliding:
@@ -178,11 +193,12 @@ func _physics_process(delta: float) -> void:
 				AIR_FRICTION * delta
 			)
 
-
-	# Shoot
+	# Shoot & Reload
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
-
+		
+	if Input.is_action_just_pressed("reload"):
+		reload()
 
 	# Head bobbing
 	head_bobbing(delta)
@@ -190,9 +206,18 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func shoot():
-	var space_state = get_world_3d().direct_space_state
+# --- FUNGSI WEAPON & HEALTH ---
 
+func shoot():
+	if current_ammo <= 0:
+		print("Peluru habis! Tekan R untuk reload.")
+		return
+
+	# Kurangi peluru saat menembak
+	current_ammo -= 1
+	update_hud()
+
+	var space_state = get_world_3d().direct_space_state
 	var from = camera.global_position
 	var to = from + -camera.global_transform.basis.z * 100.0
 
@@ -203,9 +228,50 @@ func shoot():
 
 	if result:
 		print("Kena: ", result.collider.name)
+		# Jika musuh punya fungsi take_damage, panggil di sini
+		if result.collider.has_method("take_damage"):
+			result.collider.take_damage(25)
 	else:
 		print("Tembakan tidak kena apa-apa")
 
+
+func reload():
+	if current_ammo == max_ammo or reserve_ammo <= 0:
+		return
+
+	var needed_ammo = max_ammo - current_ammo
+	var ammo_to_add = min(needed_ammo, reserve_ammo)
+
+	current_ammo += ammo_to_add
+	reserve_ammo -= ammo_to_add
+
+	update_hud()
+	print("Reload selesai!")
+
+
+func take_damage(amount: int):
+	current_health -= amount
+	current_health = clamp(current_health, 0, max_health)
+	update_hud()
+
+	if current_health <= 0:
+		die()
+
+
+func die():
+	print("Player Mati!")
+	# Logika player mati (misal reload level / game over)
+
+
+func update_hud():
+	if hud:
+		if hud.has_method("update_health"):
+			hud.update_health(current_health, max_health)
+		if hud.has_method("update_ammo"):
+			hud.update_ammo(current_ammo, reserve_ammo)
+
+
+# --- FUNGSI GERAKAN ---
 
 func head_bobbing(delta):
 	var is_sprinting = Input.is_action_pressed("sprint") and not is_crouching

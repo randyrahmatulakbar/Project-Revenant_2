@@ -46,6 +46,17 @@ func _ready():
 	head_start_position = head.position
 	
 	interaction_label.visible = false
+	
+	$Health.health_changed.connect(_on_health_changed)
+	$Health.died.connect(_on_died)
+	
+func _on_health_changed(current: float, max: float) -> void:
+	print("HP: ", current, "/", max)
+	# update HP bar UI di sini kalau ada
+
+func _on_died() -> void:
+	print("Player mati!")
+	get_tree().reload_current_scene()
 
 
 func _unhandled_input(event):
@@ -210,6 +221,9 @@ func shoot():
 
 	if result:
 		print("Kena: ", result.collider.name)
+
+		if result.collider.has_method("take_damage"):
+			result.collider.take_damage(1)
 	else:
 		print("Tembakan tidak kena apa-apa")
 

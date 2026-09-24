@@ -9,7 +9,6 @@ extends CharacterBody3D
 @export_group("Vision")
 @export var view_distance: float = 10.0
 @export var view_angle: float = 60.0
-@export var eye_height: float = 1.5
 
 @export_group("Attack")
 @export var attack_range: float = 1.5
@@ -24,7 +23,14 @@ extends CharacterBody3D
 @export_group("Combat")
 @export var max_hits: int = 5
 
+@export_group("Debug")
+@export var show_vision_debug: bool = false     # titik kecil di EyePoint
+@export var show_vision_cone: bool = true        # segitiga area pandang, kepotong tembok
+@export var vision_cone_segments: int = 24       # makin banyak makin halus, tapi makin berat (raycast per segmen tiap frame)
+@export var vision_cone_ground_offset: float = 0.05   # naikin dikit dari lantai biar gak z-fighting
+
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
+@onready var eye_point: Node3D = $EyePoint   # marker mata musuh, posisinya diatur langsung di editor
 
 enum State { PATROL, CHASE }
 var state: State = State.PATROL
@@ -44,11 +50,27 @@ var position_at_last_check: Vector3 = Vector3.ZERO
 var current_hits: int = 0
 var is_dead: bool = false
 
+# Debug - dot
+var vision_debug_point: MeshInstance3D
+var vision_debug_material: StandardMaterial3D
+
+# Debug - cone
+var vision_cone: MeshInstance3D
+var vision_cone_material: StandardMaterial3D
+
+const COLOR_PATROL := Color(0.2, 1.0, 0.4, 0.35)   # hijau
+const COLOR_CHASE := Color(1.0, 0.15, 0.15, 0.35)  # merah
+
 func _ready() -> void:
 	for path in waypoint_paths:
 		var node = get_node(path)
 		if node:
 			waypoints.append(node)
+
+	if show_vision_debug:
+		_setup_vision_debug_point()
+	if show_vision_cone:
+		_setup_vision_cone()
 
 	await get_tree().physics_frame
 	_set_next_target()
@@ -82,6 +104,10 @@ func _die() -> void:
 	print("Musuh mati!")
 	velocity = Vector3.ZERO
 	set_physics_process(false)
+	if vision_debug_point:
+		vision_debug_point.queue_free()
+	if vision_cone:
+		vision_cone.queue_free()
 	queue_free()
 
 # ============ VISION ============
@@ -92,9 +118,11 @@ func _check_vision() -> void:
 		if players.size() > 0:
 			player = players[0]
 		else:
+			_update_vision_debug(eye_point.global_position, false)
+			_update_vision_cone()
 			return
 
-	var eye_pos: Vector3 = global_position + Vector3.UP * eye_height
+	var eye_pos: Vector3 = eye_point.global_position
 	var to_player: Vector3 = player.global_position - eye_pos
 	var distance: float = to_player.length()
 
@@ -124,6 +152,9 @@ func _check_vision() -> void:
 			flicker_timer -= get_physics_process_delta_time()
 			if flicker_timer <= 0.0:
 				_stop_chasing()
+
+	_update_vision_debug(eye_pos, can_see)
+	_update_vision_cone()
 
 func _has_line_of_sight(eye_pos: Vector3) -> bool:
 	var space_state = get_world_3d().direct_space_state
@@ -245,3 +276,103 @@ func _move_toward_nav_target(move_speed: float) -> void:
 		look_at(global_position + direction, Vector3.UP)
 
 	move_and_slide()
+
+# ============ DEBUG: dot di EyePoint ============
+
+func _setup_vision_debug_point() -> void:
+	vision_debug_point = MeshInstance3D.new()
+
+	var sphere := SphereMesh.new()
+	sphere.radius = 0.1
+	sphere.height = 0.2
+	vision_debug_point.mesh = sphere
+
+	vision_debug_material = StandardMaterial3D.new()
+	vision_debug_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	vision_debug_material.albedo_color = Color.RED
+	vision_debug_point.material_override = vision_debug_material
+
+	get_tree().current_scene.add_child(vision_debug_point)
+
+func _update_vision_debug(eye_pos: Vector3, can_see: bool) -> void:
+	if not show_vision_debug or vision_debug_point == null:
+		return
+
+	vision_debug_point.global_position = eye_pos
+	vision_debug_material.albedo_color = Color.GREEN if can_see else Color.RED
+
+# ============ DEBUG: vision cone (kepotong tembok) ============
+
+func _setup_vision_cone() -> void:
+	vision_cone = MeshInstance3D.new()
+
+	vision_cone_material = StandardMaterial3D.new()
+	vision_cone_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	vision_cone_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	vision_cone_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	vision_cone_material.albedo_color = COLOR_PATROL
+	vision_cone.material_override = vision_cone_material
+	vision_cone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+	# Child dari enemy sendiri biar otomatis ikut rotasi badan (arah hadap).
+	add_child(vision_cone)
+	vision_cone.position = Vector3(0, vision_cone_ground_offset, 0)
+	# Mesh-nya dibangun ulang tiap frame di _update_vision_cone(), jadi
+	# di sini dibiarkan kosong dulu.
+
+func _update_vision_cone() -> void:
+	if not show_vision_cone or vision_cone == null:
+		return
+
+	vision_cone_material.albedo_color = COLOR_CHASE if state == State.CHASE else COLOR_PATROL
+	vision_cone.mesh = _build_vision_cone_mesh()
+
+func _build_vision_cone_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+
+	var half_angle := deg_to_rad(view_angle) / 2.0
+	var full_angle := deg_to_rad(view_angle)
+	var center := Vector3.ZERO
+
+	var origin_global: Vector3 = global_position + Vector3.UP * vision_cone_ground_offset
+	var space_state := get_world_3d().direct_space_state
+
+	var exclude_list: Array = [self]
+	if player:
+		exclude_list.append(player)
+
+	var prev_point := _get_cone_edge_point(-half_angle, origin_global, space_state, exclude_list)
+
+	for i in range(1, vision_cone_segments + 1):
+		var t := -half_angle + (full_angle * i / float(vision_cone_segments))
+		var point := _get_cone_edge_point(t, origin_global, space_state, exclude_list)
+
+		st.add_vertex(center)
+		st.add_vertex(prev_point)
+		st.add_vertex(point)
+
+		prev_point = point
+
+	return st.commit()
+
+# Buat satu "jari-jari" segitiga: tembak raycast ke arah 'angle' (relatif forward),
+# kalau kena sesuatu, panjangnya dipotong sampai titik tabrakan itu.
+func _get_cone_edge_point(angle: float, origin_global: Vector3, space_state: PhysicsDirectSpaceState3D, exclude_list: Array) -> Vector3:
+	var local_dir := Vector3(sin(angle), 0.0, -cos(angle))
+
+	var global_dir: Vector3 = global_transform.basis * local_dir
+	global_dir.y = 0.0
+	global_dir = global_dir.normalized()
+
+	var to_point: Vector3 = origin_global + global_dir * view_distance
+
+	var query := PhysicsRayQueryParameters3D.create(origin_global, to_point)
+	query.exclude = exclude_list
+	var result := space_state.intersect_ray(query)
+
+	var length: float = view_distance
+	if not result.is_empty():
+		length = origin_global.distance_to(result.position)
+
+	return local_dir * length

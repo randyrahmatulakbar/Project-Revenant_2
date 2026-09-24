@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cccnm8qv2eiuy" path="res://hud.gd" id="1_37p78"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37p78"]
-bg_color = Color(0.50995183, 0, 0.09542755, 1)
+bg_color = Color(0.9607843, 0, 0, 1)
 
 [node name="HUD" type="CanvasLayer" unique_id=1785908157]
 script = ExtResource("1_37p78")
@@ -36,11 +36,13 @@ layout_mode = 2
 text = "HP"
 
 [node name="HealthBar" type="ProgressBar" parent="Control/HealthContainer" unique_id=1730495381]
-custom_minimum_size = Vector2(140, 1)
+custom_minimum_size = Vector2(140, 23)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_37p78")
+step = 0.001
 value = 100.0
+show_percentage = false
 
 [node name="AmmoContainer" type="HBoxContainer" parent="Control" unique_id=1384339246]
 custom_minimum_size = Vector2(50, 0)

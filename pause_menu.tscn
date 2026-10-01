@@ -27,7 +27,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.47058824)
 
 [node name="MenuContainer" type="VBoxContainer" parent="PanelControl/ColorRect" unique_id=498072519]
-visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -55,6 +54,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Resume"
 
+[node name="Restart" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=647417915]
+custom_minimum_size = Vector2(200, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Restart"
+
 [node name="SettingsButton" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=595031354]
 custom_minimum_size = Vector2(200, 45)
 layout_mode = 2
@@ -74,6 +79,7 @@ theme_override_font_sizes/font_size = 20
 text = "Exit Game"
 
 [node name="Panel" type="Panel" parent="." unique_id=1997734482]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

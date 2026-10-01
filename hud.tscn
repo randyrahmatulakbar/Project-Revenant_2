@@ -25,7 +25,7 @@ anchor_bottom = 1.0
 offset_left = 21.0
 offset_top = -54.0
 offset_right = 272.0
-offset_bottom = -27.0
+offset_bottom = -31.0
 grow_vertical = 0
 scale = Vector2(1.2, 1.2)
 mouse_filter = 2
@@ -36,7 +36,7 @@ layout_mode = 2
 text = "HP"
 
 [node name="HealthBar" type="ProgressBar" parent="Control/HealthContainer" unique_id=1730495381]
-custom_minimum_size = Vector2(140, 23)
+custom_minimum_size = Vector2(160, 23)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_37p78")

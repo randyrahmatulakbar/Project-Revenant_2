@@ -2,13 +2,14 @@ extends CanvasLayer
 
 const MAIN_MENU_SCENE = "res://main menu/mainmenu.tscn"
 
-# Referensi tombol pause utama
+# Referensi tombol
 @onready var resume_button = $PanelControl/ColorRect/MenuContainer/ResumeButton
+@onready var restart_button = $PanelControl/ColorRect/MenuContainer/Restart # <-- Referensi tombol Restart
 @onready var settings_button = $PanelControl/ColorRect/MenuContainer/SettingsButton
 @onready var main_menu_button = $PanelControl/ColorRect/MenuContainer/MainMenuButton
 @onready var exit_button = $PanelControl/ColorRect/MenuContainer/ExitButton
 
-# Container Utama vs Panel Settings
+# Panel & Container
 @onready var menu_container = $PanelControl/ColorRect/MenuContainer
 @onready var settings_panel = $Panel
 @onready var back_button = $Panel/MarginContainer/VBoxContainer/BackButton
@@ -19,7 +20,6 @@ const MAIN_MENU_SCENE = "res://main menu/mainmenu.tscn"
 @onready var fullscreen_checkbox = $Panel/MarginContainer/VBoxContainer/HBoxContainer3/FullscreenCheckBox
 
 func _ready():
-	# Reset status pause saat game baru mulai
 	get_tree().paused = false
 	hide()
 	
@@ -30,6 +30,7 @@ func _ready():
 	
 	# Connect tombol pause utama
 	resume_button.pressed.connect(_on_resume_pressed)
+	restart_button.pressed.connect(_on_restart_pressed) # <-- Hubungkan signal tombol Restart
 	settings_button.pressed.connect(_on_settings_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_pressed)
 	exit_button.pressed.connect(_on_exit_pressed)
@@ -37,20 +38,17 @@ func _ready():
 	# Connect tombol back
 	back_button.pressed.connect(_on_back_pressed)
 	
-	# --- CONNECT KONTROL SETTINGS ---
+	# Connect kontrol settings
 	_init_settings_values()
-	
 	master_slider.value_changed.connect(_on_master_slider_value_changed)
 	sens_slider.value_changed.connect(_on_sens_slider_value_changed)
 	fullscreen_checkbox.toggled.connect(_on_fullscreen_toggled)
 
 func _init_settings_values():
-	# Master Volume (0.0 sampai 1.0)
 	master_slider.min_value = 0.0001
 	master_slider.max_value = 1.0
 	master_slider.value = db_to_linear(AudioServer.get_bus_volume_db(0))
 	
-	# Fullscreen Checkbox Status
 	var mode = DisplayServer.window_get_mode()
 	fullscreen_checkbox.button_pressed = (mode == DisplayServer.WINDOW_MODE_FULLSCREEN)
 
@@ -64,22 +62,17 @@ func _unhandled_input(event):
 func toggle_pause():
 	var is_paused = !get_tree().paused
 	get_tree().paused = is_paused
-	
-	# Tampilkan/sembunyikan Pause Menu
 	visible = is_paused
 	
-	# Sembunyikan/tampilkan Crosshair
 	var crosshair = get_tree().root.find_child("crosshair", true, false)
 	if crosshair:
 		crosshair.visible = !is_paused
 
-	# Sembunyikan/tampilkan HUD pas pause
 	var hud = get_tree().root.find_child("HUD", true, false)
 	if hud:
 		hud.visible = !is_paused
 
 	if is_paused:
-		# Saat pause dipicu, paksa menu utama tampil & settings sembunyi
 		if menu_container:
 			menu_container.show()
 		if settings_panel:
@@ -88,7 +81,14 @@ func toggle_pause():
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-# --- LOGIKA BUKA / TUTUP SETTINGS ---
+# --- FUNGSI RESTART ---
+func _on_restart_pressed():
+	get_tree().paused = false # Unpause game terlebih dahulu
+	get_tree().reload_current_scene() # Reload scene level saat ini
+
+# --- FUNGSI TOMBOL LAIN ---
+func _on_resume_pressed():
+	toggle_pause()
 
 func _on_settings_pressed():
 	if menu_container:
@@ -105,13 +105,10 @@ func _close_settings():
 	if menu_container:
 		menu_container.show()
 
-# --- LOGIKA SETTINGS ---
-
 func _on_master_slider_value_changed(value: float):
 	AudioServer.set_bus_volume_db(0, linear_to_db(value))
 
 func _on_sens_slider_value_changed(value: float):
-	# Cari node Player dan ubah sensitivitasnya
 	var player = get_tree().root.find_child("Player", true, false)
 	if player:
 		if "SENSITIVITY" in player:
@@ -124,11 +121,6 @@ func _on_fullscreen_toggled(toggled_on: bool):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-
-# --- LOGIKA TOMBOL UTAMA ---
-
-func _on_resume_pressed():
-	toggle_pause()
 
 func _on_main_menu_pressed():
 	get_tree().paused = false

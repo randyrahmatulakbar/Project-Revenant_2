@@ -224,11 +224,42 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gwcng")
 
-[node name="MarginContainer" type="MarginContainer" parent="CreditPanel" unique_id=1025006704]
+[node name="CreditTitle" type="Label" parent="CreditPanel" unique_id=1638337279]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 47.0
+offset_right = 1072.0
+offset_bottom = 95.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_vlol7")
+theme_override_font_sizes/font_size = 48
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CreditPanel" unique_id=1301719794]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 90.0
+offset_right = 1072.0
+offset_bottom = 94.0
+
+[node name="CreditViewport" type="Control" parent="CreditPanel" unique_id=673863772]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 94.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CreditPanel/CreditViewport" unique_id=1025006704]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -45.0
+offset_bottom = 451.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 80
@@ -236,50 +267,52 @@ theme_override_constants/margin_top = 80
 theme_override_constants/margin_right = 80
 theme_override_constants/margin_bottom = 80
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CreditPanel/MarginContainer" unique_id=952581758]
+[node name="VBoxContainer" type="VBoxContainer" parent="CreditPanel/CreditViewport/MarginContainer" unique_id=952581758]
 layout_mode = 2
 
-[node name="CreditTitle" type="Label" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=1638337279]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_fonts/font = ExtResource("4_vlol7")
-theme_override_font_sizes/font_size = 48
-text = "CREDITS"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=1301719794]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=1879225200]
+[node name="Spacer" type="Control" parent="CreditPanel/CreditViewport/MarginContainer/VBoxContainer" unique_id=1879225200]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CreditText" type="Label" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=294776693]
+[node name="CreditText" type="Label" parent="CreditPanel/CreditViewport/MarginContainer/VBoxContainer" unique_id=294776693]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "PROJECT REVENANT
-PROGRAMMER & GAMEPLAY
-RANDY RAHMATUL AKBAR
+DIREKSI & DESAIN 
+Game Designer: Randy Rahmatul Akbar
 
-LEVEL DESIGNER & MAP
-M. RENO ALFIAN
+PEMROGRAMAN
+Gameplay & Systems Programmer: Randy Rahmatul Akbar
 
-ASSET, UI/UX & AUDIO
-RAEVAN FADHILLAH
+LEVEL & LINGKUNGAN
+ Level Designers & Map Artists: M. Reno Alfian & Laura Aprilianza
 
-STORY
-LAURA APRILIANZA"
+ARTISTIK, VISUAL & AUDIO
+UI/UX, 2D Artist & Audio Designer: Raevan Fadhillah
+
+NARRATIVE & STORY
+ Storywriters & Narrative Designers: Laura Aprilianza & Raevan Fadhillah
+
+
+KONTRIBUSI ASET PIHAK KETIGA
+
+Aset 3D & Lingkungan:
+ - Kenney.nl (Free 3D Assets & Game Assets)
+ - Itch.io Creators (Community Assets)
+
+Audio & Sound Effects:
+ - YouTube Audio Library
+ - Freesound.org & Itch.io Audio Assets
+
+TERIMA KASIH KHUSUS
+Guru Pembimbing – Pak Maul & Bu Annisa
+SMKN 21 Jakarta
+Komunitas Godot Engine Indonesia"
 horizontal_alignment = 1
 
-[node name="Spacer2" type="Control" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=147396784]
+[node name="Spacer2" type="Control" parent="CreditPanel/CreditViewport/MarginContainer/VBoxContainer" unique_id=147396784]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="BackButtonCredit" type="Button" parent="CreditPanel/MarginContainer/VBoxContainer" unique_id=913617682]
-custom_minimum_size = Vector2(320, 60)
-layout_mode = 2
-theme_override_font_sizes/font_size = 35
-text = "BACK"
 
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
@@ -289,4 +322,3 @@ text = "BACK"
 [connection signal="value_changed" from="Options/MarginContainer/VBoxContainer/HBoxContainer2/SensSlider" to="." method="_on_sens_slider_value_changed"]
 [connection signal="toggled" from="Options/MarginContainer/VBoxContainer/HBoxContainer3/FullscreenCheckBox" to="." method="_on_fullscreen_check_box_toggled"]
 [connection signal="pressed" from="Options/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="CreditPanel/MarginContainer/VBoxContainer/BackButtonCredit" to="." method="_on_back_button_credit_pressed"]

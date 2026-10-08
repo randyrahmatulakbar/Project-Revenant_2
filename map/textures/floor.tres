@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://xv4e6xm6ifb5"]
+
+[ext_resource type="Texture2D" uid="uid://k3223n6rkwnh" path="res://map/textures/floor_tile_low.png" id="1_gobj8"]
+
+[resource]
+albedo_texture = ExtResource("1_gobj8")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0

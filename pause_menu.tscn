@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b6cwo5ijm44oy" path="res://pause_menu.gd" id="1_hdmo1"]
 [ext_resource type="FontFile" uid="uid://hyiaromrf2xl" path="res://font/Rajdhani-Bold.ttf" id="2_nwcfo"]
-[ext_resource type="PackedScene" uid="uid://c3qqwd7gaj7e1" path="res://settings_menu.tscn" id="3_05uyy"]
+[ext_resource type="Theme" uid="uid://cct5jloi6jy7f" path="res://revenant_theme.tres" id="2_p81d2"]
+[ext_resource type="PackedScene" uid="uid://blwv1xao2u0c0" path="res://settings_menu.tscn" id="3_05uyy"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1832307124]
 process_mode = 3
@@ -15,6 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_p81d2")
 
 [node name="ColorRect" type="ColorRect" parent="PanelControl" unique_id=440166733]
 process_mode = 3
@@ -80,3 +82,4 @@ theme_override_font_sizes/font_size = 20
 text = "Exit Game"
 
 [node name="SettingsMenu" parent="." unique_id=278745701 instance=ExtResource("3_05uyy")]
+theme = ExtResource("2_p81d2")

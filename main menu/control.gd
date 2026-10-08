@@ -74,7 +74,7 @@ func _set_titles_visible(value: bool) -> void:
 
 func _on_play_pressed() -> void:
 	print("Play pressed - berpindah ke game...")
-	get_tree().change_scene_to_file("res://main_level.tscn")
+	get_tree().change_scene_to_file("res://intro.tscn")
 
 
 func _on_settings_pressed() -> void:

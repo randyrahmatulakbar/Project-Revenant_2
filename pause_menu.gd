@@ -13,6 +13,8 @@ const MAIN_MENU_SCENE = "res://main menu/mainmenu.tscn"
 @onready var menu_container = $PanelControl/ColorRect/MenuContainer
 @onready var settings_menu = $SettingsMenu
 
+var _crosshair_was_visible := true
+var _hud_was_visible := true
 
 func _ready():
 	get_tree().paused = false
@@ -50,11 +52,19 @@ func toggle_pause():
 
 	var crosshair = get_tree().root.find_child("crosshair", true, false)
 	if crosshair:
-		crosshair.visible = !is_paused
+		if is_paused:
+			_crosshair_was_visible = crosshair.visible
+			crosshair.visible = false
+		else:
+			crosshair.visible = _crosshair_was_visible
 
 	var hud = get_tree().root.find_child("HUD", true, false)
 	if hud:
-		hud.visible = !is_paused
+		if is_paused:
+			_hud_was_visible = hud.visible
+			hud.visible = false
+		else:
+			hud.visible = _hud_was_visible
 
 	if is_paused:
 		menu_container.show()

@@ -1,0 +1,256 @@
+[gd_scene format=3 uid="uid://blwv1xao2u0c0"]
+
+[sub_resource type="GDScript" id="GDScript_oerog"]
+script/source = "extends CenterContainer
+
+## Ukuran panel (dalam piksel dasar project). Ubah di Inspector instance untuk menyesuaikan.
+@export var panel_size: Vector2 = Vector2(480, 400)
+@export var font_size: int = 18
+@export var title_size: int = 36
+@export var label_width: float = 150.0
+
+signal back_pressed
+signal sensitivity_changed(value: float)
+
+const SAVE_PATH := \"user://settings.cfg\"
+const BUSES := [\"Music\", \"SFX\"]
+
+@onready var master_slider: HSlider = %MasterSlider
+@onready var music_slider: HSlider = %MusicSlider
+@onready var sfx_slider: HSlider = %SfxSlider
+@onready var sens_slider: HSlider = %SensSlider
+@onready var fullscreen_check: CheckBox = %FullscreenCheck
+@onready var back_button: Button = %BackButton
+
+
+func _ready() -> void:
+	# Tetap jalan saat game di-pause (dipakai di pause menu)
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	# Selalu penuhi layar induk supaya panel tepat di tengah
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+	ensure_buses()
+	_apply_layout()
+
+	var cfg := _load_config()
+	master_slider.value = cfg.get_value(\"audio\", \"master\", 1.0)
+	music_slider.value = cfg.get_value(\"audio\", \"music\", 1.0)
+	sfx_slider.value = cfg.get_value(\"audio\", \"sfx\", 1.0)
+	sens_slider.value = cfg.get_value(\"controls\", \"sensitivity\", 1.0)
+	fullscreen_check.button_pressed = cfg.get_value(\"video\", \"fullscreen\", false)
+
+	master_slider.value_changed.connect(_on_master_changed)
+	music_slider.value_changed.connect(_on_music_changed)
+	sfx_slider.value_changed.connect(_on_sfx_changed)
+	sens_slider.value_changed.connect(_on_sens_changed)
+	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
+	back_button.pressed.connect(_on_back_pressed)
+
+
+func _apply_layout() -> void:
+	$Panel.custom_minimum_size = panel_size
+	$Panel/Margin/VBox/Title.add_theme_font_size_override(\"font_size\", title_size)
+	for child in $Panel/Margin/VBox/Grid.get_children():
+		if child is Label:
+			child.custom_minimum_size.x = label_width
+		if child is Label or child is CheckBox:
+			child.add_theme_font_size_override(\"font_size\", font_size)
+	back_button.add_theme_font_size_override(\"font_size\", font_size + 4)
+
+
+func _on_master_changed(value: float) -> void:
+	_apply_bus(\"Master\", value)
+	_save(\"audio\", \"master\", value)
+
+
+func _on_music_changed(value: float) -> void:
+	_apply_bus(\"Music\", value)
+	_save(\"audio\", \"music\", value)
+
+
+func _on_sfx_changed(value: float) -> void:
+	_apply_bus(\"SFX\", value)
+	_save(\"audio\", \"sfx\", value)
+
+
+func _on_sens_changed(value: float) -> void:
+	sensitivity_changed.emit(value)
+	_save(\"controls\", \"sensitivity\", value)
+
+
+func _on_fullscreen_toggled(on: bool) -> void:
+	_apply_fullscreen(on)
+	_save(\"video\", \"fullscreen\", on)
+
+
+func _on_back_pressed() -> void:
+	back_pressed.emit()
+
+
+# ---------- Helper statis (bisa dipanggil dari mana saja) ----------
+
+static func _load_config() -> ConfigFile:
+	var cfg := ConfigFile.new()
+	cfg.load(SAVE_PATH) # kalau file belum ada, nilai default dipakai
+	return cfg
+
+
+static func _save(section: String, key: String, value: Variant) -> void:
+	var cfg := _load_config()
+	cfg.set_value(section, key, value)
+	cfg.save(SAVE_PATH)
+
+
+## Membuat bus Music dan SFX kalau belum ada (cadangan kalau belum dibuat di tab Audio).
+static func ensure_buses() -> void:
+	for bus_name in BUSES:
+		if AudioServer.get_bus_index(bus_name) == -1:
+			AudioServer.add_bus()
+			var idx := AudioServer.bus_count - 1
+			AudioServer.set_bus_name(idx, bus_name)
+			AudioServer.set_bus_send(idx, \"Master\")
+
+
+static func _apply_bus(bus_name: String, value: float) -> void:
+	var bus := AudioServer.get_bus_index(bus_name)
+	if bus == -1:
+		return
+	AudioServer.set_bus_mute(bus, value <= 0.001)
+	AudioServer.set_bus_volume_db(bus, linear_to_db(maxf(value, 0.001)))
+
+
+static func _apply_fullscreen(on: bool) -> void:
+	DisplayServer.window_set_mode(
+		DisplayServer.WINDOW_MODE_FULLSCREEN if on else DisplayServer.WINDOW_MODE_WINDOWED
+	)
+
+
+## Panggil sekali saat game start (mis. di _ready main menu) agar setting tersimpan langsung dipakai.
+static func apply_saved() -> void:
+	ensure_buses()
+	var cfg := _load_config()
+	_apply_bus(\"Master\", cfg.get_value(\"audio\", \"master\", 1.0))
+	_apply_bus(\"Music\", cfg.get_value(\"audio\", \"music\", 1.0))
+	_apply_bus(\"SFX\", cfg.get_value(\"audio\", \"sfx\", 1.0))
+	_apply_fullscreen(cfg.get_value(\"video\", \"fullscreen\", false))
+
+
+## Multiplier sensitivitas (default 1.0). Dipakai di player: look_speed * SettingsMenu.get_sensitivity()
+static func get_sensitivity() -> float:
+	return _load_config().get_value(\"controls\", \"sensitivity\", 1.0)
+"
+
+[node name="SettingsMenu" type="CenterContainer" unique_id=1312421754]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_oerog")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=597413641]
+custom_minimum_size = Vector2(480, 400)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Panel" unique_id=346627755]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin" unique_id=637787192]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox" unique_id=1857985401]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 36
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="Panel/Margin/VBox" unique_id=705592689]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 14
+columns = 2
+
+[node name="MasterLabel" type="Label" parent="Panel/Margin/VBox/Grid" unique_id=1192008253]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="Panel/Margin/VBox/Grid" unique_id=456953142]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MusicLabel" type="Label" parent="Panel/Margin/VBox/Grid" unique_id=1630921585]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="Panel/Margin/VBox/Grid" unique_id=2034862888]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SfxLabel" type="Label" parent="Panel/Margin/VBox/Grid" unique_id=96785243]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SfxSlider" type="HSlider" parent="Panel/Margin/VBox/Grid" unique_id=2125206298]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SensLabel" type="Label" parent="Panel/Margin/VBox/Grid" unique_id=2110691881]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="SensSlider" type="HSlider" parent="Panel/Margin/VBox/Grid" unique_id=224368518]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 0.1
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="FullscreenLabel" type="Label" parent="Panel/Margin/VBox/Grid" unique_id=1160018941]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheck" type="CheckBox" parent="Panel/Margin/VBox/Grid" unique_id=1105685359]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="BackButton" type="Button" parent="Panel/Margin/VBox" unique_id=575047588]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Back"

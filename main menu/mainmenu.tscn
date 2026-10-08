@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://bfmadw44yutfr"]
 
+[ext_resource type="Theme" uid="uid://cct5jloi6jy7f" path="res://revenant_theme.tres" id="1_27q1e"]
 [ext_resource type="Script" uid="uid://b28dh78stckjw" path="res://main menu/control.gd" id="1_tgl0h"]
 [ext_resource type="Texture2D" uid="uid://d4e2q3ab3nf6j" path="res://main menu/ChatGPT Image Aug 19, 2026, 10_10_04 PM.png" id="2_27q1e"]
 [ext_resource type="AudioStream" uid="uid://b0jd4t3m2a64c" path="res://main menu/preview.mp3" id="3_so7jt"]
-[ext_resource type="FontFile" uid="uid://dongvbki7wr5m" path="res://main menu/Impact.ttf" id="4_vlol7"]
+[ext_resource type="FontFile" uid="uid://hyiaromrf2xl" path="res://font/Rajdhani-Bold.ttf" id="4_so7jt"]
+[ext_resource type="PackedScene" uid="uid://blwv1xao2u0c0" path="res://settings_menu.tscn" id="6_so7jt"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e1n45"]
 texture = ExtResource("2_27q1e")
@@ -11,10 +13,214 @@ texture = ExtResource("2_27q1e")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1n45"]
 bg_color = Color(0.16470589, 0.18039216, 0.2, 1)
 
-[sub_resource type="Theme" id="Theme_gwcng"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwcng"]
 bg_color = Color(0, 0, 0, 0.7058824)
+
+[sub_resource type="GDScript" id="GDScript_so7jt"]
+script/source = "extends VBoxContainer
+## Pasang script ini di VBoxContainer yang ada di dalam CreditViewport/MarginContainer.
+## Script membangun seluruh credit dari daftar ENTRIES di bawah.
+##
+## Jenis baris yang tersedia:
+##   {\"title\": \"...\"}                   -> judul besar di awal
+##   {\"section\": \"...\"}                 -> header bagian (penanda merah + garis)
+##   {\"role\": \"...\", \"name\": \"...\"}     -> peran di kiri, nama di kanan
+##   {\"sub\": \"...\"}                     -> sub-judul (mis. \"Aset 3D & Lingkungan\")
+##   {\"item\": \"...\"}                    -> baris daftar dengan tanda \"-\"
+
+# ===== EDIT ISI CREDIT DI SINI =====
+const ENTRIES := [
+	{\"title\": \"PROJECT REVENANT\"},
+
+	{\"section\": \"DIREKSI & DESAIN\"},
+	{\"role\": \"Game Designer\", \"name\": \"Randy Rahmatul Akbar\"},
+
+	{\"section\": \"PEMROGRAMAN\"},
+	{\"role\": \"Gameplay & Systems Programmer\", \"name\": \"Randy Rahmatul Akbar\"},
+
+	{\"section\": \"LEVEL & LINGKUNGAN\"},
+	{\"role\": \"Level Designers & Map Artists\", \"name\": \"M. Reno Alfian & Laura Aprilianza\"},
+
+	{\"section\": \"ARTISTIK, VISUAL & AUDIO\"},
+	{\"role\": \"UI/UX, 2D Artist & Audio Designer\", \"name\": \"Raevan Fadhillah\"},
+
+	{\"section\": \"NARRATIVE & STORY\"},
+	{\"role\": \"Storywriters & Narrative Designers\", \"name\": \"Laura Aprilianza & Raevan Fadhillah\"},
+
+	{\"section\": \"KONTRIBUSI ASET PIHAK KETIGA\"},
+	{\"sub\": \"Aset 3D & Lingkungan\"},
+	{\"item\": \"Kenney.nl (Free 3D Assets & Game Assets)\"},
+	{\"item\": \"Itch.io Creators (Community Assets)\"},
+	{\"sub\": \"Audio & Sound Effects\"},
+	{\"item\": \"YouTube Audio Library\"},
+	{\"item\": \"Freesound.org & Itch.io Audio Assets\"},
+	{\"item\": \"UI click sound - Universfield\"},
+	{\"sub\": \"Font\"},
+	{\"item\": \"Rajdhani - Indian Type Foundry\"},
+
+	{\"section\": \"TERIMA KASIH KHUSUS\"},
+	{\"item\": \"Guru Pembimbing - Pak Maul & Bu Annisa\"},
+	{\"item\": \"SMKN 21 Jakarta\"},
+	{\"item\": \"Komunitas Godot Engine Indonesia\"},
+]
+# ===================================
+
+const COLOR_ROLE := Color(\"c99a7e\")
+const COLOR_NAME := Color(\"eadccf\")
+const COLOR_TICK := Color(\"c0392b\")
+const COLOR_LINE := Color(0.55, 0.42, 0.34, 0.30)
+
+@export var role_width: float = 300.0
+@export var role_font_size: int = 15
+@export var name_font_size: int = 19
+@export var section_font_size: int = 17
+@export var title_font_size: int = 28
+@export var row_gap: int = 8
+@export var section_gap: int = 22
+@export var letter_spacing: int = 2
+
+
+func _ready() -> void:
+	_style_header()
+	_build()
+
+
+func _build() -> void:
+	# Hapus isi lama (Spacer, CreditText, Spacer2)
+	for child in get_children():
+		child.queue_free()
+
+	add_theme_constant_override(\"separation\", row_gap)
+
+	var first_section := true
+	for entry in ENTRIES:
+		if entry.has(\"title\"):
+			_add_title(entry[\"title\"])
+		elif entry.has(\"section\"):
+			if not first_section:
+				_add_gap(section_gap)
+			first_section = false
+			_add_section(entry[\"section\"])
+		elif entry.has(\"role\"):
+			_add_row(entry[\"role\"], entry.get(\"name\", \"\"))
+		elif entry.has(\"sub\"):
+			_add_sub(entry[\"sub\"])
+		elif entry.has(\"item\"):
+			_add_item(entry[\"item\"])
+
+	# Ruang kosong di akhir supaya teks terakhir keluar penuh dari layar
+	_add_gap(60)
+
+
+# ---------- Pembuat elemen ----------
+
+func _add_gap(height: float) -> void:
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, height)
+	add_child(gap)
+
+
+func _add_title(text: String) -> void:
+	var label := _make_label(text.to_upper(), title_font_size, COLOR_NAME)
+	add_child(label)
+	_apply_spacing(label)
+	_add_gap(6)
+
+
+func _add_section(text: String) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override(\"separation\", 12)
+	add_child(row)
+	row.add_child(_make_tick())
+	var label := _make_label(text.to_upper(), section_font_size, COLOR_ROLE)
+	row.add_child(label)
+	_apply_spacing(label)
+	_add_line()
+
+
+func _add_row(role_text: String, name_text: String) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override(\"separation\", 16)
+	add_child(row)
+
+	var role := _make_label(role_text, role_font_size, COLOR_ROLE)
+	role.custom_minimum_size = Vector2(role_width, 0)
+	role.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	role.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	row.add_child(role)
+
+	var name_label := _make_label(name_text, name_font_size, COLOR_NAME)
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	row.add_child(name_label)
+
+
+func _add_sub(text: String) -> void:
+	_add_gap(4)
+	var label := _make_label(text, name_font_size, COLOR_NAME)
+	add_child(label)
+
+
+func _add_item(text: String) -> void:
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override(\"margin_left\", 20)
+	add_child(margin)
+	var label := _make_label(\"-  \" + text, role_font_size + 2, COLOR_ROLE)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	margin.add_child(label)
+
+
+func _add_line() -> void:
+	var line := ColorRect.new()
+	line.color = COLOR_LINE
+	line.custom_minimum_size = Vector2(0, 1)
+	add_child(line)
+
+
+# ---------- Helper ----------
+
+func _make_label(text: String, size: int, color: Color) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override(\"font_size\", size)
+	label.add_theme_color_override(\"font_color\", color)
+	return label
+
+
+# Penanda merah miring (gaya HUD)
+func _make_tick() -> Panel:
+	var tick := Panel.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COLOR_TICK
+	sb.skew = Vector2(-0.35, 0)
+	tick.add_theme_stylebox_override(\"panel\", sb)
+	tick.custom_minimum_size = Vector2(6, 16)
+	tick.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	return tick
+
+
+# Menambah jarak antar huruf (font diambil dari theme). Panggil setelah label masuk tree.
+func _apply_spacing(label: Label) -> void:
+	var base := label.get_theme_font(\"font\", \"Label\")
+	if base == null:
+		return
+	var variation := FontVariation.new()
+	variation.base_font = base
+	variation.spacing_glyph = letter_spacing
+	label.add_theme_font_override(\"font\", variation)
+
+
+# Rapikan judul \"CREDITS\" (opsional, aman kalau node tidak ketemu)
+func _style_header() -> void:
+	var title := get_node_or_null(\"../../../CreditTitle\") as Label
+	if title == null:
+		return
+	title.text = \"CREDITS\"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	title.theme_type_variation = &\"HeaderLabel\"
+	title.add_theme_font_size_override(\"font_size\", 44)
+	title.add_theme_color_override(\"font_color\", COLOR_TICK)
+"
 
 [node name="Main Menu" type="Control" unique_id=1954230717]
 layout_mode = 3
@@ -23,6 +229,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_27q1e")
 script = ExtResource("1_tgl0h")
 
 [node name="Background" type="Panel" parent="." unique_id=1718657064]
@@ -44,6 +251,8 @@ offset_top = 90.0
 offset_right = -25.5
 offset_bottom = 199.0
 grow_horizontal = 2
+theme_type_variation = &"TitleLabel"
+theme_override_fonts/font = ExtResource("4_so7jt")
 theme_override_font_sizes/font_size = 57
 text = "PROJECT"
 horizontal_alignment = 1
@@ -61,6 +270,8 @@ offset_top = 153.0
 offset_right = 234.0
 offset_bottom = 277.0
 grow_horizontal = 2
+theme_type_variation = &"TitleLabel"
+theme_override_fonts/font = ExtResource("4_so7jt")
 theme_override_font_sizes/font_size = 90
 text = "REVENANT"
 horizontal_alignment = 1
@@ -81,6 +292,7 @@ offset_right = 150.0
 offset_bottom = 81.55997
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("1_27q1e")
 theme_override_constants/separation = 5
 
 [node name="Play" type="Button" parent="VBoxContainer" unique_id=18646432]
@@ -111,109 +323,10 @@ theme_override_font_sizes/font_size = 23
 theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
 text = "EXIT"
 
-[node name="Options" type="Panel" parent="." unique_id=764971772]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -352.0
-offset_top = -163.0
-offset_right = 347.0
-offset_bottom = 269.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="Options" unique_id=973280790]
-custom_minimum_size = Vector2(500, 400)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -200.0
-offset_right = 250.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Options/MarginContainer" unique_id=50575072]
-layout_mode = 2
-theme = SubResource("Theme_gwcng")
-
-[node name="TitleLabel" type="Label" parent="Options/MarginContainer/VBoxContainer" unique_id=1506011030]
-layout_mode = 2
-theme_override_font_sizes/font_size = 46
-text = "SETTINGS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Spacer2" type="Control" parent="Options/MarginContainer/VBoxContainer" unique_id=1590948240]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Options/MarginContainer/VBoxContainer" unique_id=641746226]
-layout_mode = 2
-
-[node name="MasterLabel" type="Label" parent="Options/MarginContainer/VBoxContainer/HBoxContainer" unique_id=409225821]
-layout_mode = 2
-text = "Master Volume     "
-
-[node name="MasterSlider" type="HSlider" parent="Options/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1331567085]
-custom_minimum_size = Vector2(250, 30)
-custom_maximum_size = Vector2(250, 30)
-layout_mode = 2
-size_flags_vertical = 4
-max_value = 1.0
-step = 0.05
-value = 1.0
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="Options/MarginContainer/VBoxContainer" unique_id=1460875548]
-layout_mode = 2
-
-[node name="SensLabel" type="Label" parent="Options/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=471117152]
-layout_mode = 2
-text = "Mouse Sensitivity"
-
-[node name="SensSlider" type="HSlider" parent="Options/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1798419438]
-custom_minimum_size = Vector2(250, 30)
-custom_maximum_size = Vector2(250, 30)
-layout_mode = 2
-min_value = 0.1
-max_value = 3.0
-step = 0.01
-value = 0.1
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="Options/MarginContainer/VBoxContainer" unique_id=324667921]
-layout_mode = 2
-
-[node name="FullscreenLabel" type="Label" parent="Options/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1194258589]
-layout_mode = 2
-text = "Fullscreen"
-
-[node name="FullscreenCheckBox" type="CheckBox" parent="Options/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=962066165]
-layout_mode = 2
-button_pressed = true
-
-[node name="Spacer" type="Control" parent="Options/MarginContainer/VBoxContainer" unique_id=453776876]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="BackButton" type="Button" parent="Options/MarginContainer/VBoxContainer" unique_id=678314425]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Back"
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=518245590]
 stream = ExtResource("3_so7jt")
 autoplay = true
+bus = &"Music"
 
 [node name="CreditPanel" type="Panel" parent="." unique_id=1134158603]
 layout_mode = 1
@@ -227,11 +340,11 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gwcng")
 [node name="CreditTitle" type="Label" parent="CreditPanel" unique_id=1638337279]
 layout_mode = 0
 offset_left = 80.0
-offset_top = 47.0
+offset_top = 43.0
 offset_right = 1072.0
-offset_bottom = 95.0
+offset_bottom = 109.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_fonts/font = ExtResource("4_vlol7")
+theme_override_fonts/font = ExtResource("4_so7jt")
 theme_override_font_sizes/font_size = 48
 text = "CREDITS"
 horizontal_alignment = 1
@@ -243,8 +356,7 @@ offset_top = 90.0
 offset_right = 1072.0
 offset_bottom = 94.0
 
-[node name="CreditViewport" type="Control" parent="CreditPanel" unique_id=673863772]
-clip_contents = true
+[node name="CreditViewport" type="ScrollContainer" parent="CreditPanel" unique_id=254088123]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -252,16 +364,11 @@ anchor_bottom = 1.0
 offset_top = 94.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="CreditPanel/CreditViewport" unique_id=1025006704]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -45.0
-offset_bottom = 451.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_top = 80
 theme_override_constants/margin_right = 80
@@ -269,56 +376,31 @@ theme_override_constants/margin_bottom = 80
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CreditPanel/CreditViewport/MarginContainer" unique_id=952581758]
 layout_mode = 2
+script = SubResource("GDScript_so7jt")
 
-[node name="Spacer" type="Control" parent="CreditPanel/CreditViewport/MarginContainer/VBoxContainer" unique_id=1879225200]
-layout_mode = 2
-size_flags_vertical = 3
+[node name="Back" type="Button" parent="CreditPanel" unique_id=601670350]
+layout_mode = 0
+offset_left = 941.0
+offset_top = 27.0
+offset_right = 1062.0
+offset_bottom = 86.0
+text = "Back"
 
-[node name="CreditText" type="Label" parent="CreditPanel/CreditViewport/MarginContainer/VBoxContainer" unique_id=294776693]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "PROJECT REVENANT
-DIREKSI & DESAIN 
-Game Designer: Randy Rahmatul Akbar
-
-PEMROGRAMAN
-Gameplay & Systems Programmer: Randy Rahmatul Akbar
-
-LEVEL & LINGKUNGAN
- Level Designers & Map Artists: M. Reno Alfian & Laura Aprilianza
-
-ARTISTIK, VISUAL & AUDIO
-UI/UX, 2D Artist & Audio Designer: Raevan Fadhillah
-
-NARRATIVE & STORY
- Storywriters & Narrative Designers: Laura Aprilianza & Raevan Fadhillah
-
-
-KONTRIBUSI ASET PIHAK KETIGA
-
-Aset 3D & Lingkungan:
- - Kenney.nl (Free 3D Assets & Game Assets)
- - Itch.io Creators (Community Assets)
-
-Audio & Sound Effects:
- - YouTube Audio Library
- - Freesound.org & Itch.io Audio Assets
-
-TERIMA KASIH KHUSUS
-Guru Pembimbing – Pak Maul & Bu Annisa
-SMKN 21 Jakarta
-Komunitas Godot Engine Indonesia"
-horizontal_alignment = 1
-
-[node name="Spacer2" type="Control" parent="CreditPanel/CreditViewport/MarginContainer/VBoxContainer" unique_id=147396784]
-layout_mode = 2
-size_flags_vertical = 3
+[node name="SettingsMenu" parent="." unique_id=278745701 instance=ExtResource("6_so7jt")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -280.0
+offset_right = 450.0
+offset_bottom = 280.0
 
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/Credit" to="." method="_on_credit_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
-[connection signal="value_changed" from="Options/MarginContainer/VBoxContainer/HBoxContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
-[connection signal="value_changed" from="Options/MarginContainer/VBoxContainer/HBoxContainer2/SensSlider" to="." method="_on_sens_slider_value_changed"]
-[connection signal="toggled" from="Options/MarginContainer/VBoxContainer/HBoxContainer3/FullscreenCheckBox" to="." method="_on_fullscreen_check_box_toggled"]
-[connection signal="pressed" from="Options/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CreditPanel/Back" to="." method="_on_back_pressed"]

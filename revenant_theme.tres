@@ -1,0 +1,169 @@
+[gd_resource type="Theme" format=3 uid="uid://cct5jloi6jy7f"]
+
+[sub_resource type="StyleBoxFlat" id="btn_disabled"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.12, 0.12, 0.6)
+skew = Vector2(-0.12, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.25, 0.22, 1)
+
+[sub_resource type="StyleBoxFlat" id="btn_hover"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1373, 0.1922, 0.1922, 0.98)
+skew = Vector2(-0.12, 0)
+border_width_left = 8
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.851, 0.6627, 0.549, 1)
+
+[sub_resource type="StyleBoxFlat" id="btn_normal"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1137, 0.1608, 0.1608, 0.92)
+skew = Vector2(-0.12, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.549, 0.4157, 0.3412, 1)
+
+[sub_resource type="StyleBoxFlat" id="btn_pressed"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 10.0
+bg_color = Color(0.2, 0.09, 0.08, 1)
+skew = Vector2(-0.12, 0)
+border_width_left = 8
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7529, 0.2235, 0.1686, 1)
+
+[sub_resource type="StyleBoxEmpty" id="empty"]
+
+[sub_resource type="Gradient" id="grad_tan"]
+colors = PackedColorArray(0.851, 0.6627, 0.549, 1, 0.851, 0.6627, 0.549, 1)
+
+[sub_resource type="GradientTexture2D" id="grab_tan"]
+gradient = SubResource("grad_tan")
+width = 12
+height = 28
+
+[sub_resource type="Gradient" id="grad_red"]
+colors = PackedColorArray(0.7529, 0.2235, 0.1686, 1, 0.7529, 0.2235, 0.1686, 1)
+
+[sub_resource type="GradientTexture2D" id="grab_red"]
+gradient = SubResource("grad_red")
+width = 12
+height = 28
+
+[sub_resource type="StyleBoxFlat" id="slider_fill"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.7529, 0.2235, 0.1686, 1)
+
+[sub_resource type="StyleBoxFlat" id="slider_bg"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.1137, 0.1608, 0.1608, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.549, 0.4157, 0.3412, 1)
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+content_margin_left = 24.0
+content_margin_top = 20.0
+content_margin_right = 24.0
+content_margin_bottom = 20.0
+bg_color = Color(0.0745, 0.1098, 0.1098, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.549, 0.4157, 0.3412, 1)
+
+[sub_resource type="StyleBoxFlat" id="scroll_grab"]
+bg_color = Color(0.851, 0.6627, 0.549, 1)
+
+[sub_resource type="StyleBoxFlat" id="scroll_grab_hl"]
+bg_color = Color(0.7529, 0.2235, 0.1686, 1)
+
+[sub_resource type="StyleBoxFlat" id="scroll_track"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color(0.1137, 0.1608, 0.1608, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(0.3, 0.23, 0.19, 1)
+
+[resource]
+default_font_size = 22
+Button/colors/font_color = Color(0.7255, 0.6627, 0.6078, 1)
+Button/colors/font_disabled_color = Color(0.4, 0.36, 0.33, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(0.7529, 0.2235, 0.1686, 1)
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 28
+Button/fonts/font = null
+Button/styles/disabled = SubResource("btn_disabled")
+Button/styles/focus = SubResource("btn_hover")
+Button/styles/hover = SubResource("btn_hover")
+Button/styles/normal = SubResource("btn_normal")
+Button/styles/pressed = SubResource("btn_pressed")
+CheckBox/colors/checkbox_checked_color = Color(0.851, 0.6627, 0.549, 1)
+CheckBox/colors/checkbox_unchecked_color = Color(0.7255, 0.6627, 0.6078, 1)
+CheckBox/colors/font_color = Color(0.9176, 0.8627, 0.8118, 1)
+CheckBox/colors/font_focus_color = Color(1, 1, 1, 1)
+CheckBox/colors/font_hover_color = Color(1, 1, 1, 1)
+CheckBox/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+CheckBox/colors/font_pressed_color = Color(0.9176, 0.8627, 0.8118, 1)
+CheckBox/constants/h_separation = 14
+CheckBox/font_sizes/font_size = 22
+CheckBox/fonts/font = null
+CheckBox/styles/disabled = SubResource("empty")
+CheckBox/styles/focus = SubResource("empty")
+CheckBox/styles/hover = SubResource("empty")
+CheckBox/styles/hover_pressed = SubResource("empty")
+CheckBox/styles/normal = SubResource("empty")
+CheckBox/styles/pressed = SubResource("empty")
+HSlider/icons/grabber = SubResource("grab_tan")
+HSlider/icons/grabber_disabled = SubResource("grab_tan")
+HSlider/icons/grabber_highlight = SubResource("grab_red")
+HSlider/styles/grabber_area = SubResource("slider_fill")
+HSlider/styles/grabber_area_highlight = SubResource("slider_fill")
+HSlider/styles/slider = SubResource("slider_bg")
+HeaderLabel/base_type = &"Label"
+HeaderLabel/colors/font_color = Color(0.9176, 0.8627, 0.8118, 1)
+HeaderLabel/font_sizes/font_size = 64
+HeaderLabel/fonts/font = null
+Label/colors/font_color = Color(0.9176, 0.8627, 0.8118, 1)
+Label/font_sizes/font_size = 22
+Label/fonts/font = null
+Panel/styles/panel = SubResource("panel")
+PanelContainer/styles/panel = SubResource("panel")
+TitleLabel/base_type = &"Label"
+TitleLabel/colors/font_color = Color(0.9176, 0.8627, 0.8118, 1)
+TitleLabel/font_sizes/font_size = 96
+TitleLabel/fonts/font = null
+VScrollBar/styles/grabber = SubResource("scroll_grab")
+VScrollBar/styles/grabber_highlight = SubResource("scroll_grab_hl")
+VScrollBar/styles/grabber_pressed = SubResource("scroll_grab_hl")
+VScrollBar/styles/scroll = SubResource("scroll_track")
+VScrollBar/styles/scroll_focus = SubResource("scroll_track")

@@ -5,20 +5,20 @@ extends Control
 @onready var settings_menu: Control = $SettingsMenu
 @onready var credit_panel: Panel = $CreditPanel
 
-# Judul
+# Judul (disembunyikan saat Settings / Credit terbuka)
 @onready var title_1: Control = $Background/Label
 @onready var title_2: Control = $Background/Label2
 
-# Referensi Node Credit
-@onready var credit_viewport: Control = $CreditPanel/CreditViewport
-@onready var credits_label: VBoxContainer = $CreditPanel/CreditViewport/MarginContainer/VBoxContainer
+# Credit sekarang ScrollContainer (scroll manual: mouse wheel, scrollbar, atau panah atas/bawah)
+@onready var credit_viewport: ScrollContainer = $CreditPanel/CreditViewport
 
-# Scroll manual
-@export var credit_scroll_speed: float = 100.0
+# Kecepatan scroll saat tombol panah / W / S ditahan
+@export var key_scroll_speed: float = 500.0
 
 var is_credits_active: bool = false
-var initial_label_y: float = 0.0
 
+# Tetap ada supaya script lain yang membaca nilai ini tidak error.
+# Nilainya selalu disinkronkan dari SettingsMenu.
 static var mouse_sensitivity: float = 1.0
 
 
@@ -32,31 +32,24 @@ func _ready() -> void:
 	settings_menu.back_pressed.connect(_on_back_pressed)
 	settings_menu.sensitivity_changed.connect(_on_sensitivity_changed)
 
-	if credits_label:
-		initial_label_y = credits_label.position.y
+	credit_viewport.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 
 
 func _process(delta: float) -> void:
-	if not is_credits_active or not credits_label:
-		return
+	if is_credits_active:
+		var axis := Input.get_axis("ui_up", "ui_down")
+		if axis != 0.0:
+			credit_viewport.scroll_vertical += int(axis * key_scroll_speed * delta)
 
-	# W / Arrow Up = scroll ke atas
-	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
-		credits_label.position.y += credit_scroll_speed * delta
-
-	# S / Arrow Down = scroll ke bawah
-	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
-		credits_label.position.y -= credit_scroll_speed * delta
-
-
-# ==========================================
-# INPUT
-# ==========================================
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and (settings_menu.visible or credit_panel.visible):
-		_on_back_pressed()
-		get_viewport().set_input_as_handled()
+	if event.is_action_pressed("ui_cancel"):
+		if settings_menu.visible:
+			_on_back_pressed()
+			get_viewport().set_input_as_handled()
+		elif is_credits_active:
+			_close_credit()
+			get_viewport().set_input_as_handled()
 
 
 # ==========================================
@@ -69,7 +62,7 @@ func _set_titles_visible(value: bool) -> void:
 
 
 # ==========================================
-# MENU UTAMA
+# TOMBOL MENU UTAMA
 # ==========================================
 
 func _on_play_pressed() -> void:
@@ -86,12 +79,9 @@ func _on_settings_pressed() -> void:
 func _on_credit_pressed() -> void:
 	vbox_container.visible = false
 	_set_titles_visible(false)
-
 	credit_panel.visible = true
 	is_credits_active = true
-
-	if credits_label and credit_viewport:
-		credits_label.position.y = credit_viewport.size.y
+	credit_viewport.scroll_vertical = 0
 
 
 func _on_exit_pressed() -> void:
@@ -99,37 +89,36 @@ func _on_exit_pressed() -> void:
 
 
 # ==========================================
-# BACK (SETTINGS & CREDITS)
+# TOMBOL KEMBALI
 # ==========================================
 
-# Satu fungsi untuk semua tombol Back. Sambungkan semua sinyal pressed() Back ke sini.
 func _on_back_pressed() -> void:
-	print("Back ditekan")
-
-	# Tutup credits kalau sedang terbuka
-	if credit_panel.visible:
-		_close_credit()
-		return
-
-	# Kalau tidak, tutup settings
 	settings_menu.visible = false
 	vbox_container.visible = true
 	_set_titles_visible(true)
 
 
+func _on_back_button_pressed() -> void:
+	_on_back_pressed()
+
+
+func _on_back_credit_pressed() -> void:
+	_close_credit()
+
+
+func _on_back_button_credit_pressed() -> void:
+	_close_credit()
+
+
 func _close_credit() -> void:
 	is_credits_active = false
 	credit_panel.visible = false
-
 	vbox_container.visible = true
 	_set_titles_visible(true)
 
-	if credits_label:
-		credits_label.position.y = initial_label_y
-
 
 # ==========================================
-# SETTINGS
+# SETTINGS (diurus SettingsMenu)
 # ==========================================
 
 func _on_sensitivity_changed(value: float) -> void:

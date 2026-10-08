@@ -1,0 +1,664 @@
+{
+ "frame_size": [
+  240,
+  180
+ ],
+ "fps": 24,
+ "grid": {
+  "columns": 10,
+  "rows": 6
+ },
+ "total_frames": 60,
+ "layer_order": [
+  "gun",
+  "slots",
+  "shells",
+  "hand"
+ ],
+ "clips": {
+  "open": {
+   "start": 0,
+   "count": 32,
+   "loop": false,
+   "events": {
+    "eject": 22
+   },
+   "next": "insert_or_close"
+  },
+  "insert": {
+   "start": 32,
+   "count": 8,
+   "loop": true,
+   "events": {
+    "commit": 5
+   },
+   "spin_tween": [
+    5,
+    8
+   ],
+   "note": "frame 0 = READY pose; decide at the end of each cycle: continue (holding and empty slot left) or play close"
+  },
+  "close": {
+   "start": 40,
+   "count": 20,
+   "loop": false,
+   "note": "frame 0 = READY pose; last frame = idle frame 0"
+  }
+ },
+ "slot": {
+  "sprite_size": [
+   12,
+   12
+  ],
+  "atlas": "reload_slots_atlas.png",
+  "atlas_rows": [
+   "empty",
+   "shell",
+   "bullet"
+  ],
+  "variants": [
+   0.35,
+   0.55,
+   0.7,
+   0.88,
+   1.0
+  ],
+  "radius_factor": 0.6,
+  "spacing_deg": 60,
+  "insert_angle_deg": 180,
+  "formula": "pos = (cx,cy) + Vector2(0.6*a*cos(t), 0.6*b*sin(t)).rotated(deg2rad(rot)),  t = deg2rad(spin + 60*slot_index)"
+ },
+ "shell": {
+  "sprite": "reload_shell.png",
+  "sprite_size": [
+   14,
+   14
+  ],
+  "spawn_frame_in_open": 22,
+  "lifetime_frames": 26,
+  "stagger_frames_per_slot": 0.64,
+  "gravity_px_per_frame2": 0.46875,
+  "slots": [
+   {
+    "vx": -1.008,
+    "vy": -1.923,
+    "start_angle": 142.6,
+    "spin_deg_per_frame": -6.038
+   },
+   {
+    "vx": -1.294,
+    "vy": -1.699,
+    "start_angle": 330.5,
+    "spin_deg_per_frame": 5.258
+   },
+   {
+    "vx": -0.115,
+    "vy": -1.834,
+    "start_angle": 193.2,
+    "spin_deg_per_frame": -3.908
+   },
+   {
+    "vx": -1.115,
+    "vy": -1.92,
+    "start_angle": 77.2,
+    "spin_deg_per_frame": 7.481
+   },
+   {
+    "vx": -0.007,
+    "vy": -1.395,
+    "start_angle": 288.2,
+    "spin_deg_per_frame": -5.365
+   },
+   {
+    "vx": -0.883,
+    "vy": -1.53,
+    "start_angle": 263.5,
+    "spin_deg_per_frame": 6.206
+   }
+  ]
+ },
+ "frames": [
+  {
+   "cx": 158.0,
+   "cy": 130.0,
+   "a": 16,
+   "b": 0.0,
+   "rot": 0.0,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 158.79,
+   "cy": 129.65,
+   "a": 16,
+   "b": 0.0,
+   "rot": 1.01,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 159.58,
+   "cy": 129.3,
+   "a": 16,
+   "b": 0.0,
+   "rot": 2.0,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 160.37,
+   "cy": 128.96,
+   "a": 16,
+   "b": 0.0,
+   "rot": 2.96,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 161.14,
+   "cy": 128.61,
+   "a": 16,
+   "b": 0.0,
+   "rot": 3.89,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 161.91,
+   "cy": 128.26,
+   "a": 16,
+   "b": 0.0,
+   "rot": 4.79,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 162.65,
+   "cy": 127.9,
+   "a": 16,
+   "b": 0.0,
+   "rot": 5.66,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 163.37,
+   "cy": 127.54,
+   "a": 16,
+   "b": 0.0,
+   "rot": 6.49,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 164.06,
+   "cy": 127.18,
+   "a": 16,
+   "b": 0.0,
+   "rot": 7.26,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 164.44,
+   "cy": 126.96,
+   "a": 16,
+   "b": 0.13,
+   "rot": 7.99,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 162.14,
+   "cy": 127.95,
+   "a": 16,
+   "b": 1.51,
+   "rot": 8.7,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 154.92,
+   "cy": 130.61,
+   "a": 16,
+   "b": 4.99,
+   "rot": 9.4,
+   "variant": 0,
+   "slots": true
+  },
+  {
+   "cx": 144.71,
+   "cy": 131.8,
+   "a": 16,
+   "b": 9.25,
+   "rot": 10.12,
+   "variant": 1,
+   "slots": true
+  },
+  {
+   "cx": 135.97,
+   "cy": 128.84,
+   "a": 16,
+   "b": 12.18,
+   "rot": 10.87,
+   "variant": 2,
+   "slots": true
+  },
+  {
+   "cx": 129.44,
+   "cy": 123.48,
+   "a": 16,
+   "b": 13.72,
+   "rot": 11.66,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.04,
+   "cy": 117.97,
+   "a": 16,
+   "b": 14.13,
+   "rot": 12.57,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 124.69,
+   "cy": 115.3,
+   "a": 16,
+   "b": 14.13,
+   "rot": 13.71,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 124.26,
+   "cy": 113.41,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 126.56,
+   "cy": 112.07,
+   "a": 16,
+   "b": 14.13,
+   "rot": 16.34,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 129.29,
+   "cy": 110.99,
+   "a": 16,
+   "b": 14.13,
+   "rot": 17.61,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 130.63,
+   "cy": 109.85,
+   "a": 16,
+   "b": 14.13,
+   "rot": 18.7,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 131.62,
+   "cy": 108.97,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.52,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 132.15,
+   "cy": 108.52,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.96,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 132.18,
+   "cy": 108.48,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.99,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 132.09,
+   "cy": 108.54,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.93,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 131.9,
+   "cy": 108.68,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.79,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 131.58,
+   "cy": 108.91,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.56,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 131.11,
+   "cy": 109.26,
+   "a": 16,
+   "b": 14.13,
+   "rot": 19.21,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 130.46,
+   "cy": 109.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 18.72,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 129.63,
+   "cy": 110.43,
+   "a": 16,
+   "b": 14.13,
+   "rot": 18.07,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 128.6,
+   "cy": 111.3,
+   "a": 16,
+   "b": 14.13,
+   "rot": 17.25,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 127.35,
+   "cy": 112.4,
+   "a": 16,
+   "b": 14.13,
+   "rot": 16.24,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.91,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 115.06,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 114.84,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.88,
+   "cy": 113.76,
+   "a": 16,
+   "b": 14.13,
+   "rot": 15.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 124.06,
+   "cy": 115.42,
+   "a": 16,
+   "b": 14.13,
+   "rot": 13.35,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 122.45,
+   "cy": 117.1,
+   "a": 16,
+   "b": 14.13,
+   "rot": 11.83,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 121.04,
+   "cy": 118.74,
+   "a": 16,
+   "b": 14.13,
+   "rot": 10.45,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 119.9,
+   "cy": 120.36,
+   "a": 16,
+   "b": 14.13,
+   "rot": 9.21,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 119.22,
+   "cy": 122.06,
+   "a": 16,
+   "b": 14.13,
+   "rot": 8.14,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 119.22,
+   "cy": 123.94,
+   "a": 16,
+   "b": 14.13,
+   "rot": 7.24,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 120.51,
+   "cy": 126.37,
+   "a": 16,
+   "b": 14.12,
+   "rot": 6.52,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 125.95,
+   "cy": 130.95,
+   "a": 16,
+   "b": 13.47,
+   "rot": 6.0,
+   "variant": 3,
+   "slots": true
+  },
+  {
+   "cx": 135.92,
+   "cy": 135.65,
+   "a": 16,
+   "b": 11.02,
+   "rot": 5.68,
+   "variant": 2,
+   "slots": true
+  },
+  {
+   "cx": 147.1,
+   "cy": 135.92,
+   "a": 16,
+   "b": 6.99,
+   "rot": 5.46,
+   "variant": 0,
+   "slots": true
+  },
+  {
+   "cx": 156.18,
+   "cy": 133.07,
+   "a": 16,
+   "b": 2.96,
+   "rot": 5.2,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 161.56,
+   "cy": 130.5,
+   "a": 16,
+   "b": 0.24,
+   "rot": 4.7,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 161.39,
+   "cy": 130.32,
+   "a": 16,
+   "b": 0.0,
+   "rot": 3.74,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 160.75,
+   "cy": 130.33,
+   "a": 16,
+   "b": 0.0,
+   "rot": 2.79,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 159.87,
+   "cy": 130.25,
+   "a": 16,
+   "b": 0.0,
+   "rot": 1.79,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 158.87,
+   "cy": 130.13,
+   "a": 16,
+   "b": 0.0,
+   "rot": 0.8,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 158.15,
+   "cy": 130.02,
+   "a": 16,
+   "b": 0.0,
+   "rot": 0.13,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 158.0,
+   "cy": 130.0,
+   "a": 16,
+   "b": 0.0,
+   "rot": 0.0,
+   "variant": 0,
+   "slots": false
+  },
+  {
+   "cx": 158.0,
+   "cy": 130.0,
+   "a": 16,
+   "b": 0.0,
+   "rot": 0.0,
+   "variant": 0,
+   "slots": false
+  }
+ ],
+ "canvas_pad_left": 60,
+ "note_canvas": "Frame sekarang 240x180. Bagian kiri 60 px ekstra untuk tangan. Geser sprite -60 px di x supaya gun sejajar dengan sprite idle 180x180. Semua koordinat cx/cy sudah dalam koordinat kanvas 240x180."
+}

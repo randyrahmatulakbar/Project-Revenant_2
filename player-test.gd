@@ -39,20 +39,42 @@ var camera_start_position = Vector3.ZERO
 
 const INTERACTION_DISTANCE = 3.0
 
+# HUD
+var hud: CanvasLayer = null
+
+# Ammo
+@export var max_ammo_per_clip: int = 30
+@export var starting_reserve_ammo: int = 90
+var current_ammo: int = 0
+var reserve_ammo: int = 0
+
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_start_position = camera.position
 	head_start_position = head.position
-	
+
 	interaction_label.visible = false
-	
+
 	$Health.health_changed.connect(_on_health_changed)
 	$Health.died.connect(_on_died)
-	
+
+	current_ammo = max_ammo_per_clip
+	reserve_ammo = starting_reserve_ammo
+
+	# Cari HUD lewat group "hud" (di-set manual di editor: klik node HUD,
+	# tab Groups di panel Node, tambahin "hud")
+	var huds = get_tree().get_nodes_in_group("hud")
+	if huds.size() > 0:
+		hud = huds[0]
+		_update_ammo_ui()
+
+	print("HUD found: ", hud)   # <-- TAMBAHIN BARIS INI
+
 func _on_health_changed(current: float, max: float) -> void:
 	print("HP: ", current, "/", max)
-	# update HP bar UI di sini kalau ada
+	if hud:
+		hud.update_health(int(current), int(max))
 
 func _on_died() -> void:
 	print("Player mati!")
@@ -74,10 +96,14 @@ func _unhandled_input(event):
 
 func _physics_process(delta: float) -> void:
 
-	
 	# Gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+
+		# FIX: kalau player meninggalkan lantai (misal jatuh dari tepi),
+		# hentikan slide supaya tidak "melayang sambil slide" selamanya
+		if is_sliding:
+			is_sliding = false
 
 
 	# Jump
@@ -98,7 +124,7 @@ func _physics_process(delta: float) -> void:
 			end_slide()
 		else:
 			is_crouching = false
-		
+
 	handle_crouch(delta)
 
 
@@ -199,16 +225,27 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
 
+	# Reload (opsional - aktif otomatis kalau kamu udah bikin action "reload" di Input Map)
+	if InputMap.has_action("reload") and Input.is_action_just_pressed("reload"):
+		reload()
+
 
 	# Head bobbing
 	head_bobbing(delta)
-	
+
 	check_interaction()
-	
+
 	move_and_slide()
 
 
 func shoot():
+	if current_ammo <= 0:
+		print("Peluru habis!")
+		return
+
+	current_ammo -= 1
+	_update_ammo_ui()
+
 	var space_state = get_world_3d().direct_space_state
 
 	var from = camera.global_position
@@ -226,6 +263,23 @@ func shoot():
 			result.collider.take_damage(1)
 	else:
 		print("Tembakan tidak kena apa-apa")
+
+
+func reload():
+	if reserve_ammo <= 0 or current_ammo >= max_ammo_per_clip:
+		return
+
+	var needed = max_ammo_per_clip - current_ammo
+	var take = min(needed, reserve_ammo)
+
+	current_ammo += take
+	reserve_ammo -= take
+	_update_ammo_ui()
+
+
+func _update_ammo_ui() -> void:
+	if hud:
+		hud.update_ammo(current_ammo, reserve_ammo)
 
 
 func head_bobbing(delta):
@@ -287,11 +341,15 @@ func start_slide():
 	is_crouching = true
 	slide_timer = SLIDE_DURATION
 
-	slide_direction = Vector3(
-		velocity.x,
-		0,
-		velocity.z
-	).normalized()
+	# FIX: kalau kecepatan horizontal nyaris nol (edge case),
+	# jangan sampai slide_direction jadi Vector3.ZERO (player macet).
+	# Fallback ke arah hadap kamera.
+	var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
+
+	if horizontal_velocity.length() > 0.01:
+		slide_direction = horizontal_velocity.normalized()
+	else:
+		slide_direction = -head.global_transform.basis.z
 
 
 func end_slide():
@@ -300,7 +358,7 @@ func end_slide():
 
 	# Lompat kecil setelah slide
 	velocity.y = SLIDE_JUMP
-	
+
 func check_interaction():
 	interaction_label.visible = false
 

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cccnm8qv2eiuy" path="res://hud.gd" id="1_37p78"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37p78"]
-bg_color = Color(0.50995183, 0, 0.09542755, 1)
+bg_color = Color(0.9607843, 0, 0, 1)
 
 [node name="HUD" type="CanvasLayer" unique_id=1785908157]
 script = ExtResource("1_37p78")

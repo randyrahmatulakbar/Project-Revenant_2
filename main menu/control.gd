@@ -4,6 +4,7 @@ extends Control
 @onready var vbox_container: VBoxContainer = $VBoxContainer
 @onready var settings_menu: Control = $SettingsMenu
 @onready var credit_panel: Panel = $CreditPanel
+@onready var credit_back: Button = $CreditPanel/Back
 
 # Judul
 @onready var title_1: Control = $Background/Label
@@ -18,6 +19,8 @@ extends Control
 
 var is_credits_active: bool = false
 var initial_label_y: float = 0.0
+const MenuStyle := preload("res://main menu/menu_style.gd")
+var menu_style: Node
 
 static var mouse_sensitivity: float = 1.0
 
@@ -27,13 +30,25 @@ func _ready() -> void:
 	mouse_sensitivity = SettingsMenu.get_sensitivity()
 
 	settings_menu.visible = false
+	HudSkin.style_settings(settings_menu)
 	credit_panel.visible = false
+	
+	HudSkin.skin_button(credit_back, Vector2(200, 48), 22)
+	credit_back.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	credit_back.offset_left = 72
+	credit_back.offset_right = 272
+	credit_back.offset_top = -84
+	credit_back.offset_bottom = -36
 
 	settings_menu.back_pressed.connect(_on_back_pressed)
 	settings_menu.sensitivity_changed.connect(_on_sensitivity_changed)
 
 	if credits_label:
 		initial_label_y = credits_label.position.y
+		
+	menu_style = MenuStyle.new()
+	add_child(menu_style)
+	menu_style.setup(self)
 
 
 func _process(delta: float) -> void:
@@ -66,6 +81,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _set_titles_visible(value: bool) -> void:
 	title_1.visible = value
 	title_2.visible = value
+	if value and menu_style:
+		menu_style.play_intro()
 
 
 # ==========================================
@@ -92,6 +109,8 @@ func _on_credit_pressed() -> void:
 
 	if credits_label and credit_viewport:
 		credits_label.position.y = credit_viewport.size.y
+		
+	HudSkin.play_in([credit_back], 0.2)
 
 
 func _on_exit_pressed() -> void:

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://enemy_leaper.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://models/leaper.glb" id="2_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enemy"]
+radius = 0.5
+height = 1.6
+
+[node name="EnemyLeaper" type="CharacterBody3D"]
+script = ExtResource("1_script")
+max_health = 5.0
+move_speed = 6.5
+claw_hit_time = 0.33
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CapsuleShape3D_enemy")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.6
+target_desired_distance = 0.8
+radius = 0.5
+height = 2.0

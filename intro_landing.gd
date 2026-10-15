@@ -2,7 +2,7 @@ extends Node
 ## Intro landing:
 ## 1. Player jatuh, semua kontrol mati (cuma jatuh).
 ## 2. Pas kena lantai: screen shake + debu + puing jatuh (gempa).
-## 3. HUD tangan (HUDIntro) "boot up": naik dari bawah + kedip nyala.
+## 3. HUD tangan (HUDIntro) naik dari bawah layar ke posisi normal.
 ## 4. Kontrol player nyala lagi.
 ##
 ## Pasang di node Node biasa bernama "IntroLanding" (anak dari root scene intro).
@@ -19,6 +19,11 @@ signal landed
 @export_group("Setelah mendarat")
 @export var boot_delay := 0.25      # jeda sebelum HUD tangan boot up
 @export var unlock_delay := 0.6     # jeda sebelum player boleh gerak lagi
+
+@export_group("HUD tangan")
+@export var hud_rise_from := 360.0       # minimal jarak mulai di bawah layar (px, otomatis dilebarin kalau kurang)
+@export var hud_rise_time := 1.0         # lama naik (detik)
+@export var hud_rise_overshoot := 16.0   # naik kebablasan segini (px), lalu turun ke posisi diam
 
 @export_group("Screen shake (meter)")
 @export var shake_impact := 0.12    # kuat saat tabrak lantai
@@ -49,11 +54,11 @@ func _ready() -> void:
 		return
 
 	# tunggu 1 frame supaya _ready player dan HUD selesai dulu
+	_hide_crosshairs()
 	await get_tree().process_frame
 	_lock_player()
 	if fist_hud:
 		fist_hud.visible = false
-		_hide_crosshairs()
 	_falling = true
 
 
@@ -254,35 +259,28 @@ func _boot_hud() -> void:
 	_show_crosshairs()
 	if fist_hud == null:
 		return
-	var sprite := fist_hud.get_node_or_null("FirstPersonFist") as CanvasItem
+	var sprite := fist_hud.get_node_or_null("FirstPersonFist") as AnimatedSprite2D
 
+	# mulai dari cukup jauh di bawah, biar tangan bener-bener keluar layar dulu
+	var from_y := hud_rise_from
+	if sprite:
+		sprite.modulate = Color.WHITE
+		if sprite.sprite_frames:
+			var tex := sprite.sprite_frames.get_frame_texture("idle", 0)
+			if tex:
+				from_y = maxf(from_y, tex.get_height() * sprite.scale.y)
+
+	fist_hud.offset = Vector2(0, from_y)
 	fist_hud.visible = true
-	fist_hud.offset = Vector2(0, 260)
-	if sprite:
-		sprite.modulate = Color(0.5, 1.0, 1.0, 0.0)
 
-	# naik dari bawah layar
-	var slide := create_tween()
-	slide.tween_property(fist_hud, "offset", Vector2.ZERO, 0.5) \
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	# 1) naik cepat di awal lalu melambat, agak kebablasan ke atas
+	var rise := create_tween()
+	rise.tween_property(fist_hud, "offset", Vector2(0, -hud_rise_overshoot), hud_rise_time) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	# 2) turun pelan ke posisi diam (kayak tangan "ditaruh")
+	rise.tween_property(fist_hud, "offset", Vector2.ZERO, 0.3) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-	# kedip nyala (terang - mati - terang), berakhir putih normal
-	if sprite:
-		var blink: Array[Color] = [
-			Color(0.5, 1.0, 1.0, 1.0),
-			Color(0.5, 1.0, 1.0, 0.0),
-			Color(0.8, 1.0, 1.0, 1.0),
-			Color(1.0, 1.0, 1.0, 0.2),
-			Color(0.5, 1.0, 1.0, 1.0),
-			Color(1.0, 1.0, 1.0, 0.0),
-			Color(1.0, 1.0, 1.0, 1.0),
-		]
-		var wait: Array[float] = [0.05, 0.07, 0.05, 0.08, 0.06, 0.12, 0.0]
-		var flicker := create_tween()
-		for i in blink.size():
-			var c: Color = blink[i]
-			flicker.tween_callback(func(): sprite.modulate = c)
-			flicker.tween_interval(wait[i])
 
 func _hide_crosshairs() -> void:
 	_hidden_crosshairs.clear()
@@ -295,6 +293,9 @@ func _hide_crosshairs() -> void:
 
 func _show_crosshairs() -> void:
 	for c in _hidden_crosshairs:
-		if is_instance_valid(c):
-			c.visible = true
+		if not is_instance_valid(c):
+			continue
+		if fist_hud and is_instance_valid(fist_hud) and fist_hud.is_ancestor_of(c):
+			continue          # crosshair HUD tangan tetap hilang sampai pistol diambil
+		c.visible = true
 	_hidden_crosshairs.clear()

@@ -2,13 +2,14 @@ extends StaticBody3D
 ## Pistol melayang. Diambil lewat sistem interaksi player:
 ## player-test.gd nembak raycast dari crosshair, kalau kena objek yang punya
 ## fungsi interact() dan tombol "interact" ditekan -> interact() dipanggil.
-## Prompt (interek.gd) juga diurus player, jadi di sini gak perlu.
+## Prompt (interek.gd) juga diurus player, teksnya universal (gak diubah di sini).
 
 signal picked_up
 
 const PICK_MASK := 1 << 19   # collision layer 20, cuma buat raycast
 
-@export var prompt_text: String = "AMBIL"
+## Teks di prompt interaksi pas pistol disorot (dibaca oleh player-test.gd)
+@export var interact_text: String = "AMBIL"
 @export var max_distance: float = 3.0
 @export var bob_height: float = 0.12
 @export var bob_speed: float = 1.5
@@ -16,8 +17,6 @@ const PICK_MASK := 1 << 19   # collision layer 20, cuma buat raycast
 @onready var sprite: Sprite3D = $Sprite3D
 @onready var light: OmniLight3D = $OmniLight3D
 
-var _prompt: Control
-var _prev_text := ""
 var _base_y := 0.0
 var _base_scale := Vector3.ONE
 var _base_energy := 1.5
@@ -28,7 +27,6 @@ var _hl_tween: Tween
 
 
 func _ready() -> void:
-	_prompt = get_node_or_null("../CanvasLayer/interek")
 	_base_y = position.y
 	_base_scale = sprite.scale
 	_base_energy = light.light_energy
@@ -49,7 +47,7 @@ func _process(delta: float) -> void:
 	light.light_energy = _base_energy * (0.8 + 0.2 * sin(_time * 7.0) + 0.1 * sin(_time * 13.0))
 
 
-# cuma buat efek "disorot" + ganti teks prompt jadi AMBIL
+# cuma buat efek "disorot" (pistol sedikit membesar)
 func _physics_process(_delta: float) -> void:
 	if _taken:
 		return
@@ -68,13 +66,6 @@ func _set_looking(on: bool) -> void:
 		return
 	_looking = on
 
-	if _prompt and "action_text" in _prompt:
-		if on:
-			_prev_text = _prompt.action_text
-			_prompt.action_text = prompt_text
-		else:
-			_prompt.action_text = _prev_text
-
 	if _hl_tween:
 		_hl_tween.kill()
 	_hl_tween = create_tween().set_parallel(true)
@@ -86,8 +77,6 @@ func _set_looking(on: bool) -> void:
 
 func _pickup() -> void:
 	_taken = true
-	if _looking and _prompt and "action_text" in _prompt:
-		_prompt.action_text = _prev_text
 	set_deferred("collision_layer", 0)   # prompt langsung ilang
 	picked_up.emit()
 

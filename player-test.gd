@@ -461,6 +461,7 @@ func check_interaction():
 	var result = space_state.intersect_ray(query)
 
 	var can_interact := false
+	var prompt_text := ""
 
 	if result:
 		var object = result.collider
@@ -468,12 +469,17 @@ func check_interaction():
 		if object.has_method("interact"):
 			can_interact = true
 
+			# teks khusus objek (opsional); kosong = teks default prompt
+			var t = object.get("interact_text")
+			if t is String:
+				prompt_text = t
+
 			if Input.is_action_just_pressed("interact"):
 				object.interact()
 
 	# tampilkan / sembunyikan prompt HUD (aman dipanggil tiap frame)
 	if prompt:
-		prompt.set_active(can_interact)
+		prompt.set_active(can_interact, prompt_text)
 
 
 # Cari prompt interaksi (Control dengan fungsi set_active). Dicari sekali, lalu disimpan.

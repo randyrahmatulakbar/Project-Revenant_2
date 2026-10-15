@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://0sao13g24n8u"]
+
+[ext_resource type="Texture2D" uid="uid://bqmt1j4u3uioc" path="res://map/textures/metal_wall_ribbed.png" id="1_ivn7n"]
+
+[resource]
+albedo_texture = ExtResource("1_ivn7n")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0

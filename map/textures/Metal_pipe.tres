@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c8vyarvxs6ox6"]
+
+[ext_resource type="Texture2D" uid="uid://bq8737exh58k1" path="res://map/textures/pipe_metal.png" id="1_k244h"]
+
+[resource]
+albedo_texture = ExtResource("1_k244h")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0

@@ -46,6 +46,7 @@ func _ready() -> void:
 	back_button.pressed.connect(_on_back_pressed)
 
 
+
 func _apply_layout() -> void:
 	$Panel.custom_minimum_size = panel_size
 	$Panel/Margin/VBox/Title.add_theme_font_size_override("font_size", title_size)
@@ -84,6 +85,7 @@ func _on_fullscreen_toggled(on: bool) -> void:
 
 func _on_back_pressed() -> void:
 	back_pressed.emit()
+	
 
 
 # ---------- Helper statis (bisa dipanggil dari mana saja) ----------

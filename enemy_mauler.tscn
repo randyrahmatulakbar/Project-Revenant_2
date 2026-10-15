@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://enemy_mauler.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://models/mauler.glb" id="2_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enemy"]
+radius = 0.6
+height = 2.6
+
+[node name="EnemyMauler" type="CharacterBody3D"]
+script = ExtResource("1_script")
+max_health = 14.0
+move_speed = 3.5
+jab_damage = 3.0
+jab_times = Array[float]([0.21, 0.41, 0.61, 0.81, 1.01])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("CapsuleShape3D_enemy")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.6
+target_desired_distance = 0.8
+radius = 0.5
+height = 2.0

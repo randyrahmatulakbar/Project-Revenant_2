@@ -1,7 +1,7 @@
 extends Control
 
 @export var action_name: String = "interact"
-@export var action_text: String = "MULAI"
+@export var action_text: String = "INTERAKSI"   # teks default (dipakai kalau objek gak punya teks sendiri)
 @export var font: Font   # kosongin = font bawaan, isi pakai font pixel kamu biar makin nyatu
 
 const PANEL_SIZE := Vector2(250, 48)
@@ -14,6 +14,7 @@ const COL_ACCENT := Color("dba98c")
 const COL_TEXT := Color("e9dcc8")
 const COL_DARK := Color("1c2422")
 
+var _default_text := ""   # teks default dari Inspector, disimpan buat balik ke default
 var _active := false
 var _t := 0.0       # 0 = sembunyi, 1 = tampil penuh
 var _flash := 0.0
@@ -24,6 +25,7 @@ var _tween: Tween
 
 
 func _ready() -> void:
+	_default_text = action_text
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_preset(Control.PRESET_CENTER)
 	offset_left = -PANEL_SIZE.x / 2.0
@@ -36,7 +38,15 @@ func _ready() -> void:
 	set_process(false)
 
 
-func set_active(on: bool) -> void:
+# text: teks khusus objek yang disorot ("AMBIL", "TEKAN", dll). Kosong = teks default.
+# Teks cuma diganti pas prompt TAMPIL. Pas menghilang teksnya dibiarin, jadi
+# gak berubah di tengah animasi hilang. Kalau pindah langsung dari satu objek ke
+# objek lain, teks langsung ikut berganti.
+func set_active(on: bool, text: String = "") -> void:
+	if on:
+		if _default_text == "":
+			_default_text = action_text
+		action_text = text if text != "" else _default_text
 	if on == _active:
 		return
 	_active = on

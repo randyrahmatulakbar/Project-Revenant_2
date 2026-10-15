@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://poison_glob.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://models/poison_glob.glb" id="2_model"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_glob"]
+radius = 0.3
+
+[node name="PoisonGlob" type="Area3D"]
+collision_layer = 0
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_glob")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]

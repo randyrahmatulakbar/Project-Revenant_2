@@ -15,6 +15,7 @@ const MAIN_MENU_SCENE = "res://main menu/mainmenu.tscn"
 
 var _crosshair_was_visible := true
 var _hud_was_visible := true
+var _pause_buttons: Array = []
 
 func _ready():
 	get_tree().paused = false
@@ -34,6 +35,7 @@ func _ready():
 
 	# Terapkan setting tersimpan saat level dimulai
 	SettingsMenu.apply_saved()
+	_style_pause()
 	_apply_sensitivity.call_deferred(SettingsMenu.get_sensitivity())
 
 
@@ -70,6 +72,7 @@ func toggle_pause():
 		menu_container.show()
 		settings_menu.hide()
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		HudSkin.play_in(_pause_buttons, 0.1)
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -92,6 +95,7 @@ func _on_settings_pressed():
 func _close_settings():
 	settings_menu.hide()
 	menu_container.show()
+	HudSkin.play_in(_pause_buttons)
 
 
 func _on_main_menu_pressed():
@@ -117,3 +121,21 @@ func _apply_sensitivity(multiplier: float):
 				player.set_meta(meta_key, player.get(prop))
 			player.set(prop, player.get_meta(meta_key) * multiplier)
 			return
+			
+func _style_pause() -> void:
+	HudSkin.style_settings(settings_menu)
+	_pause_buttons = [resume_button, restart_button, settings_button, main_menu_button, exit_button]
+	for b in _pause_buttons:
+		HudSkin.skin_button(b, Vector2(360, 50), 24)
+
+	# layout rata kiri, sama seperti main menu
+	menu_container.set_anchors_preset(Control.PRESET_CENTER_LEFT, true)
+	menu_container.grow_horizontal = Control.GROW_DIRECTION_END
+	menu_container.grow_vertical = Control.GROW_DIRECTION_BOTH
+	menu_container.offset_left = 72
+	menu_container.offset_right = 72 + 360
+	menu_container.offset_top = -200
+	menu_container.offset_bottom = 200
+	menu_container.add_theme_constant_override("separation", 10)
+	$PanelControl/ColorRect/MenuContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	HudSkin.make_shade($PanelControl/ColorRect)

@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://0vpqno1c63ve"]
+
+[ext_resource type="Texture2D" uid="uid://d0fayhqlmrbxg" path="res://map/textures/floor_metal_plate.png" id="1_u7ucn"]
+
+[resource]
+albedo_texture = ExtResource("1_u7ucn")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0

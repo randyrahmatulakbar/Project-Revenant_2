@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://cgn2x2wtvhmse"]
+
+[ext_resource type="Material" uid="uid://3obngaeifmn" path="res://map/textures/wall.tres" id="1_wall"]
+[ext_resource type="Material" uid="uid://d3rdux3foluuf" path="res://map/textures/metal_dark.tres" id="2_37qpu"]
+
+[node name="RoomLayout" type="Node3D" unique_id=587505922]
+
+[node name="Ledges" type="Node3D" parent="." unique_id=1676652696]
+
+[node name="LedgeL" type="CSGBox3D" parent="Ledges" unique_id=1408018882]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, -0.955, -95.5)
+use_collision = true
+size = Vector3(5, 2.51, 12)
+material = ExtResource("1_wall")
+
+[node name="LedgeLTop" type="CSGBox3D" parent="Ledges" unique_id=1898232722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 0.35, -95.5)
+use_collision = true
+size = Vector3(5, 0.1, 12)
+material = ExtResource("2_37qpu")
+
+[node name="LedgeR" type="CSGBox3D" parent="Ledges" unique_id=372600741]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.5, -0.955, -95.5)
+use_collision = true
+size = Vector3(5, 2.51, 12)
+material = ExtResource("1_wall")
+
+[node name="LedgeRTop" type="CSGBox3D" parent="Ledges" unique_id=2067915093]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.5, 0.35, -95.5)
+use_collision = true
+size = Vector3(5, 0.1, 12)
+material = ExtResource("2_37qpu")
+
+[node name="Ramps" type="Node3D" parent="." unique_id=1835763849]
+
+[node name="RampL" type="CSGBox3D" parent="Ramps" unique_id=834645529]
+transform = Transform3D(1, 0, 0, 0, 0.9397, -0.342, 0, 0.342, 0.9397, 18.5, -1.046, -85.9658)
+use_collision = true
+size = Vector3(5, 0.3, 7.731)
+material = ExtResource("2_37qpu")
+
+[node name="RampR" type="CSGBox3D" parent="Ramps" unique_id=201340666]
+transform = Transform3D(1, 0, 0, 0, 0.9397, -0.342, 0, 0.342, 0.9397, 45.5, -1.046, -85.9658)
+use_collision = true
+size = Vector3(5, 0.3, 7.731)
+material = ExtResource("2_37qpu")
+
+[node name="Cover" type="Node3D" parent="." unique_id=1706290607]
+
+[node name="Pedestal" type="CSGBox3D" parent="Cover" unique_id=158217945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, -1.71, -91)
+use_collision = true
+material = ExtResource("1_wall")
+
+[node name="CoverL" type="CSGBox3D" parent="Cover" unique_id=1391048170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.5, -1.61, -78)
+use_collision = true
+size = Vector3(4.5, 1.2, 1)
+material = ExtResource("1_wall")
+
+[node name="CoverR" type="CSGBox3D" parent="Cover" unique_id=1471594698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5, -1.61, -78)
+use_collision = true
+size = Vector3(4.5, 1.2, 1)
+material = ExtResource("1_wall")
+
+[node name="CoverML" type="CSGBox3D" parent="Cover" unique_id=362646476]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5, -1.61, -86)
+use_collision = true
+size = Vector3(1, 1.2, 4.5)
+material = ExtResource("1_wall")
+
+[node name="CoverMR" type="CSGBox3D" parent="Cover" unique_id=2031673713]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5, -1.61, -86)
+use_collision = true
+size = Vector3(1, 1.2, 4.5)
+material = ExtResource("1_wall")
+
+[node name="PillarL" type="CSGBox3D" parent="Cover" unique_id=794976393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0.04, -96.5)
+use_collision = true
+size = Vector3(4, 4.5, 2)
+material = ExtResource("1_wall")
+
+[node name="PillarR" type="CSGBox3D" parent="Cover" unique_id=184887415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.5, 0.04, -96.5)
+use_collision = true
+size = Vector3(4, 4.5, 2)
+material = ExtResource("1_wall")

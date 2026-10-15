@@ -35,10 +35,45 @@ var _ammo_punch := 0.0
 
 var _time := 0.0
 
+# --- animasi masuk (0 = panel belum muncul, 1 = penuh) ---
+var hp_reveal := 1.0
+var ammo_reveal := 1.0
+
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+
+# Nilai asli sekarang (dipakai animasi masuk)
+func snapshot() -> Dictionary:
+	var mx := 100
+	if _hp_target > 0.001:
+		mx = int(round(float(_hp) / _hp_target))
+	return {"hp": _hp, "max_hp": mx, "ammo": _ammo, "reserve": _reserve}
+
+
+# Siapin tampilan awal animasi masuk: panel disembunyiin, nilai direset
+# TANPA efek damage / kilatan.
+func boot_prepare(start_hp: int, max_hp: int, reserve: int) -> void:
+	var f := clampf(float(start_hp) / maxf(float(max_hp), 1.0), 0.0, 1.0)
+	_hp = start_hp
+	_hp_target = f
+	_hp_fill = f
+	_hp_trail = f
+	_trail_delay = 0.0
+	_hp_flash = 0.0
+	_hp_shake = 0.0
+	_hp_ready = true
+	_ammo = 0
+	_reserve = reserve
+	_ammo_ready = true
+	_flash_from = 0
+	_flash_to = 0
+	_ammo_flash = 0.0
+	_ammo_punch = 0.0
+	hp_reveal = 0.0
+	ammo_reveal = 0.0
 
 
 func update_health(current: int, max_hp: int) -> void:
@@ -117,10 +152,12 @@ func _draw() -> void:
 
 
 func _draw_health(f: Font) -> void:
+	if hp_reveal <= 0.001:
+		return
 	var sz := Vector2(320, 64)
 	var origin := Vector2(margin.x, size.y - margin.y - sz.y)
 	origin += Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * 4.0 * _hp_shake
-	draw_set_transform(origin)
+	draw_set_transform(origin, 0.0, Vector2(hp_reveal, 1.0))
 
 	var low := _hp_target <= 0.25
 	var pulse := 0.5 + 0.5 * sin(_time * 8.0)
@@ -166,9 +203,12 @@ func _draw_health(f: Font) -> void:
 
 
 func _draw_ammo(f: Font) -> void:
+	if ammo_reveal <= 0.001:
+		return
 	var sz := Vector2(260, 64)
-	var origin := Vector2(size.x - margin.x - sz.x, size.y - margin.y - sz.y)
-	draw_set_transform(origin)
+	var sx := ammo_reveal
+	var origin := Vector2(size.x - margin.x - sz.x * sx, size.y - margin.y - sz.y)
+	draw_set_transform(origin, 0.0, Vector2(sx, 1.0))
 
 	var empty := _ammo <= 0
 	var blink := 0.5 + 0.5 * sin(_time * 10.0)
@@ -186,10 +226,10 @@ func _draw_ammo(f: Font) -> void:
 	if empty:
 		num_col = COL_TEXT.lerp(COL_HP_HOT, blink)
 	var scl := 1.0 + 0.3 * _ammo_punch
-	draw_set_transform(origin + Vector2(24, sz.y - 12), 0.0, Vector2(scl, scl))
+	draw_set_transform(origin + Vector2(24.0 * sx, sz.y - 12), 0.0, Vector2(scl * sx, scl))
 	var cur_txt := str(_ammo)
 	draw_string(f, Vector2.ZERO, cur_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 34, num_col)
-	draw_set_transform(origin)
+	draw_set_transform(origin, 0.0, Vector2(sx, 1.0))
 
 	# cadangan
 	var cw := f.get_string_size(cur_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 34).x

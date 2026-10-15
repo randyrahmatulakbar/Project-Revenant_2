@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://b0jd4t3m2a64c" path="res://main menu/preview.mp3" id="3_so7jt"]
 [ext_resource type="FontFile" uid="uid://hyiaromrf2xl" path="res://font/Rajdhani-Bold.ttf" id="4_so7jt"]
 [ext_resource type="PackedScene" uid="uid://blwv1xao2u0c0" path="res://settings_menu.tscn" id="6_so7jt"]
+[ext_resource type="Script" uid="uid://dfjw2dx8i6omg" path="res://credit_page.gd" id="6_vlol7"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e1n45"]
 texture = ExtResource("2_27q1e")
@@ -298,6 +299,7 @@ theme_override_constants/separation = 5
 [node name="Play" type="Button" parent="VBoxContainer" unique_id=18646432]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_27q1e")
 theme_override_font_sizes/font_size = 23
 theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
 text = "PLAY"
@@ -305,6 +307,7 @@ text = "PLAY"
 [node name="Settings" type="Button" parent="VBoxContainer" unique_id=628636482]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_27q1e")
 theme_override_font_sizes/font_size = 23
 theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
 text = "SETTINGS"
@@ -312,6 +315,7 @@ text = "SETTINGS"
 [node name="Credit" type="Button" parent="VBoxContainer" unique_id=132610437]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_27q1e")
 theme_override_font_sizes/font_size = 23
 theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
 text = "CREDIT"
@@ -319,6 +323,7 @@ text = "CREDIT"
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=97394790]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_27q1e")
 theme_override_font_sizes/font_size = 23
 theme_override_styles/normal = SubResource("StyleBoxFlat_e1n45")
 text = "EXIT"
@@ -336,12 +341,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gwcng")
+script = ExtResource("6_vlol7")
 
 [node name="CreditTitle" type="Label" parent="CreditPanel" unique_id=1638337279]
 layout_mode = 0
-offset_left = 80.0
+offset_left = 81.0
 offset_top = 43.0
-offset_right = 1072.0
+offset_right = 1073.0
 offset_bottom = 109.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_so7jt")

@@ -49,6 +49,36 @@ var interaction_prompt: Control = null
 var hud: CanvasLayer = null
 
 
+# Damage tembakan revolver (tinju = 5, lihat parry.gd). Semua musuh kena damage yang sama; bedanya cuma di HP musuh.
+@export var gun_damage: float = 11.0
+
+
+# Kamera miring (roll) saat jalan ke samping / belok. Semua bisa diatur di Inspector.
+@export_group("Kamera Miring")
+@export var tilt_enabled: bool = true
+@export var strafe_tilt_deg: float = 2.6      # miring saat jalan ke samping (derajat, max)
+@export var turn_tilt_deg: float = 1.8        # miring saat mouse dibelokkan cepat
+@export var tilt_speed: float = 9.0           # makin besar makin cepat nyusul / balik tegak
+
+# Wallhop: tekan lompat di udara dekat tembok -> mental dari tembok.
+@export_group("Wallhop")
+@export var wall_hop_enabled: bool = true
+@export var wall_hop_up: float = 5.2          # dorongan ke atas
+@export var wall_hop_push: float = 6.5        # dorongan menjauhi tembok
+@export var wall_hop_forward: float = 3.0     # tambahan ke arah pandangan (biar bisa lanjut lari)
+@export var wall_hop_keep: float = 0.7        # sisa kecepatan yang sejajar tembok
+@export var wall_hop_limit: int = 3           # maks wallhop per sekali di udara (0 = tanpa batas)
+@export var wall_hop_cooldown: float = 0.18
+@export var wall_reach: float = 1.2           # jarak deteksi tembok dari badan
+@export var wall_hop_tilt_deg: float = 7.0    # sentakan miring kamera saat wallhop
+
+var _roll := 0.0
+var _roll_kick := 0.0
+var _mouse_dx := 0.0
+var _wall_hops := 0
+var _wall_cd := 0.0
+
+
 # Ammo
 @export var max_ammo_per_clip: int = 6
 @export var starting_reserve_ammo: int = 24
@@ -76,6 +106,15 @@ func _ready():
 	current_ammo = max_ammo_per_clip
 	reserve_ammo = starting_reserve_ammo
 
+	var cfg := ConfigFile.new()
+	if cfg.load("user://settings.cfg") == OK:
+		_sprint_cfg = cfg.get_value("controls", "sprint_toggle", false)
+		_sens_cfg = cfg.get_value("controls", "sensitivity", 1.0)
+		_fov_cfg = cfg.get_value("gameplay", "fov", 75.0)
+		_tilt_cfg = cfg.get_value("gameplay", "camera_tilt", true)
+		_bob_cfg = cfg.get_value("gameplay", "head_bob", true)
+		_bright_cfg = cfg.get_value("video", "brightness", 1.0)
+
 	var huds = get_tree().get_nodes_in_group("hud")
 
 	if huds.size() > 0:
@@ -92,15 +131,102 @@ func _on_health_changed(current: float, max: float) -> void:
 		hud.update_health(int(current), int(max))
 
 
+var _dead := false
+
+# Sprint: Hold (tahan tombol) atau Toggle (tekan sekali nyala, tekan lagi mati; tetap nyala walau berhenti lalu jalan lagi). Pilihan dari settings (SettingsMenu menaruh Engine meta "sprint_toggle").
+var _sprint_on := false
+var _sprint_latched := false
+var _sprint_cfg := false
+var _sens_cfg := 1.0
+var _fov_cfg := 75.0
+var _tilt_cfg := true
+var _bob_cfg := true
+var _bright_cfg := 1.0
+var _bright_applied := -1.0
+var _bright_warned := false
+
+
+func _meta_or(key: String, fallback: Variant) -> Variant:
+	return Engine.get_meta(key) if Engine.has_meta(key) else fallback
+
+
+# FOV dasar dari settings; sprint = dasar + 15 (dulu 75 -> 90)
+func _base_fov() -> float:
+	return float(_meta_or("fov", _fov_cfg))
+
+
+func _tilt_allowed() -> bool:
+	return bool(_meta_or("camera_tilt", _tilt_cfg))
+
+
+func _bob_allowed() -> bool:
+	return bool(_meta_or("head_bob", _bob_cfg))
+
+
+# Kecerahan: dipasang ke WorldEnvironment (adjustment_brightness). Dicek tiap frame, hanya bekerja kalau nilainya berubah.
+func _apply_brightness() -> void:
+	var b := float(_meta_or("brightness", _bright_cfg))
+	if is_equal_approx(b, _bright_applied):
+		return
+	var scene := get_tree().current_scene
+	var we: WorldEnvironment = null
+	if scene:
+		we = scene.find_child("WorldEnvironment", true, false) as WorldEnvironment
+	if we == null or we.environment == null:
+		if not _bright_warned:
+			_bright_warned = true
+			push_warning("Player: WorldEnvironment tidak ketemu, pengaturan Brightness tidak berpengaruh")
+		return
+	we.environment.adjustment_enabled = not is_equal_approx(b, 1.0)
+	we.environment.adjustment_brightness = b
+	_bright_applied = b
+
+
+# Pengali sensitivitas mouse dari settings (Engine meta diisi SettingsMenu; cadangan: baca dari file)
+func _sens_mult() -> float:
+	if Engine.has_meta("mouse_sensitivity"):
+		return float(Engine.get_meta("mouse_sensitivity"))
+	return _sens_cfg
+
+
+func _sprint_toggle_mode() -> bool:
+	if Engine.has_meta("sprint_toggle"):
+		return Engine.get_meta("sprint_toggle")
+	return _sprint_cfg                  # settings belum pernah dimuat di sesi ini: baca dari file
+
+
+func _update_sprint() -> void:
+	if not _sprint_toggle_mode():
+		_sprint_latched = false
+		_sprint_on = Input.is_action_pressed("sprint")
+		return
+	if Input.is_action_just_pressed("sprint"):
+		_sprint_latched = not _sprint_latched
+	_sprint_on = _sprint_latched
+
+
 func _on_died() -> void:
+	if _dead:
+		return                          # sinyal bisa datang lagi (mis. racun masih menetes)
+	_dead = true
 	print("Player mati!")
-	get_tree().reload_current_scene()
+
+	set_physics_process(false)
+	set_process_unhandled_input(false)
+
+	# siapa yang terakhir nyakitin (dicatat enemy_base.hurt_player / poison_glob), cuma dipakai kalau barusan
+	var killer := ""
+	if has_meta("last_hit_by") and Time.get_ticks_msec() - int(get_meta("last_hit_time", 0)) < 6000:
+		killer = str(get_meta("last_hit_by"))
+
+	DeathScreen.play(self, killer)      # death_screen.gd: pause game, animasi, lalu reload scene sendiri
 
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		head.rotate_y(-event.relative.x * SENSITIVITY)
-		camera.rotate_x(-event.relative.y * SENSITIVITY)
+		head.rotate_y(-event.relative.x * SENSITIVITY * _sens_mult())
+		_mouse_dx += event.relative.x
+		camera.rotate_x(-event.relative.y * SENSITIVITY * _sens_mult())
 
 		camera.rotation.x = clamp(
 			camera.rotation.x,
@@ -111,6 +237,11 @@ func _unhandled_input(event):
 
 func _physics_process(delta: float) -> void:
 
+	if is_on_floor():
+		_wall_hops = 0
+	_wall_cd = maxf(0.0, _wall_cd - delta)
+	_update_sprint()
+
 	# Gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -120,13 +251,16 @@ func _physics_process(delta: float) -> void:
 
 
 	# Jump
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	if Input.is_action_just_pressed("jump"):
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		elif wall_hop_enabled:
+			_try_wall_hop()
 
 
 	# Crouch / Slide
 	if Input.is_action_just_pressed("crouch"):
-		if Input.is_action_pressed("sprint") and is_on_floor() and velocity.length() > 0.1:
+		if _sprint_on and is_on_floor() and velocity.length() > 0.1:
 			start_slide()
 		else:
 			is_crouching = true
@@ -149,7 +283,7 @@ func _physics_process(delta: float) -> void:
 	)
 
 	var direction = (
-		head.transform.basis *
+		Basis(Vector3.UP, head.rotation.y) *       # yaw saja: roll kamera gak boleh ikut ngubah arah jalan
 		Vector3(input_dir.x, 0, input_dir.y)
 	).normalized()
 
@@ -161,7 +295,7 @@ func _physics_process(delta: float) -> void:
 		current_speed = 0.0
 	elif is_crouching:
 		current_speed = CROUCH_SPEED
-	elif Input.is_action_pressed("sprint"):
+	elif _sprint_on:
 		current_speed = SPRINT_SPEED
 
 
@@ -236,7 +370,7 @@ func _physics_process(delta: float) -> void:
 
 	var is_moving = direction.length() > 0.1 and is_on_floor()
 	var is_sprinting = (
-		Input.is_action_pressed("sprint")
+		_sprint_on
 		and is_moving
 		and not is_crouching
 	)
@@ -269,6 +403,167 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
+func _process(delta: float) -> void:
+	_apply_brightness()
+	_update_camera_tilt(delta)
+
+
+# Kamera miring ke arah gerak: jalan ke samping & belok. Dipasang di head (roll), bukan camera,
+# supaya gak tabrakan dengan sentakan kamera parry (parry.gd mainin camera.rotation.z).
+func _update_camera_tilt(delta: float) -> void:
+	var target := _roll_kick if _tilt_allowed() else 0.0
+	if tilt_enabled and _tilt_allowed():
+		var local_v := Basis(Vector3.UP, head.rotation.y).inverse() * velocity
+		var strafe := clampf(local_v.x / SPRINT_SPEED, -1.0, 1.0)
+		var turn := clampf(_mouse_dx / 40.0, -1.0, 1.0)
+		target += deg_to_rad(-strafe * strafe_tilt_deg - turn * turn_tilt_deg)
+	_mouse_dx = 0.0
+	_roll = lerpf(_roll, target, 1.0 - exp(-tilt_speed * delta))
+	head.rotation.z = _roll
+	_roll_kick = lerpf(_roll_kick, 0.0, 1.0 - exp(-6.0 * delta))
+
+
+# Cari tembok terdekat di sekeliling badan (8 arah). Kosong = gak ada.
+func _find_wall() -> Dictionary:
+	var space := get_world_3d().direct_space_state
+	var origin := global_position + Vector3(0.0, 0.9, 0.0)
+	var best := {}
+	var best_d := INF
+	for i in 8:
+		var dir := Vector3.FORWARD.rotated(Vector3.UP, TAU * i / 8.0)
+		var q := PhysicsRayQueryParameters3D.create(origin, origin + dir * wall_reach)
+		q.exclude = [get_rid()]
+		var r := space.intersect_ray(q)
+		if r.is_empty():
+			continue
+		var col = r.collider
+		if col is Node and (col.is_in_group("enemy") or col.has_method("take_damage")):
+			continue                                   # musuh bukan tembok
+		if absf(r.normal.y) > 0.3:
+			continue                                   # lantai / plafon bukan tembok
+		var d := origin.distance_to(r.position)
+		if d < best_d:
+			best_d = d
+			best = r
+	return best
+
+
+func _try_wall_hop() -> bool:
+	if _wall_cd > 0.0:
+		return false
+	if wall_hop_limit > 0 and _wall_hops >= wall_hop_limit:
+		return false
+	var hit := _find_wall()
+	if hit.is_empty():
+		return false
+
+	var n: Vector3 = hit.normal
+	n.y = 0.0
+	n = n.normalized()
+	var yaw := Basis(Vector3.UP, head.rotation.y)
+	var look: Vector3 = -yaw.z
+	look.y = 0.0
+	var hv := Vector3(velocity.x, 0.0, velocity.z)
+	var parallel := hv - n * hv.dot(n)                          # kecepatan sejajar tembok tetap sebagian
+	var look_off := look - n * minf(look.dot(n), 0.0)           # arah pandang tanpa komponen yang masuk ke tembok
+	var h := parallel * wall_hop_keep + n * wall_hop_push + look_off.normalized() * wall_hop_forward
+	velocity.x = h.x
+	velocity.z = h.z
+	velocity.y = wall_hop_up
+
+	_wall_hops += 1
+	get_tree().call_group("style", "register", "wallhop")
+	_wall_cd = wall_hop_cooldown
+	is_sliding = false
+
+	# efek: kamera tersentak miring menjauhi tembok, FOV nyentak, debu, suara
+	var side := signf(n.dot(yaw.x))
+	if _tilt_allowed():
+		_roll_kick = -side * deg_to_rad(wall_hop_tilt_deg)
+	camera.fov -= 5.0
+	spawn_impact_particles(hit.position, hit.normal, Color(0.75, 0.7, 0.62))
+	get_tree().call_group("sfx", "play", "land_soft", -3.0, 0.06)
+	get_tree().call_group("sfx", "play", "punch_whoosh", -8.0, 0.08)
+	return true
+
+
+# ---------------------------------------------------------------
+#  BULLET TRAIL: garis peluru melesat dari moncong ke titik kena
+# ---------------------------------------------------------------
+@export_group("Bullet Trail")
+@export var tracer_enabled := true
+@export var tracer_color := Color(1.0, 0.72, 0.32)
+@export var tracer_speed := 240.0                # m/detik (makin besar makin 'instan')
+@export var tracer_length := 4.5                 # panjang ekor garis
+@export var tracer_width := 0.014
+@export var muzzle_offset := Vector3(0.2, -0.17, -0.6)   # titik moncong relatif kamera (kanan-bawah-depan)
+
+var _tracer_mat_core: StandardMaterial3D
+var _tracer_mat_glow: StandardMaterial3D
+
+
+func _tracer_materials() -> void:
+	if _tracer_mat_core:
+		return
+	for k in 2:
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		m.albedo_color = Color(1.0, 0.96, 0.85, 1.0) if k == 0 else Color(tracer_color, 0.32)
+		if k == 0:
+			_tracer_mat_core = m
+		else:
+			_tracer_mat_glow = m
+
+
+func _spawn_tracer(end: Vector3) -> void:
+	if not tracer_enabled:
+		return
+	_tracer_materials()
+	var start: Vector3 = camera.global_transform * muzzle_offset
+	var dist := start.distance_to(end)
+	if dist < 0.6:
+		return
+	var dir := (end - start) / dist
+	var up := Vector3.UP if absf(dir.dot(Vector3.UP)) < 0.99 else Vector3.RIGHT
+	var basis0 := Basis.looking_at(dir, up)
+
+	var root := Node3D.new()
+	for k in 2:
+		var mi := MeshInstance3D.new()
+		var bm := BoxMesh.new()
+		var w := tracer_width * (1.0 if k == 0 else 4.0)
+		bm.size = Vector3(w, w, 1.0)
+		mi.mesh = bm
+		mi.material_override = _tracer_mat_core if k == 0 else _tracer_mat_glow
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(mi)
+	var scene := get_tree().current_scene
+	if scene == null:
+		return
+	scene.add_child(root)
+	root.visible = false
+
+	var total := (dist + tracer_length) / tracer_speed
+	var tw := root.create_tween()
+	tw.tween_method(_tracer_step.bind(root, start, dir, basis0, dist), 0.0, 1.0, maxf(total, 0.04))
+	tw.tween_callback(root.queue_free)
+
+
+func _tracer_step(k: float, root: Node3D, start: Vector3, dir: Vector3, b: Basis, dist: float) -> void:
+	var p := k * (dist + tracer_length)
+	var head := minf(p, dist)
+	var tail := clampf(p - tracer_length, 0.0, dist)
+	var seg := head - tail
+	if seg < 0.01:
+		root.visible = false
+		return
+	root.visible = true
+	root.global_transform = Transform3D(b * Basis.from_scale(Vector3(1.0, 1.0, seg)), start + dir * (tail + seg * 0.5))
+
+
 func shoot():
 	if hud and hud.is_busy:
 		return
@@ -299,11 +594,13 @@ func shoot():
 
 	var result = space_state.intersect_ray(query)
 
+	_spawn_tracer(result.position if result else to)
+
 	if result:
 		print("Kena: ", result.collider.name)
 
 		if result.collider.has_method("take_damage"):
-			result.collider.take_damage(1)
+			result.collider.take_damage(gun_damage)
 
 			spawn_impact_particles(
 				result.position,
@@ -369,11 +666,12 @@ func _update_ammo_ui() -> void:
 
 
 func head_bobbing(delta):
-	var is_sprinting = Input.is_action_pressed("sprint") and not is_crouching
+	var is_sprinting = _sprint_on and not is_crouching and Vector2(velocity.x, velocity.z).length() > 1.0   # FOV lebar hanya saat benar-benar bergerak
 	var is_moving = velocity.length() > 0.1 and is_on_floor()
 
 	# FOV
-	var target_fov = SPRINT_FOV if is_sprinting else NORMAL_FOV
+	var base_fov := _base_fov()
+	var target_fov = (base_fov + (SPRINT_FOV - NORMAL_FOV)) if is_sprinting else base_fov
 
 	camera.fov = lerp(
 		camera.fov,
@@ -383,7 +681,7 @@ func head_bobbing(delta):
 
 
 	# Bobbing
-	if is_moving:
+	if is_moving and _bob_allowed():
 		var current_frequency = BOB_FREQUENCY
 		var current_amplitude = BOB_AMPLITUDE
 
@@ -410,10 +708,91 @@ func head_bobbing(delta):
 		)
 
 
+# --- collider ikut mengecil saat nunduk/slide (supaya muat di bawah duct) ---
+const CROUCH_COLLIDER_H := 0.75     # tinggi badan saat jongkok (lebih kecil = lebih pendek)
+const SLIDE_COLLIDER_H := 0.5       # tinggi badan saat slide
+const SLIDE_HEAD_DROP := 0.95       # kamera turun segini saat slide (jongkok biasa pakai CROUCH_HEIGHT)
+var _col: CollisionShape3D
+var _col_h_stand := 0.0
+var _col_r_stand := 0.0
+var _col_y_stand := 0.0
+var _col_ready := false
+
+func _setup_collider() -> void:
+	_col_ready = true
+	for c in find_children("*", "CollisionShape3D", true, false):
+		var sh = (c as CollisionShape3D).shape
+		if sh is CapsuleShape3D or sh is BoxShape3D or sh is CylinderShape3D:
+			_col = c
+			break
+	if _col == null:
+		push_warning("Player: CollisionShape3D (capsule/box/cylinder) tidak ketemu, collider tidak mengecil saat nunduk")
+		return
+	_col.shape = _col.shape.duplicate()
+	_col_h_stand = _shape_h(_col.shape)
+	_col_r_stand = _shape_r(_col.shape)
+	_col_y_stand = _col.position.y
+	print("Player collider: ", _col.name, " ", _col.shape.get_class(), " h=", _col_h_stand, " y=", _col_y_stand)
+
+
+func _shape_r(sh: Shape3D) -> float:
+	if sh is CapsuleShape3D:
+		return (sh as CapsuleShape3D).radius
+	if sh is CylinderShape3D:
+		return (sh as CylinderShape3D).radius
+	return 0.0
+
+
+func _set_shape_r(sh: Shape3D, r: float) -> void:
+	if sh is CapsuleShape3D:
+		(sh as CapsuleShape3D).radius = r
+	elif sh is CylinderShape3D:
+		(sh as CylinderShape3D).radius = r
+
+
+func _shape_h(sh: Shape3D) -> float:
+	if sh is CapsuleShape3D:
+		return (sh as CapsuleShape3D).height
+	if sh is CylinderShape3D:
+		return (sh as CylinderShape3D).height
+	return (sh as BoxShape3D).size.y
+
+
+func _set_shape_h(sh: Shape3D, h: float) -> void:
+	if sh is CapsuleShape3D:
+		(sh as CapsuleShape3D).height = h
+	elif sh is CylinderShape3D:
+		(sh as CylinderShape3D).height = h
+	else:
+		(sh as BoxShape3D).size.y = h
+
+
+func _update_collider() -> void:
+	if not _col_ready:
+		_setup_collider()
+	if _col == null:
+		return
+	var h := _col_h_stand
+	if is_sliding:
+		h = SLIDE_COLLIDER_H
+	elif is_crouching:
+		h = CROUCH_COLLIDER_H
+	# kapsul tidak boleh lebih pendek dari 2x jari-jarinya, jadi jari-jari ikut mengecil kalau perlu.
+	# Jari-jari dikembalikan saat berdiri (kalau tidak, badan jadi kurus selamanya).
+	if _col_r_stand > 0.0:
+		_set_shape_r(_col.shape, minf(_col_r_stand, h * 0.5))
+	_set_shape_h(_col.shape, h)
+	# telapak kaki tetap di tempat: geser tengah collider turun separuh selisihnya
+	_col.position.y = _col_y_stand - (_col_h_stand - h) * 0.5
+
+
 func handle_crouch(delta):
+	_update_collider()
 	var target_y = head_start_position.y
 
-	if is_crouching:
+	if is_sliding:
+		target_y -= SLIDE_HEAD_DROP
+	elif is_crouching:
 		target_y -= CROUCH_HEIGHT
 
 	head.position.y = lerp(
@@ -425,6 +804,7 @@ func handle_crouch(delta):
 
 func start_slide():
 	is_sliding = true
+	get_tree().call_group("style", "register", "slide")
 	is_crouching = true
 	slide_timer = SLIDE_DURATION
 

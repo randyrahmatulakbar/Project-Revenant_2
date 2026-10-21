@@ -15,7 +15,7 @@ var _done := false
 
 # --- PARRY: tekan F pas bola dekat -> dipantulkan balik ke penembak ---
 @export var reflect_speed_mult: float = 1.4
-@export var reflect_damage: float = 4.0       # damage ke musuh yang kena bola pantulan
+@export var reflect_damage: float = 20.0      # damage ke musuh yang kena bola pantulan
 @export var reflect_hit_radius: float = 1.0   # jarak ke badan musuh yang dihitung kena
 var _reflected := false
 
@@ -99,6 +99,8 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		var h := body.get_node_or_null("Health")
 		if h:
+			body.set_meta("last_hit_by", "Spitter")
+			body.set_meta("last_hit_time", Time.get_ticks_msec())
 			h.take_damage(damage)
 		PoisonDot.apply(body, poison_dps, poison_time)
 		get_tree().call_group("sfx", "play_at", "glob_splat", global_position, -1.0)

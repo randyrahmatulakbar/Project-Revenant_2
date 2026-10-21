@@ -4,7 +4,7 @@ extends Node
 
 @export var action_name := "parry"
 @export var punch_reach := 2.2
-@export var punch_damage := 2
+@export var punch_damage := 5.0      # damage tinju (tembakan revolver = 11, lihat player-test.gd)
 @export var parry_window := 0.25         # lama jendela parry sejak F ditekan
 @export var parry_range := 3.0
 @export var parry_angle_deg := 50.0      # seberapa lebar "depan" yang dihitung

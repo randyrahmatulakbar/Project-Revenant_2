@@ -6,6 +6,9 @@ enum Mode { MOVE, SPIT }
 
 @export var glob_scene: PackedScene           # poison_glob.tscn
 
+@export_group("Darah")
+@export var hp: float = 20.0                   # HP musuh ini. Damage senjata sama untuk semua musuh (revolver 11, tinju 5)
+
 @export_group("Jarak")
 @export var preferred_min: float = 6.0        # lebih dekat dari ini -> mundur
 @export var preferred_max: float = 15.0       # lebih jauh dari ini / gak kelihatan -> maju
@@ -25,6 +28,7 @@ var _aiming := false
 
 
 func _ready() -> void:
+	max_health = hp                                  # harus sebelum super(): base mengisi health dari max_health
 	super()                                          # WAJIB: jalankan _ready milik EnemyBase dulu
 	if gore_color.is_equal_approx(Color(0.75, 0.05, 0.05)):
 		gore_color = Color(0.45, 0.85, 0.12)         # darah hijau racun
@@ -60,12 +64,12 @@ func _think(delta: float) -> void:
 		var dir := nav_dir_to(player.global_position)
 		move_dir(dir, move_speed, delta)
 		face_dir(dir, delta)
-		play_anim("walk_loop", 0.12, move_speed / 3.0)
+		play_anim("walk_loop", 0.2, move_speed / 3.0)
 	elif d < preferred_min:
 		var away := -dir_to_player_flat()
 		move_dir(away, move_speed * 0.8, delta)
 		face_dir(dir_to_player_flat(), delta)
-		play_anim("walk_loop", 0.12, -0.8)              # jalan mundur
+		play_anim("walk_loop", 0.2, -0.8)              # jalan mundur
 	else:
 		stop_h(delta)
 		face_dir(dir_to_player_flat(), delta)

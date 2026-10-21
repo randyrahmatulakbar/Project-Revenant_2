@@ -1,25 +1,23 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://dro38ruwelxbu"]
 
-[ext_resource type="Script" path="res://enemy_flayer.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://models/flayer.glb" id="2_model"]
+[ext_resource type="Script" uid="uid://csiwkv7cpvpsc" path="res://enemy_flayer.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://cidl14xe2o7r0" path="res://models/flayer.glb" id="2_model"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enemy"]
 radius = 0.4
 height = 2.4
 
-[node name="EnemyFlayer" type="CharacterBody3D"]
+[node name="EnemyFlayer" type="CharacterBody3D" unique_id=1770542182]
 script = ExtResource("1_script")
-max_health = 5.0
 move_speed = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=610190003]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("CapsuleShape3D_enemy")
 
-[node name="Model" parent="." instance=ExtResource("2_model")]
+[node name="Model" parent="." unique_id=1173265493 instance=ExtResource("2_model")]
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1279473758]
 path_desired_distance = 0.6
 target_desired_distance = 0.8
-radius = 0.5
 height = 2.0

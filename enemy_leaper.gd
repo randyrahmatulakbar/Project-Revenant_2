@@ -5,6 +5,9 @@ extends EnemyBase
 
 enum Mode { CHASE, WINDUP, AIR, LAND, CLAW, STUN }
 
+@export_group("Darah")
+@export var hp: float = 11.0            # HP musuh ini. Damage senjata sama untuk semua musuh (revolver 11, tinju 5)
+
 @export_group("Lompat")
 @export var leap_min_range: float = 4.0
 @export var leap_max_range: float = 13.0
@@ -26,7 +29,7 @@ enum Mode { CHASE, WINDUP, AIR, LAND, CLAW, STUN }
 @export var parry_lead: float = 0.35          # cakar bisa di-parry sekian detik sebelum kena
 @export var parry_stun: float = 1.3
 @export var parry_knockback: float = 5.0
-@export var parry_damage: float = 4.0
+@export var parry_damage: float = 7.5        # cakar: 2x parry. Parry pas di udara = x1.5 (11.25) -> 1x parry
 @export var parry_height: float = 0.9
 
 var mode: Mode = Mode.CHASE
@@ -38,6 +41,11 @@ var _squash_tw: Tween
 
 
 # Hook dari EnemyBase saat musuh mati
+func _ready() -> void:
+	max_health = hp                                  # harus sebelum super(): base mengisi health dari max_health
+	super()
+
+
 func _on_died() -> void:
 	_atk_token += 1
 	_set_parryable(false)
@@ -73,7 +81,7 @@ func _think(delta: float) -> void:
 				var dir := nav_dir_to(player.global_position)
 				move_dir(dir, move_speed, delta)
 				face_dir(dir, delta)
-				play_anim("walk_loop", 0.1, move_speed / 5.0)
+				play_anim("walk_loop", 0.2, move_speed / 5.0)
 		Mode.WINDUP:
 			stop_h(delta)
 			face_dir(dir_to_player_flat(), delta, 14.0)

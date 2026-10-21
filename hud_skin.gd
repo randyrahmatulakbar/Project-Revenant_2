@@ -177,7 +177,7 @@ static func _refresh(b: Button) -> void:
 # ---------- Halaman Settings ----------
 const FONT_PATH := "res://font/Rajdhani-Bold.ttf"
 const SETTINGS_MARGIN_X := 72.0
-const SETTINGS_PANEL := Vector2(560, 430)
+const SETTINGS_PANEL := Vector2(560, 600)
 
 ## Restyle SettingsMenu (rata kiri, panel gaya HUD, judul merah, tombol Back HUD, animasi masuk).
 ## Cukup dipanggil dari luar: HudSkin.style_settings(settings_menu)
@@ -189,7 +189,9 @@ static func style_settings(menu: Control) -> void:
 
 	var panel: PanelContainer = menu.get_node("Panel")
 	var title: Label = menu.get_node("Panel/Margin/VBox/Title")
-	var back: Button = menu.get_node("Panel/Margin/VBox/BackButton")
+	# Tombol dicari lewat nama (bukan path tetap), karena posisinya sekarang di dalam HBox "Buttons"
+	var back: Button = menu.find_child("BackButton", true, false) as Button
+	var reset: Button = menu.find_child("ResetButton", true, false) as Button
 
 	# Rata kiri: CenterContainer dipersempit sehingga panel (yang selalu di tengahnya)
 	# jatuh di sisi kiri layar.
@@ -222,8 +224,15 @@ static func style_settings(menu: Control) -> void:
 		title.add_theme_font_override("font", load(FONT_PATH))
 
 	# Tombol Back
-	skin_button(back, Vector2(200, 48), 22)
-	back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	if back:
+		skin_button(back, Vector2(200, 48), 22)
+		back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	if reset:
+		skin_button(reset, Vector2(260, 48), 22)
+		reset.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	var kbtn: Button = menu.find_child("KeybindsButton", true, false) as Button
+	if kbtn:
+		skin_button(kbtn, Vector2(0, 40), 20, false)
 
 	menu.visibility_changed.connect(Callable(HudSkin, "_settings_in").bind(menu))
 	if menu.visible:
@@ -240,4 +249,9 @@ static func _settings_in(menu: Control) -> void:
 	var t := menu.create_tween().set_parallel(true).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 	t.tween_property(p, "modulate:a", 1.0, 0.45)
 	t.tween_property(p, "scale", Vector2.ONE, 0.7)
-	play_in([menu.get_node("Panel/Margin/VBox/BackButton")], 0.25)
+	var btns: Array = []
+	for n in ["ResetButton", "BackButton"]:
+		var bb := menu.find_child(n, true, false)
+		if bb:
+			btns.append(bb)
+	play_in(btns, 0.25)

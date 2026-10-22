@@ -31,6 +31,22 @@ enum State { SPAWN, ACTIVE, DEAD }
 @export var corpse_drag: float = 8.0         # seberapa cepat dorongan itu berhenti
 @export var soft_death: bool = true          # true = jatuh "lemas" (percepatan, limbung, mantul). false = animasi mati bawaan
 
+@export_group("Mati: ragdoll & terbakar")
+@export var ragdoll_death: bool = true          # true = badan jadi ragdoll (fisika). false = pakai animasi mati lama
+@export var ragdoll_impulse: float = 5.0        # dorongan awal menjauhi player (m/s)
+@export var ragdoll_settle_time: float = 2.2    # lama tergeletak sebelum mulai terbakar
+@export var burn_time: float = 2.4              # lama proses terbakar sampai habis
+@export var burn_edge_color: Color = Color(1.0, 0.35, 0.05)
+
+@export_group("Debug")
+@export var debug_anim: bool = false               # label di atas kepala musuh: animasi apa yang lagi jalan (matiin kalau udah beres)
+
+@export_group("Animasi jalan (anti licin)")
+@export var walk_natural_speed: float = 1.8   # kecepatan lantai (m/s) yang pas sama walk_loop pada kecepatan 1x
+@export var run_natural_speed: float = 3.4    # ... sama run_loop pada kecepatan 1x
+@export var run_threshold: float = 3.0        # kecepatan jalan di atas ini -> pakai run_loop (kalau modelnya punya)
+@export var step_phase: float = 0.25          # fase siklus (0..1) saat telapak kaki kena tanah (dari data animasi)
+
 @export_group("Gerak (biar gak kaku)")
 @export var move_juice: bool = true          # badan goyang & naik-turun dikit pas jalan
 @export var hit_flinch: float = 0.12         # badan tersentak ke belakang tiap kena tembak (0 = mati)
@@ -49,6 +65,12 @@ var _anim_name: String = ""
 var _juice_tw: Tween                         # ancang-ancang / terjang saat nyerang
 var _flinch_tw: Tween                        # tersentak kena tembak
 var _bob_phase := 0.0
+var _run_clip := false
+var _prev_pos := Vector3.ZERO
+var _dbg_label: Label3D
+var _dbg_t := 0.0
+var _meas_speed := 0.0          # kecepatan SESUNGGUHNYA (jarak yang ditempuh per detik), dipakai buat animasi kaki
+var _prev_cycle := -1.0
 var _last_step := -1
 static var _soft_tex: Texture2D
 var _death_fall := 0.5
@@ -58,21 +80,29 @@ var _rest_rot := {}                          # pose awal tiap node model (buat m
 
 func _ready() -> void:
 	health = max_health
+	_prev_pos = global_position
 	add_to_group("enemy")
 	model = get_node_or_null("Model") as Node3D
 	if model:
 		anim = model.find_child("AnimationPlayer", true, false) as AnimationPlayer
+		if anim:
+			anim.playback_default_blend_time = 0.18   # semua pindah animasi di-crossfade, gak "nyentak"
 	nav = get_node_or_null("NavigationAgent3D") as NavigationAgent3D
 	_setup_flash()
 	_record_rest_pose()
 	_find_player()
 	_begin_spawn()
+	_make_debug_label()
 
 
 # =========================
 # ALUR UTAMA
 # =========================
 func _physics_process(delta: float) -> void:
+	_update_debug(delta)
+	var moved := global_position - _prev_pos                  # seberapa jauh badan BENERAN bergerak frame ini
+	_prev_pos = global_position
+	_meas_speed = lerpf(_meas_speed, Vector2(moved.x, moved.z).length() / maxf(delta, 0.0001), 0.35)
 	if state == State.DEAD:
 		velocity.x = move_toward(velocity.x, 0.0, corpse_drag * delta)   # mayat meluncur sebentar lalu berhenti
 		velocity.z = move_toward(velocity.z, 0.0, corpse_drag * delta)
@@ -159,13 +189,17 @@ func _die() -> void:
 		model.rotation.z = 0.0
 		model.scale = Vector3.ONE
 	var fall_t := 0.0
-	if soft_death and _soft_death():
+	var ragdolled := ragdoll_death and _start_ragdoll()
+	if ragdolled:
+		fall_t = 0.5
+	elif soft_death and _soft_death():
 		fall_t = _death_fall
 	else:
 		play_anim("death", 0.08, death_speed, true)
 		if anim and anim.has_animation("death"):
 			fall_t = anim.get_animation("death").length / death_speed * 0.85
-	_relax_untracked_parts("death")
+	if not ragdolled:
+		_relax_untracked_parts("death")
 	if fall_t > 0.0:
 		get_tree().create_timer(fall_t).timeout.connect(_corpse_impact)
 	sfx_at("enemy_death", 0.0)
@@ -174,7 +208,11 @@ func _die() -> void:
 	vfx_light(global_position + Vector3(0, 1.2, 0), gore_color.lightened(0.3), 3.0, 0.3, 6.0)
 	_on_died()
 	died.emit(self)
-	get_tree().create_timer(corpse_time).timeout.connect(_sink_and_free)
+	if ragdolled:
+		get_tree().create_timer(ragdoll_settle_time).timeout.connect(_start_burn)
+		get_tree().create_timer(ragdoll_settle_time + burn_time + 0.6).timeout.connect(_finish_corpse)
+	else:
+		get_tree().create_timer(corpse_time).timeout.connect(_sink_and_free)
 
 
 # ---------- GERAK SEKUNDER (biar gak kaku) ----------
@@ -184,6 +222,7 @@ func juice_attack(hits: Array, lean: float = 10.0) -> void:
 	if model == null:
 		return
 	kill_juice()
+	lean *= 0.6                                              # animasi bawaan sudah condong, jadi tambahannya dikecilin
 	_juice_tw = create_tween()
 	var t := 0.0
 	for h in hits:
@@ -222,21 +261,34 @@ func flinch(amount: float = 0.12) -> void:
 	_flinch_tw.tween_property(model, "position:z", 0.0, 0.16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 
 
-# Goyang & naik-turun dikit saat berjalan di tanah
+# Efek langkah: debu + bunyi tepat saat telapak kena tanah (diambil dari fase animasi jalan/lari),
+# plus goyang samping tipis yang ikut siklus. Naik-turun badan sudah ada di animasinya.
 func _move_juice(delta: float) -> void:
 	if model == null or not move_juice:
 		return
+	var clip: String = anim.current_animation if anim else ""
+	var cycling := (clip == "walk_loop" or clip == "run_loop") and is_on_floor() and anim.current_animation_length > 0.0
+	if not cycling:
+		model.rotation.z = lerp_angle(model.rotation.z, 0.0, clampf(delta * 10.0, 0.0, 1.0))
+		_prev_cycle = -1.0
+		return
 	var sp := Vector2(velocity.x, velocity.z).length()
-	var k := clampf(sp / maxf(move_speed, 0.1), 0.0, 1.0) if is_on_floor() else 0.0
-	_bob_phase += delta * sp * 2.2
-	var step := int(floor(_bob_phase / PI))
-	if step != _last_step:
-		_last_step = step
-		if k > 0.3:                                          # tiap telapak kena tanah: debu kecil + bunyi langkah
-			burst(global_position + Vector3(0, 0.05, 0), Color(0.5, 0.45, 0.4), 3, 0.08, 1.4, 0.5, Vector3.UP, 60.0)
-			sfx_at("footstep", -17.0)
-	model.position.y = absf(sin(_bob_phase)) * 0.06 * k
-	model.rotation.z = sin(_bob_phase) * deg_to_rad(3.0) * k
+	var k := clampf(sp / maxf(move_speed, 0.1), 0.0, 1.0)
+	var cycle: float = anim.current_animation_position / anim.current_animation_length
+	if _prev_cycle >= 0.0 and k > 0.3:
+		for mark in [step_phase, fposmod(step_phase + 0.5, 1.0)]:
+			if _crossed(_prev_cycle, cycle, mark):
+				burst(global_position + Vector3(0, 0.05, 0), Color(0.5, 0.45, 0.4), 3, 0.08, 1.4, 0.5, Vector3.UP, 60.0)
+				sfx_at("footstep", -17.0)
+	_prev_cycle = cycle
+	var sway := sin((cycle - step_phase) * TAU) * deg_to_rad(1.6) * k
+	model.rotation.z = lerp_angle(model.rotation.z, sway, clampf(delta * 14.0, 0.0, 1.0))
+
+
+func _crossed(prev: float, cur: float, mark: float) -> bool:
+	if absf(cur - prev) > 0.5:                               # loncat melewati ujung siklus
+		return (mark > prev or mark <= cur) if prev > cur else (mark < prev or mark >= cur)
+	return minf(prev, cur) < mark and mark <= maxf(prev, cur)
 
 
 # Mati "lemas": animasi mati bawaan dibaca lalu dimainkan ulang per-bagian dengan timing sendiri:
@@ -372,6 +424,192 @@ func _sink_and_free() -> void:
 
 
 # =========================
+# MATI: RAGDOLL + TERBAKAR
+# =========================
+const BURN_SHADER_CODE := """
+shader_type spatial;
+uniform sampler2D albedo_tex : source_color, filter_nearest, repeat_enable;
+uniform vec4 albedo_color : source_color = vec4(1.0);
+uniform sampler2D emission_tex : source_color, filter_nearest, repeat_enable;
+uniform vec4 emission_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform float emission_energy = 1.0;
+uniform sampler2D noise_tex : filter_linear, repeat_enable;
+uniform float burn : hint_range(0.0, 1.0) = 0.0;
+uniform float noise_scale = 1.4;
+uniform float edge_width = 0.12;
+uniform vec4 edge_color : source_color = vec4(1.0, 0.35, 0.05, 1.0);
+uniform vec4 char_color : source_color = vec4(0.035, 0.028, 0.025, 1.0);
+varying vec3 obj_pos;
+void vertex() {
+	obj_pos = VERTEX;
+}
+void fragment() {
+	vec4 a = texture(albedo_tex, UV) * albedo_color;
+	vec3 em = texture(emission_tex, UV).rgb * emission_color.rgb * emission_energy;
+	float n = texture(noise_tex, obj_pos.xz * noise_scale + obj_pos.y * vec2(0.71, 0.37) * noise_scale).r;
+	float cut = n - burn * (1.0 + edge_width * 2.0);
+	if (cut < 0.0) {
+		discard;
+	}
+	float edge = 1.0 - smoothstep(0.0, edge_width, cut);
+	float flick = 0.85 + 0.15 * sin(TIME * 25.0 + n * 40.0);
+	float charred = smoothstep(0.0, 0.55, burn) * 0.9;
+	vec3 base = mix(a.rgb, char_color.rgb, charred);
+	base = mix(base, char_color.rgb, edge * 0.7);
+	ALBEDO = base;
+	ROUGHNESS = 1.0;
+	EMISSION = em * (1.0 - charred) + edge_color.rgb * edge * flick * 3.5;
+}
+"""
+
+var _rag_bodies: Array[RigidBody3D] = []
+var _rag_joints: Array[Node] = []
+var _burn_mats: Array[ShaderMaterial] = []
+
+
+# Tiap bagian badan (yang punya mesh) jadi RigidBody3D, disambung bola (PinJoint3D) di porosnya.
+# Bagian ragdoll cuma nabrak dunia (layer 1), gak saling nabrak dan gak ngeganggu player.
+func _start_ragdoll() -> bool:
+	if model == null:
+		return false
+	var parts: Array[MeshInstance3D] = []
+	for n in model.find_children("*", "MeshInstance3D", true, false):
+		parts.append(n as MeshInstance3D)
+	if parts.is_empty():
+		return false
+	if anim:
+		anim.stop()
+		anim.active = false
+	var scene := get_tree().current_scene
+	var away := -dir_to_player_flat()
+
+	var parent_of := {}                                  # bagian induk (sebelum dipindah)
+	for mi in parts:
+		var p := mi.get_parent()
+		while p != null and p != model and not (p is MeshInstance3D):
+			p = p.get_parent()
+		parent_of[mi] = p if p is MeshInstance3D else null
+
+	var bodies := {}
+	for mi in parts:
+		var box := mi.get_aabb()
+		var rb := RigidBody3D.new()
+		rb.collision_layer = 1 << 9
+		rb.collision_mask = 1
+		rb.mass = clampf(box.size.x * box.size.y * box.size.z * 150.0, 2.0, 35.0)
+		rb.linear_damp = 0.25
+		rb.angular_damp = 1.6
+		var pm := PhysicsMaterial.new()
+		pm.friction = 0.9
+		pm.bounce = 0.05
+		rb.physics_material_override = pm
+		var shape := BoxShape3D.new()
+		shape.size = Vector3(maxf(box.size.x, 0.1), maxf(box.size.y, 0.1), maxf(box.size.z, 0.1)) * 0.85
+		var cs := CollisionShape3D.new()
+		cs.shape = shape
+		cs.position = box.get_center()
+		rb.add_child(cs)
+		scene.add_child(rb)
+		rb.global_transform = mi.global_transform
+		bodies[mi] = rb
+		_rag_bodies.append(rb)
+	for mi in parts:
+		mi.reparent(bodies[mi], true)                    # mesh ikut body, posisi dunia tetap
+	for mi in parts:                                     # sendi bola di poros tiap bagian
+		var pmi = parent_of[mi]
+		if pmi == null or not bodies.has(pmi):
+			continue
+		var j := PinJoint3D.new()
+		scene.add_child(j)
+		j.global_position = mi.global_position
+		j.node_a = j.get_path_to(bodies[pmi])
+		j.node_b = j.get_path_to(bodies[mi])
+		_rag_joints.append(j)
+	for rb in _rag_bodies:                               # dorongan awal
+		rb.linear_velocity = Vector3(velocity.x, 0.0, velocity.z) + away * ragdoll_impulse + Vector3(0.0, 2.0 + randf() * 1.5, 0.0)
+		rb.angular_velocity = Vector3(randf_range(-3.0, 3.0), randf_range(-3.0, 3.0), randf_range(-3.0, 3.0))
+	return true
+
+
+# Mayat terbakar: tekstur asli dipakai ulang, dilarutkan pakai noise (tepinya membara), lalu hilang.
+func _start_burn() -> void:
+	if not is_inside_tree() or _rag_bodies.is_empty():
+		return
+	var shader := Shader.new()
+	shader.code = BURN_SHADER_CODE
+	var noise_tex := _make_noise_tex()
+	var cache := {}
+	for rb in _rag_bodies:
+		if not is_instance_valid(rb):
+			continue
+		for n in rb.find_children("*", "MeshInstance3D", false, false):
+			var mi := n as MeshInstance3D
+			mi.material_overlay = null
+			if mi.mesh == null:
+				continue
+			for i in mi.mesh.get_surface_count():
+				var base := mi.get_active_material(i)
+				if not cache.has(base):
+					cache[base] = _burn_material(shader, noise_tex, base)
+				mi.set_surface_override_material(i, cache[base])
+		vfx_emitter(rb, Color(1.0, 0.5, 0.1, 0.95), 10, 0.8, burn_time, 0.07, 1.6, Vector3.UP, 35.0)
+		vfx_emitter(rb, Color(1.0, 0.85, 0.3, 0.95), 5, 0.5, burn_time, 0.05, 2.2, Vector3.UP, 50.0)
+	_burn_mats.assign(cache.values())
+	var lt := OmniLight3D.new()
+	lt.light_color = Color(1.0, 0.45, 0.12)
+	lt.light_energy = 0.0
+	lt.omni_range = 5.0
+	lt.shadow_enabled = false
+	_rag_bodies[0].add_child(lt)
+	var lw := lt.create_tween()
+	lw.tween_property(lt, "light_energy", 3.0, burn_time * 0.4)
+	lw.tween_property(lt, "light_energy", 0.0, burn_time * 0.6)
+	var tw := create_tween()
+	tw.tween_method(_set_burn, 0.0, 1.0, burn_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+
+func _set_burn(v: float) -> void:
+	for m in _burn_mats:
+		m.set_shader_parameter("burn", v)
+
+
+func _burn_material(shader: Shader, noise_tex: Texture2D, base: Material) -> ShaderMaterial:
+	var sm := ShaderMaterial.new()
+	sm.shader = shader
+	sm.set_shader_parameter("noise_tex", noise_tex)
+	sm.set_shader_parameter("edge_color", burn_edge_color)
+	if base is BaseMaterial3D:
+		var b := base as BaseMaterial3D
+		if b.albedo_texture:
+			sm.set_shader_parameter("albedo_tex", b.albedo_texture)
+		sm.set_shader_parameter("albedo_color", b.albedo_color)
+		if b.emission_enabled:
+			sm.set_shader_parameter("emission_color", b.emission)
+			sm.set_shader_parameter("emission_energy", b.emission_energy_multiplier)
+			if b.emission_texture:
+				sm.set_shader_parameter("emission_tex", b.emission_texture)
+	return sm
+
+
+func _make_noise_tex() -> Texture2D:
+	var n := FastNoiseLite.new()
+	n.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	n.frequency = 0.035
+	n.fractal_octaves = 3
+	return ImageTexture.create_from_image(n.get_seamless_image(256, 256))
+
+
+func _finish_corpse() -> void:
+	for n in _rag_bodies:
+		if is_instance_valid(n):
+			n.queue_free()
+	for n in _rag_joints:
+		if is_instance_valid(n):
+			n.queue_free()
+	queue_free()
+
+
+# =========================
 # GERAK
 # =========================
 func _gravity_step(delta: float) -> void:
@@ -483,18 +721,83 @@ func hurt_player(amount: float, knockback: float = 0.0) -> void:
 # =========================
 # ANIMASI, EFEK, SUARA
 # =========================
+# Cari nama klip yang sebenarnya di AnimationPlayer (bisa ada awalan library, atau beda akhiran _loop)
+var _clip_map := {}
+
+func _clip(want: String) -> String:
+	if anim == null:
+		return ""
+	if _clip_map.has(want):
+		return _clip_map[want]
+	var names := anim.get_animation_list()
+	var found := ""
+	for n in names:
+		if String(n) == want:
+			found = String(n)
+			break
+	if found == "":
+		for n in names:
+			var tail := String(n).get_slice("/", String(n).get_slice_count("/") - 1)
+			if tail.to_lower() == want.to_lower():
+				found = String(n)
+				break
+	if found == "":
+		var base := want.to_lower().trim_suffix("_loop").trim_suffix("-loop")
+		for n in names:
+			var tail2 := String(n).get_slice("/", String(n).get_slice_count("/") - 1).to_lower().trim_suffix("_loop").trim_suffix("-loop")
+			if tail2 == base:
+				found = String(n)
+				break
+	_clip_map[want] = found
+	return found
+
+
 func play_anim(anim_name: String, blend: float = 0.15, speed: float = 1.0, restart: bool = false) -> void:
 	if anim == null:
 		return
-	if not anim.has_animation(anim_name):
+	var clip := _clip(anim_name)
+	if clip == "":
 		if not _warned.has(anim_name):
 			_warned[anim_name] = true
-			push_warning("%s: animasi '%s' tidak ada di model. Yang ada: %s" % [name, anim_name, ", ".join(anim.get_animation_list())])
+			push_warning("%s: animasi '%s' tidak ketemu. Yang ada: %s" % [name, anim_name, ", ".join(anim.get_animation_list())])
 		return
-	if not restart and _anim_name == anim_name and anim.is_playing() and is_equal_approx(anim.speed_scale, 1.0):
+	if not restart and _anim_name == anim_name and anim.is_playing():
+		anim.speed_scale = speed                             # ubah kecepatan tanpa mengulang animasi
 		return
 	_anim_name = anim_name
-	anim.play(anim_name, blend, speed, speed < 0.0)
+	anim.speed_scale = speed
+	anim.play(clip, blend, 1.0, speed < 0.0)
+	if anim.current_animation != clip and not _warned.has("play:" + clip):
+		_warned["play:" + clip] = true
+		push_warning("%s: anim.play('%s') tidak berjalan (current='%s', aktif=%s)" % [name, clip, anim.current_animation, str(anim.active)])
+
+
+# Jalan / lari yang kecepatan kakinya ikut kecepatan badan sesungguhnya (anti kaki licin).
+# intent_speed = kecepatan yang diminta AI. reverse = jalan mundur.
+func play_move_anim(intent_speed: float, reverse: bool = false) -> void:
+	if anim == null:
+		return
+	# Kecepatan kaki ikut jarak yang beneran ditempuh badan -> telapak gak ngesot saat melambat, belok, atau nabrak.
+	var eff := _meas_speed
+	if eff < 0.2:
+		play_anim("idle_loop", 0.2)                          # badan diam -> kaki juga diam
+		return
+	if not reverse and _clip("run_loop") != "":
+		if not _run_clip and eff > run_threshold + 0.3:
+			_run_clip = true
+		elif _run_clip and eff < run_threshold - 0.3:
+			_run_clip = false
+	else:
+		_run_clip = false
+	var clip := "run_loop" if _run_clip else "walk_loop"
+	var nat := run_natural_speed if _run_clip else walk_natural_speed
+	var s := clampf(eff / maxf(nat, 0.1), 0.15, 2.6)
+	var frac := 0.0
+	if (_anim_name == "walk_loop" or _anim_name == "run_loop") and _anim_name != clip and anim.current_animation_length > 0.0:
+		frac = anim.current_animation_position / anim.current_animation_length
+	play_anim(clip, 0.22, -s if reverse else s)
+	if frac > 0.0 and _anim_name == clip:
+		anim.seek(frac * anim.current_animation_length, false)   # pindah walk <-> run tanpa loncat fase kaki
 
 
 # jalankan fn setelah t detik (batal kalau musuh udah mati)
@@ -721,3 +1024,44 @@ func vfx_parry(stun_time: float = 1.0) -> void:
 	flash(Color(1.0, 0.95, 0.6), 0.8, 0.25)
 	if model:
 		vfx_emitter(model, Color(1.0, 0.9, 0.3), 7, 0.5, stun_time, 0.06, 1.0, Vector3.UP, 25.0, Vector3(0, 2.0, 0))
+
+
+# =========================
+# DEBUG ANIMASI
+# =========================
+func _make_debug_label() -> void:
+	if not debug_anim:
+		return
+	_dbg_label = Label3D.new()
+	_dbg_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_dbg_label.no_depth_test = true
+	_dbg_label.pixel_size = 0.006
+	_dbg_label.font_size = 36
+	_dbg_label.outline_size = 10
+	_dbg_label.modulate = Color(1.0, 0.95, 0.3)
+	_dbg_label.position = Vector3(0, 3.3, 0)
+	add_child(_dbg_label)
+
+
+func _update_debug(delta: float) -> void:
+	if _dbg_label == null:
+		return
+	_dbg_t -= delta
+	if _dbg_t > 0.0:
+		return
+	_dbg_t = 0.1
+	var txt := ""
+	if anim == null:
+		txt = "AnimationPlayer = NULL (gak ketemu di Model!)"
+	else:
+		var thigh := model.find_child("thighL", true, false) as Node3D if model else null
+		var hips := model.find_child("hips", true, false) as Node3D if model else null
+		txt = "klip: %s\nclip: %s | main: %s | aktif: %s\nspeed_scale: %.2f | posisi: %.2f/%.2f\nkecepatan badan: %.2f | jumlah klip: %d\nthighL rot.x: %s | hips y: %s" % [
+			", ".join(anim.get_animation_list()), anim.current_animation, str(anim.is_playing()), str(anim.active),
+			anim.speed_scale, anim.current_animation_position, anim.current_animation_length,
+			_meas_speed, anim.get_animation_list().size(),
+			("%.1f" %  thigh.rotation_degrees.x) if thigh else "node 'thighL' TIDAK ADA",
+			("%.3f" % hips.position.y) if hips else "node 'hips' TIDAK ADA"]
+	_dbg_label.text = txt
+	if int(Time.get_ticks_msec() / 1000.0) % 2 == 0 and _dbg_t > 0.0:
+		pass

@@ -3,6 +3,9 @@ extends EnemyBase
 ## Animasi "attack" (0.8 s): jab pertama kena ~0.21 s, jab kedua ~0.45 s.
 ## PARRY: tiap jab bisa di-parry (tekan F pas jab mau kena) -> serangan batal, musuh kaget (stun).
 
+@export_group("Darah")
+@export var hp: float = 15.0            # HP musuh ini. Damage senjata sama untuk semua musuh (revolver 11, tinju 5)
+
 @export_group("Serangan")
 @export var attack_range: float = 1.7
 @export var jab_damage: float = 3.0
@@ -16,7 +19,7 @@ extends EnemyBase
 @export var parry_lead: float = 0.35         # bisa di-parry sekian detik sebelum jab kena
 @export var parry_stun: float = 1.0          # lama musuh kaget setelah di-parry
 @export var parry_knockback: float = 3.0     # musuh terdorong mundur
-@export var parry_damage: float = 3.0        # damage bonus ke musuh (0 = tanpa damage)
+@export var parry_damage: float = 7.5        # damage bonus ke musuh (0 = tanpa damage)
 @export var parry_height: float = 1.2        # titik parry di atas kaki musuh
 
 var _attacking := false
@@ -27,6 +30,11 @@ var _lean_tw: Tween
 
 
 # Hook dari EnemyBase saat musuh mati
+func _ready() -> void:
+	max_health = hp                                  # harus sebelum super(): base mengisi health dari max_health
+	super()
+
+
 func _on_died() -> void:
 	_atk_token += 1
 	_attacking = false
@@ -64,7 +72,7 @@ func _think(delta: float) -> void:
 		var dir := nav_dir_to(player.global_position)
 		move_dir(dir, move_speed, delta)
 		face_dir(dir, delta)
-		play_anim("walk_loop", 0.12, move_speed / walk_anim_speed)
+		play_anim("walk_loop", 0.2, move_speed / walk_anim_speed)
 
 
 func _start_attack() -> void:

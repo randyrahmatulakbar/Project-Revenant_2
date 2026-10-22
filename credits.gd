@@ -1,5 +1,5 @@
 extends CanvasLayer
-## Teks credit intro: muncul LANGSUNG (tanpa animasi) saat player masuk trigger.
+## Teks credit intro: muncul LANGSUNG (tanpa adnimasi) saat player masuk trigger.
 ## Taruh Marker3D bernama teks1, teks2, ... di belokan. Isi Lines sesuai urutan marker.
 
 @export var font: Font

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://inventory/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"ammo_revolver"
+display_name = "Peluru Revolver"
+description = "Satu kotak peluru kaliber revolver. Isinya 7 sampai 14 peluru dan langsung masuk ke cadangan."
+type = 3
+max_stack = 1
+ammo_type = &"revolver"
+ammo_min = 7
+ammo_max = 14

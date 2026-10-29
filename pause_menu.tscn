@@ -5,11 +5,12 @@
 [ext_resource type="Theme" uid="uid://cct5jloi6jy7f" path="res://revenant_theme.tres" id="2_p81d2"]
 [ext_resource type="PackedScene" uid="uid://blwv1xao2u0c0" path="res://settings_menu.tscn" id="3_05uyy"]
 
-[node name="PauseMenu" type="CanvasLayer" unique_id=1832307124]
+[node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_hdmo1")
+font = ExtResource("2_nwcfo")
 
-[node name="PanelControl" type="Control" parent="." unique_id=1229167663]
+[node name="PanelControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,68 +19,5 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_p81d2")
 
-[node name="ColorRect" type="ColorRect" parent="PanelControl" unique_id=440166733]
-process_mode = 3
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.47058824)
-
-[node name="MenuContainer" type="VBoxContainer" parent="PanelControl/ColorRect" unique_id=498072519]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 5
-
-[node name="TitleLabel" type="Label" parent="PanelControl/ColorRect/MenuContainer" unique_id=758674450]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_nwcfo")
-theme_override_font_sizes/font_size = 46
-text = "PAUSED"
-horizontal_alignment = 1
-
-[node name="ResumeButton" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=440780094]
-custom_minimum_size = Vector2(200, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Resume"
-
-[node name="Restart" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=647417915]
-custom_minimum_size = Vector2(200, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Restart"
-
-[node name="SettingsButton" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=595031354]
-custom_minimum_size = Vector2(200, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Settings"
-
-[node name="MainMenuButton" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=369870635]
-custom_minimum_size = Vector2(200, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Main Menu"
-
-[node name="ExitButton" type="Button" parent="PanelControl/ColorRect/MenuContainer" unique_id=1168754893]
-custom_minimum_size = Vector2(200, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Exit Game"
-
-[node name="SettingsMenu" parent="." unique_id=278745701 instance=ExtResource("3_05uyy")]
+[node name="SettingsMenu" parent="." instance=ExtResource("3_05uyy")]
 theme = ExtResource("2_p81d2")

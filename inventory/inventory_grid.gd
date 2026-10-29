@@ -9,17 +9,17 @@ signal selection_changed(entry)     # entry: Dictionary atau null
 signal notice(text: String)
 
 const CELL := 56
-const COL_CELL := Color(0.075, 0.11, 0.11, 1.0)
-const COL_GRID := Color(0.55, 0.42, 0.34, 0.35)
-const COL_BORDER := Color("7b5e4c")
-const COL_ACCENT := Color("dba98c")
-const COL_TEXT := Color("e9dcc8")
+const COL_CELL := Color(0.045, 0.075, 0.08, 1.0)
+const COL_GRID := Color(0.49, 0.388, 0.329, 0.26)
+const COL_BORDER := Color("7d6354")
+const COL_ACCENT := Color("dea68a")
+const COL_TEXT := Color("eadccf")
 const COL_GOOD := Color("6fae8f")
 const COL_BAD := Color("c0392b")
 
 var cursor := Vector2i.ZERO
 var held = null                      # entry yang sedang dipegang, atau null
-var held_rot := false
+var held_rot: int = 0
 var grab_offset := Vector2i.ZERO
 var locked := false                  # true saat menu aksi terbuka
 
@@ -70,7 +70,7 @@ func cancel_hold() -> void:
 
 func _clear_hold() -> void:
 	held = null
-	held_rot = false
+	held_rot = 0
 	grab_offset = Vector2i.ZERO
 	_press_active = false
 	_moved = false
@@ -187,17 +187,17 @@ func _on_accept() -> void:
 func rotate_item() -> void:
 	if held != null:
 		var d: ItemData = held["data"]
-		if d.allow_rotate and d.grid_w != d.grid_h:
-			held_rot = not held_rot
+		if Inventory.can_rotate(d):
+			held_rot = Inventory.next_rot(d, held_rot)
 			_moved = true
 		return
 	var e = Inventory.entry_at(cursor.x, cursor.y)
 	if e == null:
 		return
 	var item: ItemData = e["data"]
-	if not item.allow_rotate or item.grid_w == item.grid_h:
+	if not Inventory.can_rotate(item):
 		return
-	if not Inventory.move_entry(e, e["x"], e["y"], not e["rot"]):
+	if not Inventory.move_entry(e, e["x"], e["y"], Inventory.next_rot(item, e["rot"])):
 		notice.emit("Tidak muat kalau diputar")
 
 
@@ -206,7 +206,7 @@ func rotate_item() -> void:
 func _anchor() -> Vector2i:
 	if held == null:
 		return cursor
-	var s := Inventory.footprint(held["data"], held_rot)
+	var s: Vector2i = Inventory.footprint(held["data"], held_rot)
 	var a := cursor - grab_offset
 	a.x = clampi(a.x, 0, maxi(Inventory.cols - s.x, 0))
 	a.y = clampi(a.y, 0, maxi(Inventory.rows - s.y, 0))
@@ -261,7 +261,7 @@ func _selection_update() -> void:
 # =================================================================== gambar
 
 func _entry_rect(e: Dictionary) -> Rect2:
-	var r := Inventory.rect_of(e)
+	var r: Rect2i = Inventory.rect_of(e)
 	return Rect2(Vector2(r.position) * CELL, Vector2(r.size) * CELL)
 
 
@@ -275,17 +275,25 @@ func _type_color(t: int) -> Color:
 			return Color(0.1, 0.22, 0.19)
 		ItemData.Type.AMMO:
 			return Color(0.22, 0.1, 0.09)
+		ItemData.Type.EQUIPMENT:
+			return Color(0.17, 0.12, 0.24)
+		ItemData.Type.WEAPON:
+			return Color(0.14, 0.16, 0.2)
 	return Color(0.15, 0.15, 0.15)
 
 
 func _draw() -> void:
-	var cols := Inventory.cols
-	var rows := Inventory.rows
+	var cols: int = Inventory.cols
+	var rows: int = Inventory.rows
 	draw_rect(Rect2(Vector2.ZERO, Vector2(cols, rows) * CELL), COL_CELL)
 	for x in range(cols + 1):
 		draw_line(Vector2(x * CELL, 0), Vector2(x * CELL, rows * CELL), COL_GRID, 1.0)
 	for y in range(rows + 1):
 		draw_line(Vector2(0, y * CELL), Vector2(cols * CELL, y * CELL), COL_GRID, 1.0)
+
+	var full := Rect2(Vector2.ZERO, Vector2(cols, rows) * CELL)
+	draw_rect(full, Color(COL_BORDER, 0.55), false, 1.0)
+	_brackets(full.grow(4.0), Color(COL_ACCENT, 0.9), 16.0, 2.0)          # siku di empat sudut grid
 
 	for e in Inventory.entries:
 		var faded: bool = held != null and is_same(e, held)
@@ -293,14 +301,20 @@ func _draw() -> void:
 
 	var pulse := 0.65 + 0.35 * sin(Time.get_ticks_msec() / 160.0)
 	if held == null:
-		var r := Rect2(Vector2(cursor) * CELL, Vector2(CELL, CELL))
 		var hover = Inventory.entry_at(cursor.x, cursor.y)
-		if hover != null:
-			r = _entry_rect(hover)
-		draw_rect(r.grow(-1), Color(COL_ACCENT, pulse), false, 2.0)
+		if hover != null and Inventory.is_shaped(hover["data"]):
+			_outline_cells(Vector2(hover["x"], hover["y"]) * CELL, Inventory.cells_of(hover["data"], hover["rot"]),
+					Color(COL_ACCENT, pulse), 2.0)
+		else:
+			var r := Rect2(Vector2(cursor) * CELL, Vector2(CELL, CELL))
+			if hover != null:
+				r = _entry_rect(hover)
+			draw_rect(r.grow(-1), Color(COL_ACCENT, 0.07 + 0.05 * pulse))
+			draw_rect(r.grow(-1), Color(COL_ACCENT, 0.45), false, 1.0)
+			_brackets(r.grow(-1), Color(COL_ACCENT, pulse), 11.0, 2.5)
 	else:
 		var a := _anchor()
-		var s := Inventory.footprint(held["data"], held_rot)
+		var s: Vector2i = Inventory.footprint(held["data"], held_rot)
 		var rr := Rect2(Vector2(a) * CELL, Vector2(s) * CELL)
 		var tint := COL_GOOD
 		match _drop_state():
@@ -308,35 +322,134 @@ func _draw() -> void:
 				tint = COL_BAD
 			"merge":
 				tint = COL_ACCENT
-		draw_rect(rr, Color(tint, 0.28))
-		_draw_entry(held, rr, 0.9, held_rot)
-		draw_rect(rr.grow(-1), Color(tint, pulse), false, 2.0)
+		var hd: ItemData = held["data"]
+		if Inventory.is_shaped(hd):
+			var cells: Array = Inventory.cells_of(hd, held_rot)
+			for c in cells:
+				draw_rect(Rect2(rr.position + Vector2(c) * CELL, Vector2(CELL, CELL)), Color(tint, 0.28))
+			_draw_entry(held, rr, 0.9, held_rot)
+			_outline_cells(rr.position, cells, Color(tint, pulse), 2.0)
+		else:
+			draw_rect(rr, Color(tint, 0.28))
+			_draw_entry(held, rr, 0.9, held_rot)
+			draw_rect(rr.grow(-1), Color(tint, pulse), false, 2.0)
 
 
-func _draw_entry(e: Dictionary, rect: Rect2, alpha: float, rot: bool) -> void:
+## Empat siku sudut (target bracket) di sekeliling sebuah kotak.
+func _brackets(r: Rect2, col: Color, l: float, w: float) -> void:
+	var tl := r.position
+	var tr_ := Vector2(r.end.x, r.position.y)
+	var bl := Vector2(r.position.x, r.end.y)
+	var br := r.end
+	draw_line(tl, tl + Vector2(l, 0), col, w)
+	draw_line(tl, tl + Vector2(0, l), col, w)
+	draw_line(tr_, tr_ + Vector2(-l, 0), col, w)
+	draw_line(tr_, tr_ + Vector2(0, l), col, w)
+	draw_line(bl, bl + Vector2(l, 0), col, w)
+	draw_line(bl, bl + Vector2(0, -l), col, w)
+	draw_line(br, br + Vector2(-l, 0), col, w)
+	draw_line(br, br + Vector2(0, -l), col, w)
+
+
+## Garis tepi luar sebuah bentuk (hanya sisi yang tidak bersebelahan dengan kotak lain milik bentuk itu)
+func _outline_cells(origin: Vector2, cells: Array, col: Color, w: float) -> void:
+	var occ := {}
+	for c in cells:
+		occ[c] = true
+	for c in cells:
+		var p: Vector2 = origin + Vector2(c) * CELL
+		if not occ.has(c + Vector2i(0, -1)):
+			draw_line(p, p + Vector2(CELL, 0), col, w)
+		if not occ.has(c + Vector2i(0, 1)):
+			draw_line(p + Vector2(0, CELL), p + Vector2(CELL, CELL), col, w)
+		if not occ.has(c + Vector2i(-1, 0)):
+			draw_line(p, p + Vector2(0, CELL), col, w)
+		if not occ.has(c + Vector2i(1, 0)):
+			draw_line(p + Vector2(CELL, 0), p + Vector2(CELL, CELL), col, w)
+
+
+func _draw_entry(e: Dictionary, rect: Rect2, alpha: float, rot: int) -> void:
 	var item: ItemData = e["data"]
-	var inner := rect.grow(-2)
-	draw_rect(inner, Color(_type_color(item.type), 0.92 * alpha))
-	draw_rect(inner, Color(COL_BORDER, alpha), false, 2.0)
+	var has_icon := item.icon != null
+	var fill := Color(_type_color(item.type), (0.5 if has_icon else 0.92) * alpha)    # item bergambar: latar tipis supaya grid kelihatan
+	var border := Color(COL_BORDER, alpha)
+	var inner := rect.grow(-2)                             # area untuk nama / ikon / angka
+	if Inventory.is_shaped(item):
+		inner = _draw_shape(item, rect, rot, fill, border)
+	else:
+		draw_rect(inner, fill)
+		draw_rect(inner, border, false, 2.0)
+	if has_icon:                                           # garis kotak di dalam item = ukuran visualnya
+		for c in Inventory.cells_of(item, rot):
+			var cell := Rect2(rect.position + Vector2(c) * CELL, Vector2(CELL, CELL)).grow(-1.0)
+			draw_rect(cell, Color(COL_BORDER, 0.4 * alpha), false, 1.0)
 	var font := get_theme_default_font()
+	var odd := posmod(rot, 2) == 1
 
 	if item.icon != null:
 		var tex: Texture2D = item.icon
 		var tsz := tex.get_size()
-		var fit := inner.size - Vector2(8, 8)
-		if rot:
+		var area := rect.grow(-2)                          # kotak pembatas seluruh item (juga untuk bentuk L / T)
+		var fit := area.size - Vector2(4, 4)
+		if odd:
 			fit = Vector2(fit.y, fit.x)
 		var sc := maxf(1.0, floorf(minf(fit.x / tsz.x, fit.y / tsz.y)))
 		var dsz := tsz * sc
-		draw_set_transform(inner.get_center(), PI / 2.0 if rot else 0.0, Vector2.ONE)
+		draw_set_transform(area.get_center(), float(posmod(rot, 4)) * PI / 2.0, Vector2.ONE)
 		draw_texture_rect(tex, Rect2(-dsz / 2.0, dsz), false, Color(1, 1, 1, alpha))
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	else:
 		draw_multiline_string(font, inner.position + Vector2(6, 18), item.display_name,
 			HORIZONTAL_ALIGNMENT_LEFT, inner.size.x - 12, 14, -1, Color(COL_TEXT, alpha))
 
-	if e["amount"] > 1:
-		var txt := "x%d" % e["amount"]
+	var label := ""
+	if item.type == ItemData.Type.AMMO:
+		label = str(e.get("rounds", item.mag_rounds))          # isi magazine
+	elif e["amount"] > 1:
+		label = "x%d" % e["amount"]
+	if label != "":
+		var txt := label
 		var w := font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
 		draw_string(font, Vector2(inner.end.x - w - 5, inner.end.y - 6), txt,
 			HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(COL_ACCENT, alpha))
+
+
+## Gambar item berbentuk khusus (L, T, ...) kotak demi kotak, bingkai hanya di tepi luar.
+## Mengembalikan area baris terlebar untuk tempat nama / ikon.
+func _draw_shape(item: ItemData, rect: Rect2, rot: int, fill: Color, border: Color) -> Rect2:
+	var cells: Array = Inventory.cells_of(item, rot)
+	var occ := {}
+	for c in cells:
+		occ[c] = true
+	for c in cells:
+		var top: bool = not occ.has(c + Vector2i(0, -1))
+		var bottom: bool = not occ.has(c + Vector2i(0, 1))
+		var left: bool = not occ.has(c + Vector2i(-1, 0))
+		var right: bool = not occ.has(c + Vector2i(1, 0))
+		var cr := Rect2(rect.position + Vector2(c) * CELL, Vector2(CELL, CELL))
+		var fr := Rect2(cr.position + Vector2(2.0 if left else 0.0, 2.0 if top else 0.0),
+				cr.size - Vector2((2.0 if left else 0.0) + (2.0 if right else 0.0), (2.0 if top else 0.0) + (2.0 if bottom else 0.0)))
+		draw_rect(fr, fill)
+		if top:
+			draw_rect(Rect2(fr.position, Vector2(fr.size.x, 2.0)), border)
+		if bottom:
+			draw_rect(Rect2(fr.position.x, fr.end.y - 2.0, fr.size.x, 2.0), border)
+		if left:
+			draw_rect(Rect2(fr.position, Vector2(2.0, fr.size.y)), border)
+		if right:
+			draw_rect(Rect2(fr.end.x - 2.0, fr.position.y, 2.0, fr.size.y), border)
+	# baris terlebar (untuk teks)
+	var rows := {}
+	for c in cells:
+		rows[c.y] = int(rows.get(c.y, 0)) + 1
+	var best_y := 0
+	var best_n := -1
+	for y in rows:
+		if int(rows[y]) > best_n:
+			best_n = int(rows[y])
+			best_y = y
+	var min_x := 9999
+	for c in cells:
+		if c.y == best_y:
+			min_x = mini(min_x, c.x)
+	return Rect2(rect.position + Vector2(min_x, best_y) * CELL, Vector2(best_n * CELL, CELL)).grow(-2)

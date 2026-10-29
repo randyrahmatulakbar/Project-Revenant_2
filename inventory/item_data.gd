@@ -2,7 +2,7 @@ class_name ItemData
 extends Resource
 ## Definisi satu jenis item. Buat file .tres dari resource ini (contoh ada di folder items/).
 
-enum Type { KEY, DOCUMENT, CONSUMABLE, AMMO }
+enum Type { KEY, DOCUMENT, CONSUMABLE, AMMO, EQUIPMENT, WEAPON }   # EQUIPMENT dan WEAPON ditambah di belakang supaya .tres lama tidak berubah
 
 @export var id: StringName = &""            # unik, mis. &"medkit"
 @export var display_name: String = ""        # nama yang tampil di UI
@@ -14,6 +14,8 @@ enum Type { KEY, DOCUMENT, CONSUMABLE, AMMO }
 @export var grid_w: int = 1                  # lebar dalam kotak
 @export var grid_h: int = 1                  # tinggi dalam kotak
 @export var allow_rotate: bool = true        # boleh diputar dengan tombol R
+@export var shape: Array[Vector2i] = []     # bentuk khusus (L, T, dll) = daftar kotak (x, y). Kosong = persegi panjang grid_w x grid_h.
+                                             # Untuk bentuk khusus, grid_w / grid_h isi dengan ukuran kotak pembatasnya.
 
 @export_group("Stack")
 @export var stackable: bool = true
@@ -25,7 +27,8 @@ enum Type { KEY, DOCUMENT, CONSUMABLE, AMMO }
 
 @export_group("Ammo")
 @export var ammo_type: StringName = &"pistol"
-@export var ammo_min: int = 7                # Kotak peluru: acak 7 sampai 14
+@export var mag_rounds: int = 6               # isi 1 magazine (item peluru = 1 magazine, memakai kotak di case, tidak bisa ditumpuk)
+@export var ammo_min: int = 7                # (tidak dipakai lagi sejak peluru jadi magazine)
 @export var ammo_max: int = 14
 
 @export_group("Document / Examine")

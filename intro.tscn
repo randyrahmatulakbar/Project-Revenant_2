@@ -38,16 +38,15 @@
 [ext_resource type="Material" path="res://map/textures/barrel.tres" id="43_barrel"]
 [ext_resource type="Material" path="res://map/textures/vent_grill.tres" id="44_vent"]
 [ext_resource type="PackedScene" uid="uid://kh3wyxa3b3hs" path="res://start_details.tscn" id="45_0mn6s"]
-[ext_resource type="Material" path="res://map/textures/screen_panel.tres" id="45_screen"]
 [ext_resource type="Material" path="res://map/textures/door_panel.tres" id="46_door"]
 [ext_resource type="Script" uid="uid://biy5p3ny8k10u" path="res://music_director.gd" id="46_gv8oo"]
 [ext_resource type="Texture2D" uid="uid://cpti35er5ttl" path="res://map/textures/decal_stain.png" id="47_dstain"]
 [ext_resource type="Script" uid="uid://dg23dvaffd7lg" path="res://style_meter.gd" id="47_j5ghd"]
-[ext_resource type="Script" uid="uid://c8n1kay23kf1" path="res://loot_manager.gd" id="48_407k4"]
+[ext_resource type="Script" uid="uid://ddf157vr78sp0" path="res://inventory/loot_manager.gd" id="48_407k4"]
 [ext_resource type="Texture2D" uid="uid://duid13urm1k74" path="res://map/textures/decal_blood.png" id="48_dblood"]
 [ext_resource type="Texture2D" uid="uid://v0iw4jyqjdqn" path="res://map/textures/decal_crack.png" id="49_dcrack"]
 [ext_resource type="Texture2D" uid="uid://cijygc7faa3yp" path="res://map/textures/decal_scorch.png" id="50_dscorch"]
-[ext_resource type="PackedScene" path="res://parkour_room.tscn" id="99_parkour"]
+[ext_resource type="PackedScene" uid="uid://3eoyd6od6f7p" path="res://parkour_room.tscn" id="99_parkour"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rs8qg"]
 albedo_texture = ExtResource("8_gd62r")
@@ -55,6 +54,12 @@ uv1_scale = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
 uv1_world_triplanar = true
 texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp"]
+albedo_color = Color(0.3, 0.04, 0.03, 1)
+emission_enabled = true
+emission = Color(1, 0.12, 0.08, 1)
+emission_energy_multiplier = 2.0
 
 [sub_resource type="Gradient" id="Gradient_5ryaa"]
 offsets = PackedFloat32Array(0, 0.15, 1)
@@ -119,12 +124,6 @@ proximity_fade_distance = 0.5
 [sub_resource type="QuadMesh" id="QuadMesh_mq8aq"]
 material = SubResource("StandardMaterial3D_fi5v2")
 size = Vector2(5, 5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp"]
-albedo_color = Color(0.3, 0.04, 0.03, 1)
-emission_enabled = true
-emission = Color(1, 0.12, 0.08, 1)
-emission_energy_multiplier = 2.0
 
 [sub_resource type="Environment" id="Environment_ff1nd"]
 background_mode = 1
@@ -192,34 +191,34 @@ size = Vector2(0.08, 0.08)
 [sub_resource type="SphereShape3D" id="SphereShape3D_pistol"]
 radius = 0.7
 
-[node name="Node3D" type="Node3D" unique_id=358059712]
+[node name="abonden pabric" type="Node3D" unique_id=358059712]
 
 [node name="map" type="Node3D" parent="." unique_id=666530235 groups=["navsource"]]
 
 [node name="walls" type="Node3D" parent="map" unique_id=2143045390]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="map/walls" unique_id=734540072]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 12.099689, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 28.208942, 0)
 use_collision = true
-size = Vector3(0.212, 19.338623, 2.8)
+size = Vector3(0.212, 51.55713, 2.8)
 material = ExtResource("1_qd2jm")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="map/walls" unique_id=1413537824]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 12.130816, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 28.135517, 0)
 use_collision = true
-size = Vector3(0.212, 19.276367, 2.8)
+size = Vector3(0.212, 51.285767, 2.8)
 material = ExtResource("1_qd2jm")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="map/walls" unique_id=963113043]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 12.147174, 1.5)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 28.67995, 1.5)
 use_collision = true
-size = Vector3(0.212, 19.243652, 2.8)
+size = Vector3(0.212, 52.309204, 2.8)
 material = ExtResource("1_qd2jm")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="map/walls" unique_id=802252174]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 12.102374, -1.5)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 28.268574, -1.5)
 use_collision = true
-size = Vector3(0.212, 19.333252, 2.8)
+size = Vector3(0.212, 51.66565, 2.8)
 material = ExtResource("1_qd2jm")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="map/walls" unique_id=1863772689]
@@ -388,6 +387,12 @@ use_collision = true
 size = Vector3(1.25, 10, 0.15)
 material = ExtResource("2_5ryaa")
 
+[node name="BackWall_Left2" type="CSGBox3D" parent="map/walls" unique_id=461821682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.453117, 5.5454516, -101.5)
+use_collision = true
+size = Vector3(2.6202393, 3.9490967, 0.15)
+material = ExtResource("2_5ryaa")
+
 [node name="BackDoor_Lintel" type="CSGBox3D" parent="map/walls" unique_id=2046467645]
 visible = false
 
@@ -510,7 +515,7 @@ size = Vector3(5, 0.159, 1.104)
 material = ExtResource("4_ff1nd")
 
 [node name="CSGBox3D10" type="CSGBox3D" parent="map/floors" unique_id=378951447]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.561567, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 53.597267, 0)
 use_collision = true
 size = Vector3(5, 0.158, 5)
 material = ExtResource("4_ff1nd")
@@ -621,103 +626,6 @@ use_collision = true
 polygon = PackedVector2Array(0, 0, 0.65010476, 0.42233145, 1, 1, 1, 0)
 depth = 16.31
 material = ExtResource("4_7xutd")
-
-[node name="particle and light" type="Node3D" parent="map" unique_id=1195990802]
-
-[node name="OmniLight3D" type="OmniLight3D" parent="map/particle and light" unique_id=975672812]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2071895, -1.0393618, -11.458125)
-light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
-
-[node name="OmniLight3D5" type="OmniLight3D" parent="map/particle and light" unique_id=2097279137]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.035324, -0.17448622, -13.67812)
-light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
-
-[node name="OmniLight3D6" type="OmniLight3D" parent="map/particle and light" unique_id=2033370299]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.986366, -0.17448622, -46.43025)
-light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
-
-[node name="OmniLight3D7" type="OmniLight3D" parent="map/particle and light" unique_id=1092874627]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.151659, -0.17448622, -44.728416)
-light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="map/particle and light" unique_id=723820248]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.97602564, 1.0175909)
-light_color = Color(0.98411006, 0.71355546, 0.5009634, 1)
-light_energy = 4.404
-
-[node name="OmniLight3D3" type="OmniLight3D" parent="map/particle and light" unique_id=767779679]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.41571, 0)
-
-[node name="OmniLight3D4" type="OmniLight3D" parent="map/particle and light" unique_id=148872571]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.26437, 0)
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="map/particle and light" unique_id=1840248039]
-transform = Transform3D(-0.4762354, 0.8793179, 0, -0.8793179, -0.4762354, 0, 0, 0, 1, -0.6697957, -0.3567938, -9.110737)
-amount = 80
-lifetime = 1.4
-preprocess = 1.4
-visibility_aabb = AABB(-6, -6, -6, 12, 12, 12)
-process_material = SubResource("ParticleProcessMaterial_mq8aq")
-draw_pass_1 = SubResource("QuadMesh_mq8aq")
-
-[node name="GPUParticles3D2" type="GPUParticles3D" parent="map/particle and light" unique_id=1941879413]
-transform = Transform3D(0.683056, 0.730366, 0, -0.730366, 0.683056, 0, 0, 0, 1, 15.00416, -1.4951558, -25.571978)
-amount = 80
-lifetime = 1.4
-preprocess = 1.4
-visibility_aabb = AABB(-6, -6, -6, 12, 12, 12)
-process_material = SubResource("ParticleProcessMaterial_mq8aq")
-draw_pass_1 = SubResource("QuadMesh_mq8aq")
-
-[node name="RoomLights" type="Node3D" parent="map/particle and light" unique_id=1996760847]
-
-[node name="Light1" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=459151783]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 3.5, -86.5)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 34.0
-
-[node name="Light2" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=1455756204]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 3, -79)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 22.0
-
-[node name="Light3" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=735749590]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 3, -79)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 22.0
-
-[node name="Light4" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=1323952946]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 3, -94)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 22.0
-
-[node name="Light5" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=1860729867]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 3, -94)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 22.0
-
-[node name="Light6" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=37223414]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 3, -95.5)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 16.0
-
-[node name="Light7" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=962361852]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.5, 3, -95.5)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.0
-omni_range = 16.0
-
-[node name="CorridorLight" type="OmniLight3D" parent="map/particle and light" unique_id=1549841726]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 2.4, -104.5)
-light_color = Color(1, 0.35, 0.25, 1)
-light_energy = 0.8
-omni_range = 6.0
 
 [node name="Layout" type="Node3D" parent="map" unique_id=1833643094]
 
@@ -1079,15 +987,33 @@ cone = true
 material = ExtResource("9_nnxiy")
 
 [node name="PipeUpper1" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=59512830]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 16.9, 3.9, -86.5)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 16.9, 3.9, -85.680855)
 radius = 0.16
-height = 29.6
+height = 26.61875
+material = ExtResource("7_50cai")
+
+[node name="PipeUpper4" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=1096024125]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 16.707535, 3.9, -98.97868)
+radius = 0.16
+height = 0.5382507
 material = ExtResource("7_50cai")
 
 [node name="PipeLower1" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=125964420]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 16.9, -1, -76.05213)
+radius = 0.14
+height = 7.7685547
+material = ExtResource("7_50cai")
+
+[node name="PipeLower5" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=2146228067]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 16.73688, -0.99841475, -79.953964)
+radius = 0.14
+height = 0.5410156
+material = ExtResource("7_50cai")
+
+[node name="PipeLower4" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=1039748411]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 16.9, -1, -76.95)
 radius = 0.14
-height = 9.1
+height = 0.001
 material = ExtResource("7_50cai")
 
 [node name="Riser1" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=1488849863]
@@ -1098,15 +1024,27 @@ sides = 10
 material = ExtResource("7_50cai")
 
 [node name="PipeUpper2" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=539118765]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 47.1, 3.9, -86.5)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 47.1, 3.9, -85.66812)
 radius = 0.16
-height = 29.6
+height = 26.84795
+material = ExtResource("7_50cai")
+
+[node name="PipeUpper3" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=1965231779]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 47.286358, 3.9, -99.028175)
+radius = 0.16
+height = 0.42448115
 material = ExtResource("7_50cai")
 
 [node name="PipeLower2" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=109311885]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 47.1, -1, -76.95)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 47.1, -1, -76.21645)
 radius = 0.14
-height = 9.1
+height = 7.6329103
+material = ExtResource("7_50cai")
+
+[node name="PipeLower3" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=575421513]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 47.30607, -1, -79.92375)
+radius = 0.14
+height = 0.51755065
 material = ExtResource("7_50cai")
 
 [node name="Riser2" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=86526730]
@@ -1117,9 +1055,15 @@ sides = 10
 material = ExtResource("7_50cai")
 
 [node name="PipeBack1" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=1489285997]
-transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 32, 3.9, -100.7)
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 36.53444, 3.9, -100.7)
 radius = 0.16
-height = 22.0
+height = 25.083832
+material = ExtResource("7_50cai")
+
+[node name="PipeBack2" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=435774054]
+transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, 24.00192, 3.9, -100.78944)
+radius = 0.16
+height = 0.3219967
 material = ExtResource("7_50cai")
 
 [node name="Clamp1" type="CSGBox3D" parent="map/Detail_R1" unique_id=1084119164]
@@ -1162,11 +1106,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 5, -101.35)
 size = Vector3(2.2, 1.2, 0.12)
 material = ExtResource("44_vent")
 
-[node name="Terminal1" type="CSGBox3D" parent="map/Detail_R1" unique_id=1318864895]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, -0.6, -71.645)
-size = Vector3(1.4, 0.9, 0.15)
-material = ExtResource("45_screen")
-
 [node name="Clamp8" type="CSGBox3D" parent="map/Detail_R1" unique_id=1816831785]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 3.9, -101.05)
 size = Vector3(0.35, 0.45, 0.75)
@@ -1176,11 +1115,6 @@ material = ExtResource("9_nnxiy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 5, -101.35)
 size = Vector3(2.2, 1.2, 0.12)
 material = ExtResource("44_vent")
-
-[node name="Terminal2" type="CSGBox3D" parent="map/Detail_R1" unique_id=134490125]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, -0.6, -71.645)
-size = Vector3(1.4, 0.9, 0.15)
-material = ExtResource("45_screen")
 
 [node name="Vent3" type="CSGBox3D" parent="map/Detail_R1" unique_id=1826113479]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.14, 5.2, -77.5)
@@ -1201,22 +1135,6 @@ material = ExtResource("44_vent")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.86, 5.2, -91)
 size = Vector3(0.12, 1.2, 2.2)
 material = ExtResource("44_vent")
-
-[node name="Terminal3" type="CSGBox3D" parent="map/Detail_R1" unique_id=1909787419]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.15, -0.6, -77)
-size = Vector3(0.15, 0.9, 1.4)
-material = ExtResource("45_screen")
-
-[node name="Terminal4" type="CSGBox3D" parent="map/Detail_R1" unique_id=1710621015]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.85, -0.6, -77)
-size = Vector3(0.15, 0.9, 1.4)
-material = ExtResource("45_screen")
-
-[node name="Crate1" type="CSGBox3D" parent="map/Detail_R1" unique_id=1554550649]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.2, -1.46, -100.2)
-use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
-material = ExtResource("42_crate")
 
 [node name="Crate2" type="CSGBox3D" parent="map/Detail_R1" unique_id=827888696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4, -1.61, -100.4)
@@ -1247,54 +1165,11 @@ height = 1.2
 sides = 12
 material = ExtResource("43_barrel")
 
-[node name="Barrel2" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=319777804]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9, -1.61, -74.2)
-use_collision = true
-height = 1.2
-sides = 12
-material = ExtResource("43_barrel")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=924327036]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.9, -1.61, -74.6)
-use_collision = true
-height = 1.2
-sides = 12
-material = ExtResource("43_barrel")
-
 [node name="Crate6" type="CSGBox3D" parent="map/Detail_R1" unique_id=638888568]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.2, -1.46, -100.2)
 use_collision = true
 size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("42_crate")
-
-[node name="Crate7" type="CSGBox3D" parent="map/Detail_R1" unique_id=605301822]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4, -1.61, -100.4)
-use_collision = true
-size = Vector3(1.2, 1.2, 1.2)
-material = ExtResource("42_crate")
-
-[node name="Crate8" type="CSGBox3D" parent="map/Detail_R1" unique_id=1276507247]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.4, -0.21, -100.2)
-use_collision = true
-material = ExtResource("42_crate")
-
-[node name="Crate9" type="CSGBox3D" parent="map/Detail_R1" unique_id=1729275708]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -1.61, -73.2)
-use_collision = true
-size = Vector3(1.2, 1.2, 1.2)
-material = ExtResource("42_crate")
-
-[node name="Crate10" type="CSGBox3D" parent="map/Detail_R1" unique_id=1550787432]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3, -1.71, -73.1)
-use_collision = true
-material = ExtResource("42_crate")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=719972385]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9, -1.61, -72.9)
-use_collision = true
-height = 1.2
-sides = 12
-material = ExtResource("43_barrel")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="map/Detail_R1" unique_id=2112579706]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9, -1.61, -74.2)
@@ -1394,9 +1269,9 @@ size = Vector3(0.5, 0.08, 1.2)
 material = ExtResource("9_nnxiy")
 
 [node name="Pipe1" type="CSGCylinder3D" parent="map/Detail_Corr" unique_id=1123002499]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 17.55, 3.2, -104.5)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 17.550758, 3.1940126, -104.55176)
 radius = 0.09
-height = 6.0
+height = 4.055908
 material = ExtResource("7_50cai")
 
 [node name="HazardSill3" type="CSGBox3D" parent="map/Detail_Corr" unique_id=1397105396]
@@ -1693,6 +1568,121 @@ material = SubResource("StandardMaterial3D_lamp")
 [node name="DoorLight" type="OmniLight3D" parent="map/BackDoor" unique_id=469306071]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 3, -100.3)
 light_color = Color(1, 0.12, 0.08, 1)
+omni_range = 6.0
+
+[node name="particle and light" type="Node3D" parent="map" unique_id=1195990802]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="map/particle and light" unique_id=975672812]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2071895, -1.0393618, -11.458125)
+light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="map/particle and light" unique_id=2097279137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.035324, -0.17448622, -13.67812)
+light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="map/particle and light" unique_id=2033370299]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.986366, -0.17448622, -46.43025)
+light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="map/particle and light" unique_id=1092874627]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.151659, -0.17448622, -44.728416)
+light_color = Color(0.98711294, 0.3429357, 0.26222655, 1)
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="map/particle and light" unique_id=723820248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.97602564, 1.0175909)
+light_color = Color(0.98411006, 0.71355546, 0.5009634, 1)
+light_energy = 4.404
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="map/particle and light" unique_id=767779679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.41571, 0)
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="map/particle and light" unique_id=148872571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.26437, 0)
+
+[node name="OmniLight3D8" type="OmniLight3D" parent="map/particle and light" unique_id=851506304]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.641739, 0)
+
+[node name="OmniLight3D9" type="OmniLight3D" parent="map/particle and light" unique_id=1562760308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19.490398, 0)
+
+[node name="OmniLight3D10" type="OmniLight3D" parent="map/particle and light" unique_id=70882842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.761297, 0)
+
+[node name="OmniLight3D11" type="OmniLight3D" parent="map/particle and light" unique_id=330418400]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 31.609957, 0)
+
+[node name="OmniLight3D12" type="OmniLight3D" parent="map/particle and light" unique_id=1039420756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34.431213, 0)
+
+[node name="OmniLight3D13" type="OmniLight3D" parent="map/particle and light" unique_id=1437088455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 41.279877, 0)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="map/particle and light" unique_id=1840248039]
+transform = Transform3D(-0.4762354, 0.8793179, 0, -0.8793179, -0.4762354, 0, 0, 0, 1, -0.6697957, -0.3567938, -9.110737)
+amount = 80
+lifetime = 1.4
+preprocess = 1.4
+visibility_aabb = AABB(-6, -6, -6, 12, 12, 12)
+process_material = SubResource("ParticleProcessMaterial_mq8aq")
+draw_pass_1 = SubResource("QuadMesh_mq8aq")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="map/particle and light" unique_id=1941879413]
+transform = Transform3D(0.683056, 0.730366, 0, -0.730366, 0.683056, 0, 0, 0, 1, 15.00416, -1.4951558, -25.571978)
+amount = 80
+lifetime = 1.4
+preprocess = 1.4
+visibility_aabb = AABB(-6, -6, -6, 12, 12, 12)
+process_material = SubResource("ParticleProcessMaterial_mq8aq")
+draw_pass_1 = SubResource("QuadMesh_mq8aq")
+
+[node name="RoomLights" type="Node3D" parent="map/particle and light" unique_id=1996760847]
+
+[node name="Light1" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=459151783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 3.5, -86.5)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 34.775
+omni_range = 34.0
+
+[node name="Light2" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=1455756204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 3, -79)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.0
+omni_range = 22.0
+
+[node name="Light3" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=735749590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 3, -79)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.0
+omni_range = 22.0
+
+[node name="Light4" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=1323952946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 3, -94)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.0
+omni_range = 22.0
+
+[node name="Light5" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=1860729867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 3, -94)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.0
+omni_range = 22.0
+
+[node name="Light6" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=37223414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 3, -95.5)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.0
+omni_range = 16.0
+
+[node name="Light7" type="OmniLight3D" parent="map/particle and light/RoomLights" unique_id=962361852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.5, 3, -95.5)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.0
+omni_range = 16.0
+
+[node name="CorridorLight" type="OmniLight3D" parent="map/particle and light" unique_id=1549841726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 2.4, -104.5)
+light_color = Color(1, 0.35, 0.25, 1)
+light_energy = 0.8
 omni_range = 6.0
 
 [node name="CharacterBody3D" parent="." unique_id=572019970 instance=ExtResource("1_v83hk")]

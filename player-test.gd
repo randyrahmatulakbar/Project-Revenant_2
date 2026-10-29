@@ -260,12 +260,18 @@ func _physics_process(delta: float) -> void:
 
 	# Crouch / Slide
 	if Input.is_action_just_pressed("crouch"):
+		_stand_requested = false
 		if _sprint_on and is_on_floor() and velocity.length() > 0.1:
 			start_slide()
 		else:
 			is_crouching = true
 
 	if Input.is_action_just_released("crouch"):
+		_stand_requested = true
+
+	# Berdiri hanya kalau gak nabrak langit-langit (terowongan rendah): kalau masih sempit, tetap menunduk.
+	if _stand_requested and (is_crouching or is_sliding) and _can_stand():
+		_stand_requested = false
 		if is_sliding:
 			end_slide()
 		else:
@@ -717,6 +723,7 @@ var _col_h_stand := 0.0
 var _col_r_stand := 0.0
 var _col_y_stand := 0.0
 var _col_ready := false
+var _stand_requested := false   # tombol crouch dilepas, tapi baru berdiri kalau di atas kepala kosong
 
 func _setup_collider() -> void:
 	_col_ready = true
@@ -726,7 +733,24 @@ func _setup_collider() -> void:
 			_col = c
 			break
 	if _col == null:
-		push_warning("Player: CollisionShape3D (capsule/box/cylinder) tidak ketemu, collider tidak mengecil saat nunduk")
+		# Collider bawaan player berupa ConvexPolygonShape3D (gak bisa dikecilin). Ganti jadi kapsul seukuran.
+		for c in find_children("*", "CollisionShape3D", true, false):
+			var cs := c as CollisionShape3D
+			if cs.shape is ConvexPolygonShape3D:
+				var mn := Vector3(INF, INF, INF)
+				var mx := Vector3(-INF, -INF, -INF)
+				for p in (cs.shape as ConvexPolygonShape3D).points:
+					mn = mn.min(p)
+					mx = mx.max(p)
+				var cap := CapsuleShape3D.new()
+				cap.radius = minf(mx.x - mn.x, mx.z - mn.z) * 0.5
+				cap.height = mx.y - mn.y
+				cs.shape = cap
+				cs.position.y += (mn.y + mx.y) * 0.5
+				_col = cs
+				break
+	if _col == null:
+		push_warning("Player: CollisionShape3D tidak ketemu, collider tidak mengecil saat nunduk")
 		return
 	_col.shape = _col.shape.duplicate()
 	_col_h_stand = _shape_h(_col.shape)
@@ -784,6 +808,17 @@ func _update_collider() -> void:
 	_set_shape_h(_col.shape, h)
 	# telapak kaki tetap di tempat: geser tengah collider turun separuh selisihnya
 	_col.position.y = _col_y_stand - (_col_h_stand - h) * 0.5
+
+
+func _can_stand() -> bool:
+	if not _col_ready:
+		_setup_collider()
+	if _col == null:
+		return true
+	var grow := _col_h_stand - _shape_h(_col.shape)          # selisih tinggi berdiri vs sekarang
+	if grow <= 0.01:
+		return true
+	return not test_move(global_transform, Vector3.UP * (grow + 0.05))
 
 
 func handle_crouch(delta):

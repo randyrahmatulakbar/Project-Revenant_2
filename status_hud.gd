@@ -54,6 +54,7 @@ class Entry extends Control:
 	var font: Font
 	var shown := 1.0              # frac yang digambar (dihaluskan)
 	var flash := 0.0              # kilatan saat efek diperbarui
+	var sweep := -1.0             # sapuan cahaya saat efek disembuhkan (0..1, -1 = mati)
 	var _t := 0.0
 
 	func kick() -> void:
@@ -95,6 +96,16 @@ class Entry extends Control:
 					draw_rect(Rect2(ix + x * px, iy + y * px, px, px), ic)
 				elif ch == "H":
 					draw_rect(Rect2(ix + x * px, iy + y * px, px, px), col.lightened(0.55))
+		# sapuan cahaya (sembuh)
+		if sweep >= 0.0 and sweep <= 1.0:
+			var bx: float = lerpf(-30.0, w + 30.0, sweep)
+			var x0: float = clampf(bx - 14.0, 0.0, w)
+			var x1: float = clampf(bx + 14.0, 0.0, w)
+			if x1 - x0 > 2.0:
+				var ba := 0.5 * (1.0 - absf(sweep - 0.5) * 1.4)
+				draw_colored_polygon(PackedVector2Array([
+					Vector2(x0 + sk * 0.5, 0), Vector2(x1 + sk * 0.5, 0), Vector2(x1 - sk * 0.5, h), Vector2(x0 - sk * 0.5, h)]),
+					Color(1, 1, 1, ba))
 		# teks
 		var f: Font = font if font else ThemeDB.fallback_font
 		var tx := ix + 8.0 * px + 10.0
@@ -124,6 +135,7 @@ var _rows := {}              # id -> {"entry", "left", "total", "node", "known"}
 var _player: Node
 var _poll := 0.0
 var _font: Font
+var _suppress_poison := 0.0   # setelah disembuhkan, abaikan deteksi racun sebentar
 
 
 func _ready() -> void:
@@ -163,6 +175,32 @@ func apply_status(id: String, duration: float) -> void:
 func clear_status(id: String) -> void:
 	if _rows.has(id):
 		_remove(id)
+
+
+## Disembuhkan (mis. Poison Dissolver): bar terkuras, ada sapuan cahaya, lalu panel meluncur keluar.
+## Aman dipanggil saat game di-pause (animasi baru jalan setelah game lanjut).
+func cure_status(id: String) -> void:
+	if id == "poison":
+		_suppress_poison = 1.5
+	if not _rows.has(id):
+		return
+	var e: Dictionary = _rows[id]
+	_rows.erase(id)
+	var en: Entry = e.entry
+	en.pulse = false
+	en.frac = 0.0
+	en.left = 99.0
+	en.time_text = "BERSIH"
+	en.sweep = 0.0
+	en.kick()
+	var tw := create_tween()
+	tw.set_pause_mode(Tween.TWEEN_PAUSE_STOP)
+	tw.tween_property(en, "sweep", 1.0, 0.45)
+	tw.tween_interval(0.15)
+	tw.set_parallel(true)
+	tw.tween_property(en, "reveal", 0.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tw.tween_property(en, "modulate:a", 0.0, 0.28)
+	tw.chain().tween_callback(en.queue_free)
 
 
 # ---------- internal ----------
@@ -205,6 +243,7 @@ func _process(delta: float) -> void:
 	_layer.visible = not get_tree().paused               # tidak tampil di atas menu pause
 	if get_tree().paused:
 		return
+	_suppress_poison = maxf(_suppress_poison - delta, 0.0)
 	_poll -= delta
 	if _poll <= 0.0:
 		_poll = poll_interval
@@ -259,6 +298,8 @@ func _process(delta: float) -> void:
 
 ## Cari efek racun di player (node anak yang namanya / scriptnya mengandung "poison"), tanpa mengubah poison_dot.gd
 func _scan_player() -> void:
+	if _suppress_poison > 0.0:
+		return
 	if _player == null or not is_instance_valid(_player):
 		_player = get_tree().get_first_node_in_group("player")
 		if _player == null:

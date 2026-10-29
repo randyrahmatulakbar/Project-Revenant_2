@@ -18,8 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 UiSound="*uid://cpsws2i4iqeg8"
-Inventory="*uid://dsfuixa5wvaix"
-InventoryUi="*uid://dy7xfgw66nyf8"
+Inventory="*uid://dyg1s4ubctfb3"
+InventoryUi="*uid://h218prlhwoxm"
 
 [display]
 

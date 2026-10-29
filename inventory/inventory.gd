@@ -7,13 +7,14 @@ signal inventory_changed
 signal item_added(item: ItemData, amount: int)
 signal item_removed(item: ItemData, amount: int)
 signal item_used(item: ItemData)
+signal item_discarded(item: ItemData, amount: int, rounds: int)   # dibuang dari case (LootManager menjatuhkannya ke lantai)
 signal ammo_collected(ammo_type: StringName, amount: int)
 signal message(text: String)           # notifikasi singkat (HUD + layar inventory)
 
-@export var cols: int = 8
-@export var rows: int = 5
+@export var cols: int = 10
+@export var rows: int = 6
 
-## Tiap entry: {"data": ItemData, "amount": int, "x": int, "y": int, "rot": bool}
+## Tiap entry: {"data": ItemData, "amount": int, "x": int, "y": int, "rot": int (0..3)}
 var entries: Array = []
 
 ## Diisi oleh player. Mengembalikan "" kalau item boleh dipakai, atau alasan penolakan
@@ -23,8 +24,69 @@ var can_use_item: Callable
 
 # ---------------------------------------------------------------- geometri
 
-func footprint(item: ItemData, rot: bool) -> Vector2i:
-	return Vector2i(item.grid_h, item.grid_w) if rot else Vector2i(item.grid_w, item.grid_h)
+var _cell_cache := {}
+
+
+func is_shaped(item: ItemData) -> bool:
+	return not item.shape.is_empty()
+
+
+## Kotak yang dipakai item setelah diputar rot x 90 derajat, digeser supaya mulai dari (0,0).
+## Bentuk khusus (item.shape) atau persegi panjang grid_w x grid_h.
+func cells_of(item: ItemData, rot: int) -> Array:
+	var r := posmod(rot, 4)
+	var key := str(item.get_instance_id()) + ":" + str(r)
+	if _cell_cache.has(key):
+		return _cell_cache[key]
+	var cells: Array = []
+	if is_shaped(item):
+		for c in item.shape:
+			cells.append(c)
+	else:
+		for y in item.grid_h:
+			for x in item.grid_w:
+				cells.append(Vector2i(x, y))
+	for i in r:
+		var t: Array = []
+		for c in cells:
+			t.append(Vector2i(-c.y, c.x))
+		cells = t
+	var mn := Vector2i(9999, 9999)
+	for c in cells:
+		mn.x = mini(mn.x, c.x)
+		mn.y = mini(mn.y, c.y)
+	var res: Array = []
+	for c in cells:
+		res.append(c - mn)
+	_cell_cache[key] = res
+	return res
+
+
+## Ukuran kotak pembatas item setelah diputar.
+func footprint(item: ItemData, rot: int) -> Vector2i:
+	if not is_shaped(item):
+		return Vector2i(item.grid_h, item.grid_w) if posmod(rot, 2) == 1 else Vector2i(item.grid_w, item.grid_h)
+	var mx := 0
+	var my := 0
+	for c in cells_of(item, rot):
+		mx = maxi(mx, c.x + 1)
+		my = maxi(my, c.y + 1)
+	return Vector2i(mx, my)
+
+
+func can_rotate(item: ItemData) -> bool:
+	if not item.allow_rotate:
+		return false
+	return is_shaped(item) or item.grid_w != item.grid_h
+
+
+## Putaran berikutnya: bentuk khusus 4 arah, persegi panjang 2 arah.
+func next_rot(item: ItemData, rot: int) -> int:
+	if not can_rotate(item):
+		return rot
+	if is_shaped(item):
+		return (rot + 1) % 4
+	return 1 - posmod(rot, 2)
 
 
 func rect_of(entry: Dictionary) -> Rect2i:
@@ -34,9 +96,12 @@ func rect_of(entry: Dictionary) -> Rect2i:
 
 ## Entry yang menutupi kotak (x, y), atau null.
 func entry_at(x: int, y: int):
+	var p := Vector2i(x, y)
 	for e in entries:
-		if rect_of(e).has_point(Vector2i(x, y)):
-			return e
+		var o := Vector2i(e["x"], e["y"])
+		for c in cells_of(e["data"], e["rot"]):
+			if o + c == p:
+				return e
 	return null
 
 
@@ -47,39 +112,40 @@ func _occupancy(ignore = null) -> Array:
 	for e in entries:
 		if ignore != null and is_same(e, ignore):
 			continue
-		_mark(occ, rect_of(e))
+		_mark(occ, Vector2i(e["x"], e["y"]), cells_of(e["data"], e["rot"]))
 	return occ
 
 
-func _mark(occ: Array, r: Rect2i) -> void:
-	for y in range(r.position.y, r.end.y):
-		for x in range(r.position.x, r.end.x):
-			occ[y * cols + x] = true
+func _mark(occ: Array, origin: Vector2i, cells: Array) -> void:
+	for c in cells:
+		var p: Vector2i = origin + c
+		occ[p.y * cols + p.x] = true
 
 
-func _fits(occ: Array, r: Rect2i) -> bool:
-	if r.position.x < 0 or r.position.y < 0 or r.end.x > cols or r.end.y > rows:
-		return false
-	for y in range(r.position.y, r.end.y):
-		for x in range(r.position.x, r.end.x):
-			if occ[y * cols + x]:
-				return false
+func _fits(occ: Array, origin: Vector2i, cells: Array) -> bool:
+	for c in cells:
+		var p: Vector2i = origin + c
+		if p.x < 0 or p.y < 0 or p.x >= cols or p.y >= rows:
+			return false
+		if occ[p.y * cols + p.x]:
+			return false
 	return true
 
 
-func can_place(item: ItemData, x: int, y: int, rot: bool, ignore = null) -> bool:
-	var s := footprint(item, rot)
-	return _fits(_occupancy(ignore), Rect2i(x, y, s.x, s.y))
+func can_place(item: ItemData, x: int, y: int, rot: int, ignore = null) -> bool:
+	return _fits(_occupancy(ignore), Vector2i(x, y), cells_of(item, rot))
 
 
 func _find_spot(item: ItemData, occ: Array) -> Dictionary:
-	for rot in [false, true]:
-		if rot and (not item.allow_rotate or item.grid_w == item.grid_h):
-			continue
+	var rots: Array = [0]
+	if can_rotate(item):
+		rots = [0, 1, 2, 3] if is_shaped(item) else [0, 1]
+	for rot in rots:
+		var cells := cells_of(item, rot)
 		var s := footprint(item, rot)
 		for y in range(rows - s.y + 1):
 			for x in range(cols - s.x + 1):
-				if _fits(occ, Rect2i(x, y, s.x, s.y)):
+				if _fits(occ, Vector2i(x, y), cells):
 					return {"x": x, "y": y, "rot": rot}
 	return {}
 
@@ -93,16 +159,9 @@ func _index_of(entry) -> int:
 
 # ---------------------------------------------------------------- tambah
 
-func add_item(item: ItemData, amount: int = 1) -> bool:
+func add_item(item: ItemData, amount: int = 1, rounds: int = -1) -> bool:
 	if item == null or amount <= 0:
 		return false
-
-	# Kotak peluru tidak memakai ruang: langsung jadi cadangan peluru senjata
-	if item.type == ItemData.Type.AMMO:
-		var n := randi_range(item.ammo_min, item.ammo_max) * amount
-		ammo_collected.emit(item.ammo_type, n)
-		message.emit("+%d PELURU" % n)
-		return true
 
 	if not _can_fit(item, amount):
 		message.emit("Case penuh")
@@ -124,7 +183,10 @@ func add_item(item: ItemData, amount: int = 1) -> bool:
 	while left > 0:
 		var spot := _find_spot(item, _occupancy())
 		var put := mini(left, item.max_stack if item.stackable else 1)
-		entries.append({"data": item, "amount": put, "x": spot["x"], "y": spot["y"], "rot": spot["rot"]})
+		var entry := {"data": item, "amount": put, "x": spot["x"], "y": spot["y"], "rot": spot["rot"]}
+		if item.type == ItemData.Type.AMMO:
+			entry["rounds"] = rounds if rounds >= 0 else item.mag_rounds     # isi magazine (berkurang saat dipakai reload)
+		entries.append(entry)
 		left -= put
 
 	item_added.emit(item, amount)
@@ -150,8 +212,7 @@ func _can_fit(item: ItemData, amount: int) -> bool:
 		var spot := _find_spot(item, occ)
 		if spot.is_empty():
 			return false
-		var s := footprint(item, spot["rot"])
-		_mark(occ, Rect2i(spot["x"], spot["y"], s.x, s.y))
+		_mark(occ, Vector2i(spot["x"], spot["y"]), cells_of(item, spot["rot"]))
 		left -= per
 	return true
 
@@ -228,14 +289,17 @@ func remove_item(id: StringName, amount: int = 1) -> bool:
 
 
 func discard_entry(entry: Dictionary) -> void:
-	var name_text: String = entry["data"].display_name
-	remove_entry(entry, entry["amount"])
-	message.emit("Dibuang: %s" % name_text)
+	var data: ItemData = entry["data"]
+	var amount: int = entry["amount"]
+	var rounds: int = int(entry.get("rounds", -1))
+	remove_entry(entry, amount)
+	item_discarded.emit(data, amount, rounds)
+	message.emit("Dibuang: %s" % data.display_name)
 
 
 # ---------------------------------------------------------------- pindah / gabung
 
-func move_entry(entry: Dictionary, x: int, y: int, rot: bool) -> bool:
+func move_entry(entry: Dictionary, x: int, y: int, rot: int) -> bool:
 	if not can_place(entry["data"], x, y, rot, entry):
 		return false
 	entry["x"] = x
@@ -261,6 +325,45 @@ func merge_entries(src: Dictionary, dst: Dictionary) -> bool:
 			entries.remove_at(idx)
 	inventory_changed.emit()
 	return true
+
+
+# ---------------------------------------------------------------- peluru (magazine)
+
+## Total peluru di semua magazine bertipe ammo_type.
+func count_rounds(ammo_type: StringName) -> int:
+	var n := 0
+	for e in entries:
+		var d: ItemData = e["data"]
+		if d.type == ItemData.Type.AMMO and d.ammo_type == ammo_type:
+			n += int(e.get("rounds", d.mag_rounds))
+	return n
+
+
+## Ambil peluru dari magazine (yang isinya paling sedikit dulu). Magazine kosong hilang dari case.
+## Mengembalikan jumlah yang benar-benar terambil.
+func take_rounds(ammo_type: StringName, amount: int) -> int:
+	var mags: Array = []
+	for e in entries:
+		var d: ItemData = e["data"]
+		if d.type == ItemData.Type.AMMO and d.ammo_type == ammo_type:
+			mags.append(e)
+	mags.sort_custom(func(a, b): return int(a.get("rounds", 0)) < int(b.get("rounds", 0)))
+	var left := amount
+	for e in mags:
+		if left <= 0:
+			break
+		var r := int(e.get("rounds", e["data"].mag_rounds))
+		var take := mini(r, left)
+		e["rounds"] = r - take
+		left -= take
+		if int(e["rounds"]) <= 0:
+			var idx := _index_of(e)
+			if idx != -1:
+				entries.remove_at(idx)
+			item_removed.emit(e["data"], 1)
+	if left < amount:
+		inventory_changed.emit()
+	return amount - left
 
 
 # ---------------------------------------------------------------- pakai

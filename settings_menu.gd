@@ -141,6 +141,7 @@ func _apply_layout() -> void:
 	_style_checkbox(tilt_check)
 	_style_checkbox(bob_check)
 	_style_checkbox(mute_focus_check)
+	RevUI.style_settings(self)                             # skin gaya terminal Revenant (panel, slider, tombol, judul)
 
 
 func _style_controls(root: Node) -> void:
@@ -392,7 +393,7 @@ func _style_checkbox(cb: CheckBox) -> void:
 func _box_icon(s: int, checked: bool) -> ImageTexture:
 	var img := Image.create(s, s, false, Image.FORMAT_RGBA8)
 	var border := Color(0.88, 0.85, 0.77, 1.0)
-	var fill := Color(1.0, 0.72, 0.27, 1.0)
+	var fill := Color("dea68a")
 	var bg := Color(0.0, 0.0, 0.0, 0.35)
 	var t := maxi(2, s / 10)
 	for y in s:

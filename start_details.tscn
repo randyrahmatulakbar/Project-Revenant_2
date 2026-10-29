@@ -337,15 +337,15 @@ size = Vector3(0.3, 0.14, 0.12)
 material = ExtResource("5_strip")
 
 [node name="Riser1" type="CSGCylinder3D" parent="Shaft" unique_id=665815939]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 9.6, 1.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 27.337526, 1.2)
 radius = 0.08
-height = 23.6
+height = 59.07505
 material = ExtResource("4_pipe")
 
 [node name="Riser2" type="CSGCylinder3D" parent="Shaft" unique_id=1984360609]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 9.6, -1.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 26.856813, -1.2)
 radius = 0.08
-height = 23.6
+height = 58.113625
 material = ExtResource("4_pipe")
 
 [node name="Vent2" type="CSGBox3D" parent="Shaft" unique_id=1671488755]
@@ -355,6 +355,31 @@ material = ExtResource("9_vent")
 
 [node name="Vent3" type="CSGBox3D" parent="Shaft" unique_id=161926848]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.344, 13.5, 0.4)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Ring21" type="CSGBox3D" parent="Shaft" unique_id=518665957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 19.512651, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring22" type="CSGBox3D" parent="Shaft" unique_id=804529145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 19.512651, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring23" type="CSGBox3D" parent="Shaft" unique_id=1258520398]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19.512651, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring24" type="CSGBox3D" parent="Shaft" unique_id=1731471846]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19.512651, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent9" type="CSGBox3D" parent="Shaft" unique_id=1265959395]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.344, 20.512651, 0.4)
 size = Vector3(0.1, 0.8, 0.8)
 material = ExtResource("9_vent")
 
@@ -368,6 +393,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 17, 0.2)
 size = Vector3(0.1, 0.8, 0.8)
 material = ExtResource("9_vent")
 
+[node name="Ring17" type="CSGBox3D" parent="Shaft" unique_id=707902171]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 22.507248, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring18" type="CSGBox3D" parent="Shaft" unique_id=1554629420]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 22.507248, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring19" type="CSGBox3D" parent="Shaft" unique_id=86124126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.507248, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring20" type="CSGBox3D" parent="Shaft" unique_id=1301067737]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.507248, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent8" type="CSGBox3D" parent="Shaft" unique_id=717277077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 23.007248, 0.2)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
 [node name="Vent6" type="CSGBox3D" parent="Shaft" unique_id=2075910497]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 7.5, 1.344)
 size = Vector3(0.8, 0.8, 0.1)
@@ -375,6 +425,266 @@ material = ExtResource("9_vent")
 
 [node name="Vent7" type="CSGBox3D" parent="Shaft" unique_id=853013715]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 11.5, -1.344)
+size = Vector3(0.8, 0.8, 0.1)
+material = ExtResource("9_vent")
+
+[node name="Ring25" type="CSGBox3D" parent="Shaft" unique_id=550262629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 25.33986, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring26" type="CSGBox3D" parent="Shaft" unique_id=533557493]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 25.33986, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring27" type="CSGBox3D" parent="Shaft" unique_id=1632808949]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25.33986, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring28" type="CSGBox3D" parent="Shaft" unique_id=1687567096]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25.33986, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring29" type="CSGBox3D" parent="Shaft" unique_id=185417553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 29.33986, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring30" type="CSGBox3D" parent="Shaft" unique_id=670122501]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 29.33986, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring31" type="CSGBox3D" parent="Shaft" unique_id=920020612]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.33986, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring32" type="CSGBox3D" parent="Shaft" unique_id=833689628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.33986, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring33" type="CSGBox3D" parent="Shaft" unique_id=102666103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 33.33986, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring34" type="CSGBox3D" parent="Shaft" unique_id=299249492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 33.33986, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring35" type="CSGBox3D" parent="Shaft" unique_id=1246532370]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 33.33986, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring36" type="CSGBox3D" parent="Shaft" unique_id=1064799739]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 33.33986, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent10" type="CSGBox3D" parent="Shaft" unique_id=463091344]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.344, 30.33986, 0.4)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Ring37" type="CSGBox3D" parent="Shaft" unique_id=1001596939]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 36.352512, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring38" type="CSGBox3D" parent="Shaft" unique_id=1513216507]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 36.352512, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring39" type="CSGBox3D" parent="Shaft" unique_id=1963733777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 36.352512, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring40" type="CSGBox3D" parent="Shaft" unique_id=831646617]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 36.352512, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent11" type="CSGBox3D" parent="Shaft" unique_id=770601365]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.344, 37.352512, 0.4)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Vent12" type="CSGBox3D" parent="Shaft" unique_id=31277962]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 26.33986, -0.3)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Vent13" type="CSGBox3D" parent="Shaft" unique_id=485211851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 33.83986, 0.2)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Ring41" type="CSGBox3D" parent="Shaft" unique_id=387170640]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 39.347107, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring42" type="CSGBox3D" parent="Shaft" unique_id=334094829]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 39.347107, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring43" type="CSGBox3D" parent="Shaft" unique_id=167451446]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 39.347107, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring44" type="CSGBox3D" parent="Shaft" unique_id=240547770]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 39.347107, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent14" type="CSGBox3D" parent="Shaft" unique_id=878762380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 39.847107, 0.2)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Vent15" type="CSGBox3D" parent="Shaft" unique_id=408802523]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 28.33986, -1.344)
+size = Vector3(0.8, 0.8, 0.1)
+material = ExtResource("9_vent")
+
+[node name="Ring45" type="CSGBox3D" parent="Shaft" unique_id=592210964]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 42.1186, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring46" type="CSGBox3D" parent="Shaft" unique_id=1220993046]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 42.1186, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring47" type="CSGBox3D" parent="Shaft" unique_id=856496876]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 42.1186, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring48" type="CSGBox3D" parent="Shaft" unique_id=1745065809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 42.1186, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring49" type="CSGBox3D" parent="Shaft" unique_id=1196826297]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 46.1186, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring50" type="CSGBox3D" parent="Shaft" unique_id=2082193292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 46.1186, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring51" type="CSGBox3D" parent="Shaft" unique_id=1653208078]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 46.1186, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring52" type="CSGBox3D" parent="Shaft" unique_id=2070107382]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 46.1186, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring53" type="CSGBox3D" parent="Shaft" unique_id=1373020012]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 50.118595, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring54" type="CSGBox3D" parent="Shaft" unique_id=1485391837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 50.118595, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring55" type="CSGBox3D" parent="Shaft" unique_id=1247984122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50.118595, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring56" type="CSGBox3D" parent="Shaft" unique_id=1451767682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50.118595, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent16" type="CSGBox3D" parent="Shaft" unique_id=2090206921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.344, 47.1186, 0.4)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Ring57" type="CSGBox3D" parent="Shaft" unique_id=712283313]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 53.13125, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring58" type="CSGBox3D" parent="Shaft" unique_id=643097906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 53.13125, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring59" type="CSGBox3D" parent="Shaft" unique_id=86663652]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 53.13125, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring60" type="CSGBox3D" parent="Shaft" unique_id=728523583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 53.13125, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent17" type="CSGBox3D" parent="Shaft" unique_id=680005823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.344, 54.13125, 0.4)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Vent18" type="CSGBox3D" parent="Shaft" unique_id=1669073057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 43.1186, -0.3)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Vent19" type="CSGBox3D" parent="Shaft" unique_id=548018884]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 50.618595, 0.2)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Ring61" type="CSGBox3D" parent="Shaft" unique_id=738583605]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27, 56.125843, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring62" type="CSGBox3D" parent="Shaft" unique_id=645810002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27, 56.125843, 0)
+size = Vector3(0.25, 0.2, 2.8)
+material = ExtResource("2_metal")
+
+[node name="Ring63" type="CSGBox3D" parent="Shaft" unique_id=1106218126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 56.125843, 1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Ring64" type="CSGBox3D" parent="Shaft" unique_id=127311263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 56.125843, -1.27)
+size = Vector3(2.3, 0.2, 0.25)
+material = ExtResource("2_metal")
+
+[node name="Vent20" type="CSGBox3D" parent="Shaft" unique_id=360319694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.344, 56.625843, 0.2)
+size = Vector3(0.1, 0.8, 0.8)
+material = ExtResource("9_vent")
+
+[node name="Vent21" type="CSGBox3D" parent="Shaft" unique_id=1160320114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 45.1186, -1.344)
 size = Vector3(0.8, 0.8, 0.1)
 material = ExtResource("9_vent")
 
@@ -447,6 +757,11 @@ transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.094, 14, 0)
 size = Vector3(2.4, 1, 2.4)
 texture_albedo = ExtResource("11_dstain")
 
+[node name="Shaft10" type="Decal" parent="Decals" unique_id=1015427676]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.094, 21.012651, 0)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
 [node name="Shaft5" type="Decal" parent="Decals" unique_id=1324442567]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.4, 6.5, 1.094)
 size = Vector3(2.2, 1, 2.2)
@@ -464,5 +779,70 @@ texture_albedo = ExtResource("13_dcrack")
 
 [node name="Shaft8" type="Decal" parent="Decals" unique_id=417305210]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.3, 17, -1.094)
+size = Vector3(2.2, 1, 2.2)
+texture_albedo = ExtResource("14_dscorch")
+
+[node name="Shaft9" type="Decal" parent="Decals" unique_id=2014582984]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.3, 23.007248, -1.094)
+size = Vector3(2.2, 1, 2.2)
+texture_albedo = ExtResource("14_dscorch")
+
+[node name="Shaft11" type="Decal" parent="Decals" unique_id=184972928]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 1.094, 27.83986, -0.5)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
+[node name="Shaft12" type="Decal" parent="Decals" unique_id=1468141909]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.094, 30.83986, 0)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
+[node name="Shaft13" type="Decal" parent="Decals" unique_id=1220233482]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.094, 37.852512, 0)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
+[node name="Shaft14" type="Decal" parent="Decals" unique_id=1677467860]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 26.83986, -1.094)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("13_dcrack")
+
+[node name="Shaft15" type="Decal" parent="Decals" unique_id=1583800470]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.3, 33.83986, -1.094)
+size = Vector3(2.2, 1, 2.2)
+texture_albedo = ExtResource("14_dscorch")
+
+[node name="Shaft16" type="Decal" parent="Decals" unique_id=576920752]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.3, 39.847107, -1.094)
+size = Vector3(2.2, 1, 2.2)
+texture_albedo = ExtResource("14_dscorch")
+
+[node name="Shaft17" type="Decal" parent="Decals" unique_id=1903252556]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 1.094, 44.6186, -0.5)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
+[node name="Shaft18" type="Decal" parent="Decals" unique_id=283516296]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.094, 47.6186, 0)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
+[node name="Shaft19" type="Decal" parent="Decals" unique_id=1016709207]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.094, 54.63125, 0)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("11_dstain")
+
+[node name="Shaft20" type="Decal" parent="Decals" unique_id=2119697839]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 43.6186, -1.094)
+size = Vector3(2.4, 1, 2.4)
+texture_albedo = ExtResource("13_dcrack")
+
+[node name="Shaft21" type="Decal" parent="Decals" unique_id=1454424801]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.3, 50.618595, -1.094)
+size = Vector3(2.2, 1, 2.2)
+texture_albedo = ExtResource("14_dscorch")
+
+[node name="Shaft22" type="Decal" parent="Decals" unique_id=1643188792]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.3, 56.625843, -1.094)
 size = Vector3(2.2, 1, 2.2)
 texture_albedo = ExtResource("14_dscorch")

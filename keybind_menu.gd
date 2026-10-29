@@ -64,10 +64,11 @@ func _build_ui(host: Node) -> void:
 	else:
 		title.add_theme_font_size_override("font_size", 36)
 	vb.add_child(title)
+	RevUI.title_line(title)
 
 	_unsaved = Label.new()
 	_unsaved.text = "* UNSAVED CHANGES"
-	_unsaved.add_theme_color_override("font_color", Color(1.0, 0.72, 0.27))
+	_unsaved.add_theme_color_override("font_color", RevUI.ACCENT)
 	_unsaved.add_theme_font_size_override("font_size", _font_size - 3)
 	vb.add_child(_unsaved)
 
@@ -90,12 +91,15 @@ func _build_ui(host: Node) -> void:
 		l.text = entry[1]
 		l.custom_minimum_size.x = 170
 		l.add_theme_font_size_override("font_size", _font_size)
+		l.add_theme_color_override("font_color", RevUI.TEXT)
 		grid.add_child(l)
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(220, 36)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.focus_mode = Control.FOCUS_NONE
 		b.add_theme_font_size_override("font_size", _font_size)
+		RevUI.style_choice_button(b)
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.pressed.connect(_begin_capture.bind(action))
 		grid.add_child(b)
 		_buttons[action] = b

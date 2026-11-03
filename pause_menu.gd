@@ -2,7 +2,7 @@ extends CanvasLayer
 ## Pause menu bergaya terminal Revenant (tombol jajargenjang + garis penghubung + header/footer).
 ## UI dibangun lewat kode, jadi pause_menu.tscn cukup berisi PanelControl + SettingsMenu.
 
-const MAIN_MENU_SCENE = "res://main menu/mainmenu.tscn"
+const MAIN_MENU_SCENE = "res://menu_world.tscn"
 
 @export var font: Font
 @export var ui_stagger := 0.07                 # jeda antar elemen saat muncul / hilang (detik)

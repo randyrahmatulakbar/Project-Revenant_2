@@ -47,6 +47,9 @@ var interaction_prompt: Control = null
 
 # HUD
 var hud: CanvasLayer = null
+var _charge: Node = null
+var weapon_mgr: Node = null      # weapon_manager.gd (UI + pergantian senjata)
+var _fire_cd := 0.0              # jeda antar tembakan MP5 / Shotgun
 
 
 # Damage tembakan revolver (tinju = 5, lihat parry.gd). Semua musuh kena damage yang sama; bedanya cuma di HP musuh.
@@ -77,6 +80,7 @@ var _roll_kick := 0.0
 var _mouse_dx := 0.0
 var _wall_hops := 0
 var _wall_cd := 0.0
+var _last_wall_side := 0.0                   # sisi tembok wallhop terakhir: +1 = kanan, -1 = kiri (dibaca item_effects)
 
 
 # Ammo
@@ -122,6 +126,23 @@ func _ready():
 		_update_ammo_ui()
 
 	print("HUD found: ", hud)
+	
+	_charge = preload("res://charge_shot.gd").new()
+	_charge.name = "ChargeShot"
+	add_child(_charge)
+
+	var _wm = preload("res://weapon_manager.gd").new()   # UI + pergantian senjata (1/2/3, scroll)
+	_wm.name = "WeaponManager"
+	add_child(_wm)
+	weapon_mgr = _wm
+
+	var _th = preload("res://throwables.gd").new()          # lempar Grenade (G) dan Molotov (V)
+	_th.name = "Throwables"
+	add_child(_th)
+
+	var _bs = preload("res://burn_status.gd").new()         # efek terbakar + indikator
+	_bs.name = "BurnStatus"
+	add_child(_bs)
 
 
 func _on_health_changed(current: float, max: float) -> void:
@@ -240,6 +261,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		_wall_hops = 0
 	_wall_cd = maxf(0.0, _wall_cd - delta)
+	_fire_cd = maxf(0.0, _fire_cd - delta)
 	_update_sprint()
 
 	# Gravity
@@ -389,8 +411,12 @@ func _physics_process(delta: float) -> void:
 	# SHOOT
 	# =========================
 
-	if Input.is_action_just_pressed("shoot"):
-		shoot()
+	var _is_rev: bool = weapon_mgr == null or weapon_mgr.is_revolver()
+	if _is_rev and _charge != null and _charge.is_active():
+		_charge.tick(delta)                 # Trigger: tahan = charge, lepas = tembak (revolver saja)
+	elif Input.is_action_just_pressed("shoot") \
+			or (not _is_rev and weapon_mgr.is_auto() and Input.is_action_pressed("shoot")):
+		shoot()                             # MP5: tahan = auto
 
 
 	# =========================
@@ -429,28 +455,42 @@ func _update_camera_tilt(delta: float) -> void:
 	_roll_kick = lerpf(_roll_kick, 0.0, 1.0 - exp(-6.0 * delta))
 
 
-# Cari tembok terdekat di sekeliling badan (8 arah). Kosong = gak ada.
+# Cari tembok terdekat di sisi KANAN atau KIRI badan saja (relatif arah pandang).
+# Tiap sisi pakai 3 ray (agak ke depan, tegak lurus, agak ke belakang). Tembok yang sedang kamu hadapi
+# (normalnya berlawanan arah pandang) ditolak, jadi cuma tembok di samping yang valid.
+# Hasilnya ditambah key "side": +1 = tembok di kanan, -1 = tembok di kiri. Kosong = gak ada.
 func _find_wall() -> Dictionary:
 	var space := get_world_3d().direct_space_state
 	var origin := global_position + Vector3(0.0, 0.9, 0.0)
+	var yaw := Basis(Vector3.UP, head.rotation.y)
+	var fwd: Vector3 = -yaw.z
+	var right: Vector3 = yaw.x
 	var best := {}
 	var best_d := INF
-	for i in 8:
-		var dir := Vector3.FORWARD.rotated(Vector3.UP, TAU * i / 8.0)
-		var q := PhysicsRayQueryParameters3D.create(origin, origin + dir * wall_reach)
-		q.exclude = [get_rid()]
-		var r := space.intersect_ray(q)
-		if r.is_empty():
-			continue
-		var col = r.collider
-		if col is Node and (col.is_in_group("enemy") or col.has_method("take_damage")):
-			continue                                   # musuh bukan tembok
-		if absf(r.normal.y) > 0.3:
-			continue                                   # lantai / plafon bukan tembok
-		var d := origin.distance_to(r.position)
-		if d < best_d:
-			best_d = d
-			best = r
+	for side in [1.0, -1.0]:
+		for deg in [70.0, 90.0, 110.0]:
+			var a := deg_to_rad(deg)
+			var dir: Vector3 = (fwd * cos(a) + right * side * sin(a)).normalized()
+			var q := PhysicsRayQueryParameters3D.create(origin, origin + dir * wall_reach)
+			q.exclude = [get_rid()]
+			var r := space.intersect_ray(q)
+			if r.is_empty():
+				continue
+			var col = r.collider
+			if col is Node and (col.is_in_group("enemy") or col.has_method("take_damage")):
+				continue                               # musuh bukan tembok
+			if absf(r.normal.y) > 0.3:
+				continue                               # lantai / plafon bukan tembok
+			var nf: Vector3 = r.normal
+			nf.y = 0.0
+			nf = nf.normalized()
+			if absf(nf.dot(fwd)) > 0.5:
+				continue                               # tembok di depan / belakang (lagi dihadapi), bukan di samping
+			var d := origin.distance_to(r.position)
+			if d < best_d:
+				best_d = d
+				best = r
+				best["side"] = -signf(nf.dot(right))    # normal menjauhi tembok: normal ke kiri = tembok di kanan
 	return best
 
 
@@ -478,6 +518,7 @@ func _try_wall_hop() -> bool:
 	velocity.y = wall_hop_up
 
 	_wall_hops += 1
+	_last_wall_side = float(hit.get("side", 0.0))
 	get_tree().call_group("style", "register", "wallhop")
 	_wall_cd = wall_hop_cooldown
 	is_sliding = false
@@ -571,6 +612,9 @@ func _tracer_step(k: float, root: Node3D, start: Vector3, dir: Vector3, b: Basis
 
 
 func shoot():
+	if weapon_mgr != null and not weapon_mgr.is_revolver():
+		_shoot_special(weapon_mgr.active_def())
+		return
 	if hud and hud.is_busy:
 		return
 
@@ -629,8 +673,53 @@ func shoot():
 		print("Tembakan tidak kena apa-apa")
 
 
+# MP5 / Shotgun: jeda tembak sendiri (tanpa kunci animasi HUD), damage = gun_damage x damage_mult, pellet menyebar.
+func _shoot_special(wd: Dictionary) -> void:
+	if _fire_cd > 0.0:
+		return
+	if hud and (hud.is_busy or hud.intro_mode):
+		return
+	if current_ammo <= 0:
+		_fire_cd = 0.28
+		get_tree().call_group("sfx", "play", "gun_empty", -4.0, 0.03)
+		return
+
+	current_ammo -= 1
+	_update_ammo_ui()
+	_fire_cd = float(wd.interval)
+	weapon_mgr.fire_fx(wd)
+
+	var dmg: float = gun_damage * float(wd.damage_mult)
+	for i in int(wd.pellets):
+		_hitscan(float(wd.spread_deg), dmg)
+
+
+func _hitscan(spread_deg: float, dmg: float) -> void:
+	var b: Basis = camera.global_transform.basis
+	var dir: Vector3 = -b.z
+	if spread_deg > 0.0:
+		var ang := randf() * TAU
+		var rad := tan(deg_to_rad(spread_deg)) * sqrt(randf())
+		dir = (dir + b.x * cos(ang) * rad + b.y * sin(ang) * rad).normalized()
+
+	var from: Vector3 = camera.global_position
+	var query := PhysicsRayQueryParameters3D.create(from, from + dir * 100.0)
+	query.exclude = [self]
+	var result := get_world_3d().direct_space_state.intersect_ray(query)
+
+	_spawn_tracer(result.position if result else from + dir * 100.0)
+	if result.is_empty():
+		return
+	if result.collider.has_method("take_damage"):
+		result.collider.take_damage(dmg)
+		spawn_impact_particles(result.position, result.normal, Color(0.8, 0.05, 0.05))
+	else:
+		spawn_bullet_hole(result.position, result.normal)
+		spawn_impact_particles(result.position, result.normal)
+
+
 func reload():
-	if reserve_ammo <= 0 or current_ammo >= max_ammo_per_clip:
+	if get_reserve() <= 0 or current_ammo >= max_ammo_per_clip:
 		return
 
 	if hud and hud.is_busy:
@@ -644,31 +733,46 @@ func reload():
 
 # Reload tahan: tambah peluru satu per satu (dipanggil HUD tiap peluru masuk).
 func load_bullets(n: int) -> int:
-	var take = mini(n, mini(max_ammo_per_clip - current_ammo, reserve_ammo))
+	var take = mini(n, mini(max_ammo_per_clip - current_ammo, get_reserve()))
 	if take <= 0:
 		return 0
 
 	current_ammo += take
-	reserve_ammo -= take
+	_spend_reserve(take)
 	_update_ammo_ui()
 	return take
 
 
 # Reload cepat (tap R): buang semua peluru di silinder, ambil magazine penuh dari cadangan.
 func quick_reload() -> int:
-	var take = mini(max_ammo_per_clip, reserve_ammo)
+	var take = mini(max_ammo_per_clip, get_reserve())
 	if take <= 0:
 		return 0
 
 	current_ammo = take          # peluru lama hilang (sengaja merugikan pemain)
-	reserve_ammo -= take
+	_spend_reserve(take)
 	_update_ammo_ui()
 	return take
 
 
+# Cadangan peluru senjata yang sedang dipegang: revolver = reserve_ammo, MP5 / Shotgun = magazine di Inventory.
+func get_reserve() -> int:
+	if weapon_mgr != null and not weapon_mgr.is_revolver():
+		return weapon_mgr.reserve_now()
+	return reserve_ammo
+
+
+# Kurangi cadangan setelah reload. MP5 / Shotgun mengambil dari Inventory, reserve_ammo (revolver) tidak disentuh.
+func _spend_reserve(n: int) -> void:
+	if weapon_mgr != null and not weapon_mgr.is_revolver():
+		weapon_mgr.consume_reserve(n)
+	else:
+		reserve_ammo -= n
+
+
 func _update_ammo_ui() -> void:
 	if hud:
-		hud.update_ammo(current_ammo, reserve_ammo)
+		hud.update_ammo(current_ammo, get_reserve())
 
 
 func head_bobbing(delta):

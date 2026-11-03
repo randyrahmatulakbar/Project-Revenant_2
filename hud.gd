@@ -116,7 +116,8 @@ func play_reload():
 		await get_tree().process_frame
 		t += get_process_delta_time()
 
-	if Input.is_action_pressed(RELOAD_ACTION):
+	var rev: bool = player.get("weapon_mgr") == null or player.weapon_mgr.is_revolver()
+	if rev and Input.is_action_pressed(RELOAD_ACTION):     # reload tahan (slot silinder) khusus revolver
 		await _reload_hold()
 	else:
 		await _reload_tap()
@@ -129,7 +130,7 @@ func play_reload():
 # ---- TAP: animasi "reload" penuh, peluru terisi di akhir ----
 func _reload_tap():
 	var anim := "reload"
-	ammo_label.text = "... / " + str(player.reserve_ammo)
+	ammo_label.text = "... / " + str(player.get_reserve())
 
 	if gun.sprite_frames.has_animation(anim):
 		# diputar SEKALI, lalu tunggu sampai benar-benar selesai

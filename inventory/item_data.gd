@@ -15,7 +15,7 @@ enum Type { KEY, DOCUMENT, CONSUMABLE, AMMO, EQUIPMENT, WEAPON }   # EQUIPMENT d
 @export var grid_h: int = 1                  # tinggi dalam kotak
 @export var allow_rotate: bool = true        # boleh diputar dengan tombol R
 @export var shape: Array[Vector2i] = []     # bentuk khusus (L, T, dll) = daftar kotak (x, y). Kosong = persegi panjang grid_w x grid_h.
-                                             # Untuk bentuk khusus, grid_w / grid_h isi dengan ukuran kotak pembatasnya.
+											 # Untuk bentuk khusus, grid_w / grid_h isi dengan ukuran kotak pembatasnya.
 
 @export_group("Stack")
 @export var stackable: bool = true

@@ -58,6 +58,8 @@ func _start_punch() -> void:
 	var hud = _player.hud
 	if hud == null or hud.intro_mode or not hud.visible or _cooldown > 0.0:
 		return
+	if hud.is_busy:
+		return                                        # lagi reload (HUD sibuk) -> gak bisa tinju / parry
 	_cooldown = punch_cooldown
 	_active = true
 	_elapsed = 0.0

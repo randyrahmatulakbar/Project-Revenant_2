@@ -178,6 +178,8 @@ func _health() -> Node:
 
 ## Return "" kalau boleh dipakai, atau alasan penolakan.
 func _can_use(item: ItemData) -> String:
+	if item.id == &"grenade" or item.id == &"molotov":
+		return "Lempar dengan G (grenade) / V (molotov)"
 	if item.id == &"adrenaline" and adrenaline_enabled and _adr_left > 0.0:
 		return "Adrenaline masih aktif"
 	if item.id == &"poison_dissolver" and not _poisoned():
@@ -513,10 +515,47 @@ func _set_claw_t(v: float) -> void:
 	_claw_mat.set_shader_parameter("t", v)
 
 
+# Tembok terdekat di kanan / kiri LAYAR (pakai basis kamera aktif). +1 = kanan, -1 = kiri, 0 = gak ketemu.
+func _claw_wall_side(p: Node) -> float:
+	var cam := get_viewport().get_camera_3d()
+	if cam == null or not (p is CharacterBody3D):
+		return 0.0
+	var right: Vector3 = cam.global_basis.x
+	right.y = 0.0
+	if right.length() < 0.01:
+		return 0.0
+	right = right.normalized()
+	var body := p as CharacterBody3D
+	var space := body.get_world_3d().direct_space_state
+	var origin := body.global_position + Vector3(0.0, 0.9, 0.0)
+	var best_d := INF
+	var best_side := 0.0
+	for sd in [1.0, -1.0]:
+		var q := PhysicsRayQueryParameters3D.create(origin, origin + right * sd * 2.0)
+		q.exclude = [body.get_rid()]
+		var r := space.intersect_ray(q)
+		if r.is_empty() or absf(r.normal.y) > 0.3:
+			continue
+		var d := origin.distance_to(r.position)
+		if d < best_d:
+			best_d = d
+			best_side = sd
+	return best_side
+
+
 func _fx_claw(strong: bool) -> void:
 	if _claw_rect == null or not claw_fx:
 		return
-	_claw_flip = -_claw_flip                           # selang-seling kiri / kanan
+	# sisi tembok dihitung langsung dari arah kamera yang kelihatan di layar (gak bergantung variabel player)
+	var side := _claw_wall_side(_claw_player)
+	var from_player := 0.0
+	if _claw_player != null and "_last_wall_side" in _claw_player:
+		from_player = float(_claw_player.get("_last_wall_side"))
+	if side == 0.0:
+		side = from_player
+	if side != 0.0:
+		_claw_flip = signf(side)                           # tembok kanan -> goresan kanan, tembok kiri -> kiri
+	print("[claw] side=", side, " dari_player=", from_player, " flip=", _claw_flip, " (+1 kanan, -1 kiri)")   # debug, boleh dihapus
 	_claw_mat.set_shader_parameter("flip", _claw_flip)
 	_claw_mat.set_shader_parameter("power", 1.5 if strong else 1.0)
 	_claw_mat.set_shader_parameter("tint", COL_PEACH.lightened(0.5) if strong else COL_CREAM)

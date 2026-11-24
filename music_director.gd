@@ -120,14 +120,17 @@ func _ready() -> void:
 	else:
 		push_warning("MusicDirector: node '%s' tidak ketemu, lagu mulai saat wave pertama" % pickup_node_name)
 
-	var spawner := root.find_child(spawner_node_name, true, false)
-	if spawner:
-		if spawner.has_signal("wave_started"):
+	# Semua spawner bernama spawner_node_name (intro + parkour room), bukan cuma yang pertama ketemu.
+	# Dicari lewat sinyalnya (bukan nama), jadi spawner di room mana pun ikut terhubung.
+	var found := 0
+	for spawner in root.find_children("*", "", true, false):
+		if spawner.has_signal("wave_started") and spawner.has_signal("all_cleared"):
 			spawner.connect("wave_started", _on_wave_started)
-		if spawner.has_signal("all_cleared"):
 			spawner.connect("all_cleared", _on_all_cleared)
-	else:
-		push_warning("MusicDirector: node '%s' tidak ketemu" % spawner_node_name)
+			found += 1
+			print("MusicDirector: spawner terhubung -> ", spawner.get_path())
+	if found == 0:
+		push_warning("MusicDirector: tidak ada spawner (node dengan sinyal wave_started & all_cleared)")
 
 
 func _exit_tree() -> void:
@@ -215,10 +218,23 @@ func _on_pickup_exiting() -> void:
 
 
 func _on_wave_started(_i: int, _c: int) -> void:
-	start_drop()                                  # cadangan kalau pickup tidak terdeteksi
+	if _state == 2:
+		_resume_drop()                            # area baru (mis. arena parkour): balik ke lagu aksi
+	else:
+		start_drop()                              # cadangan kalau pickup tidak terdeteksi
+
+
+# Dari lagu "clear" balik ke lagu aksi saat area berikutnya dimulai.
+func _resume_drop() -> void:
+	_state = 0
+	var t := _tw()
+	t.tween_property(self, "_vb", -60.0, crossfade).set_trans(Tween.TRANS_SINE)
+	t.tween_callback(_b.stop)
+	start_drop()
 
 
 func _on_all_cleared() -> void:
+	print("MusicDirector: ruangan selesai -> slow-mo + lagu clear")
 	if slowmo_enabled and not get_tree().paused:
 		_slowmo()
 	start_clear()

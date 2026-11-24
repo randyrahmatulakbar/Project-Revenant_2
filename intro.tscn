@@ -33,8 +33,8 @@
 [ext_resource type="Script" uid="uid://dgnxk85ushqcu" path="res://intro_nav.gd" id="27_e84uo"]
 [ext_resource type="Script" uid="uid://c0f64rlq48e3i" path="res://boot_sequence.gd" id="33_7xutd"]
 [ext_resource type="Script" uid="uid://ceud5k2lrckah" path="res://intro_door.gd" id="40_door"]
-[ext_resource type="Material" path="res://map/textures/hazard_stripes.tres" id="41_hazard"]
-[ext_resource type="Material" path="res://map/textures/crate_metal.tres" id="42_crate"]
+[ext_resource type="Material" uid="uid://v0vrrooeitky" path="res://map/textures/hazard_stripes.tres" id="41_hazard"]
+[ext_resource type="Material" uid="uid://br6jhqvs8fhos" path="res://map/textures/crate_metal.tres" id="42_crate"]
 [ext_resource type="Material" path="res://map/textures/barrel.tres" id="43_barrel"]
 [ext_resource type="Material" path="res://map/textures/vent_grill.tres" id="44_vent"]
 [ext_resource type="PackedScene" uid="uid://kh3wyxa3b3hs" path="res://start_details.tscn" id="45_0mn6s"]
@@ -1509,7 +1509,7 @@ size = Vector3(2, 1, 2)
 texture_albedo = ExtResource("48_dblood")
 
 [node name="ParkourRoom" parent="map" unique_id=329188665 instance=ExtResource("99_parkour")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 0.4, -107.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.515776, 0.36025277, -107.57318)
 
 [node name="BackDoor" type="Node3D" parent="map" unique_id=1909700083]
 script = ExtResource("40_door")
@@ -1845,6 +1845,7 @@ script = ExtResource("46_gv8oo")
 
 [node name="StyleMeter" type="Node" parent="." unique_id=1637082434]
 script = ExtResource("47_j5ghd")
+heal_enabled = false
 
 [node name="LootManager" type="Node" parent="." unique_id=153070943]
 script = ExtResource("48_407k4")

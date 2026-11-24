@@ -15,6 +15,8 @@ const HOVER := 0.45              # tinggi ikon di atas lantai (m)
 const ICON_SIZE := 0.42          # ukuran ikon di dunia (m)
 const NEAR_DIST := 3.5           # jarak pemain yang bikin tumpukan menyala lebih terang
 const BLINK_TIME := 6.0          # berkedip selama sekian detik terakhir sebelum hilang
+const LOOT_FPS := 12.0           # efek loot bergerak per frame (12 = gaya frame-per-frame; 0 = mulus)
+const STYLE_PALETTE := true      # warna per jenis item pakai palet UI-mu (peach / teal); false = warna dari item_catalog
 
 const RING_SHADER := """
 shader_type spatial;
@@ -22,14 +24,20 @@ render_mode unshaded, blend_add, depth_draw_never, cull_disabled, shadows_disabl
 uniform vec4 col : source_color = vec4(1.0);
 uniform float energy = 1.0;
 uniform float phase = 0.0;
+uniform float fps = 12.0;
 void fragment() {
-	float r = length(UV - 0.5) * 2.0;
-	float glow = pow(smoothstep(1.0, 0.0, r), 2.2) * 0.5;
-	float pulse = 0.5 + 0.5 * sin(TIME * 2.4 + phase);
-	float ring = smoothstep(0.06, 0.0, abs(r - 0.82)) * (0.65 + 0.35 * pulse);
-	float k = fract(TIME * 0.55 + phase);
-	float wave = smoothstep(0.05, 0.0, abs(r - mix(0.25, 0.85, k))) * (1.0 - k) * 0.7;
-	float a = (glow + ring + wave) * (1.0 - smoothstep(0.9, 1.0, r));
+	vec2 p = UV - 0.5;
+	float r = length(p) * 2.0;
+	float t = fps > 0.0 ? floor(TIME * fps) / fps : TIME;
+	float ang = atan(p.y, p.x) / 6.28318 + 0.5;
+	float dash = step(0.3, fract(ang * 18.0 + t * 0.15));
+	float glow = pow(smoothstep(1.0, 0.0, r), 3.0) * 0.16;
+	float pulse = 0.5 + 0.5 * sin(t * 2.4 + phase);
+	float ring = smoothstep(0.035, 0.0, abs(r - 0.82)) * dash * (0.7 + 0.3 * pulse);
+	float inner = smoothstep(0.02, 0.0, abs(r - 0.6)) * 0.25;
+	float k = fract(t * 0.55 + phase);
+	float wave = smoothstep(0.03, 0.0, abs(r - mix(0.25, 0.85, k))) * (1.0 - k) * 0.35;
+	float a = (glow + ring + inner + wave) * (1.0 - smoothstep(0.9, 1.0, r));
 	ALBEDO = col.rgb;
 	ALPHA = clamp(a * energy, 0.0, 1.0);
 }
@@ -42,6 +50,7 @@ uniform vec4 col : source_color = vec4(1.0);
 uniform float energy = 1.0;
 uniform float height = 1.0;
 uniform float phase = 0.0;
+uniform float fps = 12.0;
 varying float hgt;
 void vertex() {
 	hgt = clamp(VERTEX.y / height + 0.5, 0.0, 1.0);
@@ -49,9 +58,10 @@ void vertex() {
 void fragment() {
 	float edge = pow(clamp(abs(dot(normalize(NORMAL), normalize(VIEW))), 0.0, 1.0), 1.6);
 	float fade = pow(1.0 - hgt, 1.4);
-	float flick = 0.85 + 0.15 * sin(TIME * 3.0 + phase + hgt * 7.0);
+	float t = fps > 0.0 ? floor(TIME * fps) / fps : TIME;
+	float flick = 0.85 + 0.15 * sin(t * 3.0 + phase + hgt * 7.0);
 	ALBEDO = col.rgb;
-	ALPHA = clamp(edge * fade * flick * 0.55 * energy, 0.0, 1.0);
+	ALPHA = clamp(edge * fade * flick * 0.36 * energy, 0.0, 1.0);
 }
 """
 
@@ -94,9 +104,30 @@ func _pile_color() -> Color:
 	for it in items:
 		var item: ItemData = it.item
 		if Catalog.is_unique(item):
-			return Catalog.color_of(item)              # ada artefak / senjata -> paling menonjol
-		best = Catalog.color_of(item)
+			return _style_color(item)                  # ada artefak / senjata -> paling menonjol
+		best = _style_color(item)
 	return best
+
+
+# Palet UI-mu: peach (ammo), peach terang (artefak), teal-hijau (consumable), abu-teal (senjata).
+func _style_color(item: ItemData) -> Color:
+	if not STYLE_PALETTE:
+		return Catalog.color_of(item)
+	match item.type:
+		ItemData.Type.AMMO:
+			return Color("dea68a")
+		ItemData.Type.EQUIPMENT:
+			return Color(1.0, 0.84, 0.66)
+		ItemData.Type.WEAPON:
+			return Color(0.56, 0.74, 0.72)
+		ItemData.Type.CONSUMABLE:
+			return Color(0.43, 0.68, 0.56)
+	return Catalog.color_of(item)
+
+
+# Waktu yang diputus per frame (gaya frame-per-frame).
+func _step(v: float) -> float:
+	return floor(v * LOOT_FPS) / LOOT_FPS if LOOT_FPS > 0.0 else v
 
 
 func _has_unique_item() -> bool:
@@ -129,10 +160,11 @@ func _build() -> void:
 	# cincin di lantai
 	_ring_mat = ShaderMaterial.new()
 	_ring_mat.shader = _make_shader(RING_SHADER)
-	_ring_mat.set_shader_parameter("col", _col.lightened(0.1))
+	_ring_mat.set_shader_parameter("col", _col)
+	_ring_mat.set_shader_parameter("fps", LOOT_FPS)
 	_ring_mat.set_shader_parameter("phase", _phase)
 	var qm := QuadMesh.new()
-	qm.size = Vector2(1.7, 1.7)
+	qm.size = Vector2(1.5, 1.5)
 	_ring = MeshInstance3D.new()
 	_ring.mesh = qm
 	_ring.material_override = _ring_mat
@@ -143,12 +175,13 @@ func _build() -> void:
 	# berkas cahaya
 	_beam_mat = ShaderMaterial.new()
 	_beam_mat.shader = _make_shader(BEAM_SHADER)
-	_beam_mat.set_shader_parameter("col", _col.lightened(0.15))
+	_beam_mat.set_shader_parameter("col", _col)
+	_beam_mat.set_shader_parameter("fps", LOOT_FPS)
 	_beam_mat.set_shader_parameter("height", _beam_h)
 	_beam_mat.set_shader_parameter("phase", _phase)
 	var cm := CylinderMesh.new()
-	cm.top_radius = 0.02
-	cm.bottom_radius = 0.17 if _unique else 0.12
+	cm.top_radius = 0.01
+	cm.bottom_radius = 0.09 if _unique else 0.06
 	cm.height = _beam_h
 	cm.radial_segments = 14
 	cm.rings = 1
@@ -172,7 +205,7 @@ func _build() -> void:
 	_halo_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	_halo_mat.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
 	_halo_mat.albedo_texture = _halo_texture()
-	_halo_mat.albedo_color = Color(_col, 0.5)
+	_halo_mat.albedo_color = Color(_col, 0.3)
 	var hq := QuadMesh.new()
 	hq.size = Vector2(1.0, 1.0)
 	var halo := MeshInstance3D.new()
@@ -223,13 +256,13 @@ func _build() -> void:
 	_motes.initial_velocity_max = 0.4
 	_motes.scale_amount_min = 0.5
 	_motes.scale_amount_max = 1.1
-	_motes.color = _col.lightened(0.2)
+	_motes.color = _col
 	var g := Gradient.new()
 	g.offsets = PackedFloat32Array([0.0, 0.2, 1.0])
 	g.colors = PackedColorArray([Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)])
 	_motes.color_ramp = g
 	var mq := QuadMesh.new()
-	mq.size = Vector2(0.045, 0.045)
+	mq.size = Vector2(0.035, 0.035)
 	var mm := StandardMaterial3D.new()
 	mm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -297,9 +330,9 @@ func _process(delta: float) -> void:
 
 	# melayang pelan
 	if _float != null:
-		_float.position.y = _ground + HOVER + 0.07 * sin(tt * 2.2)
+		_float.position.y = _ground + HOVER + 0.07 * sin(_step(tt) * 2.2)
 	if _gem != null:
-		_gem.rotation.y += delta * 1.4
+		_gem.rotation.y = _step(_t) * 1.4
 
 	# makin terang saat pemain dekat
 	if _player == null or not is_instance_valid(_player):
@@ -314,21 +347,21 @@ func _process(delta: float) -> void:
 	if lifetime > 0.0:
 		var left := lifetime - _t
 		if left < BLINK_TIME:
-			flick = 0.3 + 0.7 * absf(sin(_t * 9.0))
+			flick = 0.25 if int(_t * 8.0) % 2 == 0 else 1.0          # kedip hidup-mati per frame
 		if left <= 0.0:
 			queue_free()
 			return
 
-	var base := (1.35 if _unique else 1.0) * flick
+	var base := (1.15 if _unique else 1.0) * flick
 	if _ring_mat != null:
-		_ring_mat.set_shader_parameter("energy", (0.8 + 0.7 * _near) * base)
+		_ring_mat.set_shader_parameter("energy", (0.7 + 0.3 * _near) * base)
 	if _beam_mat != null:
-		_beam_mat.set_shader_parameter("energy", (0.75 + 0.55 * _near) * base)
+		_beam_mat.set_shader_parameter("energy", (0.7 + 0.3 * _near) * base)
 	if _halo_mat != null:
-		var pulse := 0.5 + 0.5 * sin(tt * 3.0)
-		_halo_mat.albedo_color = Color(_col, (0.35 + 0.25 * pulse + 0.25 * _near) * flick)
+		var pulse := 0.5 + 0.5 * sin(_step(tt) * 3.0)
+		_halo_mat.albedo_color = Color(_col, (0.2 + 0.12 * pulse + 0.15 * _near) * flick)
 	if _gem_mat != null:
-		_gem_mat.emission_energy_multiplier = (1.6 + 1.2 * _near) * flick
+		_gem_mat.emission_energy_multiplier = (1.3 + 0.6 * _near) * flick
 
 
 ## Gabungkan loot baru ke tumpukan ini (item yang sama dijumlah). Dipakai saat dua drop berdekatan.

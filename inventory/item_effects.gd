@@ -17,6 +17,7 @@ extends Node
 @export var claw_extra_hops := 1             # wallhop tambahan per sekali di udara
 @export var claw_fx := true                  # goresan cakar di layar saat wallhop
 @export var equip_fx := true                 # kilau saat equipment didapat
+@export var borrowed_time_enabled := true     # Borrowed Time: nyawa cadangan (logika + animasi ada di borrowed_time.gd)
 @export var extended_bonus := 0.5            # Extended Mag: tambah magazine asli sebanyak 50% dari yang dimiliki (sekali per game)
 @export var extended_types := {"ammo_revolver": &"pistol", "ammo_smg": &"smg"}   # id item magazine -> ammo_type
 @export_group("EMBER CORE")
@@ -137,6 +138,11 @@ func _ready() -> void:
 	if not enabled:
 		set_physics_process(false)
 		return
+	if borrowed_time_enabled and get_node_or_null("BorrowedTime") == null:
+		var bt := Node.new()
+		bt.set_script(preload("borrowed_time.gd"))
+		bt.name = "BorrowedTime"
+		add_child(bt)
 	if fx_enabled:
 		_build_fx()
 		Inventory.item_used.connect(_play_fx)
@@ -178,8 +184,6 @@ func _health() -> Node:
 
 ## Return "" kalau boleh dipakai, atau alasan penolakan.
 func _can_use(item: ItemData) -> String:
-	if item.id == &"grenade" or item.id == &"molotov":
-		return "Lempar dengan G (grenade) / V (molotov)"
 	if item.id == &"adrenaline" and adrenaline_enabled and _adr_left > 0.0:
 		return "Adrenaline masih aktif"
 	if item.id == &"poison_dissolver" and not _poisoned():
@@ -481,7 +485,7 @@ func _equipment_tick(delta: float) -> void:
 	_equip_poll -= delta
 	if _equip_poll <= 0.0:
 		_equip_poll = 0.2
-		for id in [&"leapers_claw", &"extended_mag", &"ember_core"]:
+		for id in [&"leapers_claw", &"extended_mag", &"ember_core", &"borrowed_time"]:
 			var now := Inventory.has_item(id)
 			if _equip_ready and now and not _owned.get(id, false):
 				_fx_equip(id)
@@ -496,6 +500,8 @@ func _fx_equip(id: StringName) -> void:
 		Inventory.message.emit("Ember Core: musuh mati bisa meledak")
 	elif id == &"leapers_claw":
 		Inventory.message.emit("Leaper's Claw: wallhop +1, lebih tinggi")
+	elif id == &"borrowed_time":
+		Inventory.message.emit("Borrowed Time: satu nyawa cadangan")
 	if _fx_root == null or not equip_fx:
 		return
 	_fx_mat.set_shader_parameter("tint", COL_PEACH)
@@ -515,47 +521,10 @@ func _set_claw_t(v: float) -> void:
 	_claw_mat.set_shader_parameter("t", v)
 
 
-# Tembok terdekat di kanan / kiri LAYAR (pakai basis kamera aktif). +1 = kanan, -1 = kiri, 0 = gak ketemu.
-func _claw_wall_side(p: Node) -> float:
-	var cam := get_viewport().get_camera_3d()
-	if cam == null or not (p is CharacterBody3D):
-		return 0.0
-	var right: Vector3 = cam.global_basis.x
-	right.y = 0.0
-	if right.length() < 0.01:
-		return 0.0
-	right = right.normalized()
-	var body := p as CharacterBody3D
-	var space := body.get_world_3d().direct_space_state
-	var origin := body.global_position + Vector3(0.0, 0.9, 0.0)
-	var best_d := INF
-	var best_side := 0.0
-	for sd in [1.0, -1.0]:
-		var q := PhysicsRayQueryParameters3D.create(origin, origin + right * sd * 2.0)
-		q.exclude = [body.get_rid()]
-		var r := space.intersect_ray(q)
-		if r.is_empty() or absf(r.normal.y) > 0.3:
-			continue
-		var d := origin.distance_to(r.position)
-		if d < best_d:
-			best_d = d
-			best_side = sd
-	return best_side
-
-
 func _fx_claw(strong: bool) -> void:
 	if _claw_rect == null or not claw_fx:
 		return
-	# sisi tembok dihitung langsung dari arah kamera yang kelihatan di layar (gak bergantung variabel player)
-	var side := _claw_wall_side(_claw_player)
-	var from_player := 0.0
-	if _claw_player != null and "_last_wall_side" in _claw_player:
-		from_player = float(_claw_player.get("_last_wall_side"))
-	if side == 0.0:
-		side = from_player
-	if side != 0.0:
-		_claw_flip = signf(side)                           # tembok kanan -> goresan kanan, tembok kiri -> kiri
-	print("[claw] side=", side, " dari_player=", from_player, " flip=", _claw_flip, " (+1 kanan, -1 kiri)")   # debug, boleh dihapus
+	_claw_flip = -_claw_flip                           # selang-seling kiri / kanan
 	_claw_mat.set_shader_parameter("flip", _claw_flip)
 	_claw_mat.set_shader_parameter("power", 1.5 if strong else 1.0)
 	_claw_mat.set_shader_parameter("tint", COL_PEACH.lightened(0.5) if strong else COL_CREAM)
@@ -652,7 +621,7 @@ func _ember_fuse(pos: Vector3) -> void:
 	tm.outer_radius = 1.0
 	tm.rings = 48
 	tm.ring_segments = 6
-	var mat := _fx_material(Color(1.0, 0.45, 0.12, 0.55))
+	var mat := _fx_material(Color(0.87, 0.65, 0.54, 0.55))
 	tm.material = mat
 	mi.mesh = tm
 	mi.scale = Vector3.ONE * ember_radius
@@ -665,7 +634,7 @@ func _ember_fuse(pos: Vector3) -> void:
 	tw.tween_property(mat, "albedo_color:a", 0.8, ember_fuse / 6.0)
 	get_tree().create_timer(ember_fuse).timeout.connect(mi.queue_free)
 	var l := OmniLight3D.new()
-	l.light_color = Color(1.0, 0.5, 0.15)
+	l.light_color = Color(0.87, 0.65, 0.54)
 	l.light_energy = 0.5
 	l.omni_range = 5.0
 	l.shadow_enabled = false
@@ -674,7 +643,7 @@ func _ember_fuse(pos: Vector3) -> void:
 	var tl := l.create_tween()
 	tl.tween_property(l, "light_energy", 3.5, ember_fuse).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	get_tree().create_timer(ember_fuse).timeout.connect(l.queue_free)
-	_fx_particles(pos + Vector3(0, 0.6, 0), Color(1.0, 0.6, 0.2), 10, 0.05, 2.5, ember_fuse + 0.2, 40.0, 1.5)
+	_fx_particles(pos + Vector3(0, 0.6, 0), Color(0.87, 0.65, 0.54), 10, 0.05, 2.5, ember_fuse + 0.2, 40.0, 1.5)
 
 
 func _ember_boom(pos: Vector3) -> void:
@@ -706,46 +675,13 @@ func _ember_boom(pos: Vector3) -> void:
 				p.velocity += away.normalized() * ember_knockback + Vector3(0, 2.0, 0)
 	if not ember_fx:
 		return
-	# --- efek 3D
-	var c := pos + Vector3(0, 0.9, 0)
-	var ball := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = 0.5
-	sm.height = 1.0
-	var bmat := _fx_material(Color(1.0, 0.62, 0.2, 0.95))
-	sm.material = bmat
-	ball.mesh = sm
-	ball.scale = Vector3.ONE * 0.4
-	ball.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	get_tree().current_scene.add_child(ball)
-	ball.global_position = c
-	var tb := ball.create_tween().set_parallel(true)
-	tb.tween_property(ball, "scale", Vector3.ONE * ember_radius * 0.9, 0.16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tb.tween_property(bmat, "albedo_color", Color(1.0, 0.25, 0.05, 0.0), 0.3).set_delay(0.04)
-	tb.chain().tween_callback(ball.queue_free)
-	_fx_ring3d(pos, Color(1.0, 0.8, 0.45, 0.9), ember_radius, 0.4, 0.15)
-	var l := OmniLight3D.new()
-	l.light_color = Color(1.0, 0.55, 0.2)
-	l.light_energy = 8.0
-	l.omni_range = ember_radius * 2.5
-	l.shadow_enabled = false
-	get_tree().current_scene.add_child(l)
-	l.global_position = c
-	var tl := l.create_tween()
-	tl.tween_property(l, "light_energy", 0.0, 0.45).set_ease(Tween.EASE_OUT)
-	tl.tween_callback(l.queue_free)
-	_fx_particles(c, Color(1.0, 0.7, 0.25), 32, 0.09, 8.0, 0.8)
-	_fx_particles(c, Color(1.0, 0.95, 0.7), 12, 0.05, 11.0, 0.5)
-	_fx_particles(c, Color(0.18, 0.15, 0.14), 12, 0.2, 2.5, 1.1, 90.0, 1.0)
-	# --- kilatan layar, makin dekat makin kuat
-	if _fx_root != null and near > 0.05:
-		_fx_mat.set_shader_parameter("tint", Color(1.0, 0.5, 0.15))
-		_fx_mat.set_shader_parameter("ring", -1.0)
-		_fx_rect.visible = true
-		var ts := create_tween()
-		ts.tween_method(_set_glow, 0.0, 0.3 + near * 0.9, 0.05)
-		ts.tween_method(_set_glow, 0.3 + near * 0.9, 0.0, 0.5).set_ease(Tween.EASE_OUT)
-		ts.tween_callback(_hide_rect)
+	# --- efek 3D: SAMA dengan ledakan granat (fungsi yang sama di grenade_projectile.gd)
+	var Gren = preload("grenade_projectile.gd")
+	Gren.explosion_fx(get_tree().current_scene, pos + Vector3(0, 0.05, 0), ember_radius)
+	# --- kilatan layar + getar kamera, makin dekat makin kuat (sama dengan granat)
+	if near > 0.05:
+		screen_glow(Gren.GLOW_COL, near)
+		Gren.shake_camera(get_viewport(), near)
 
 
 ## Dipanggil dari luar (mis. ledakan granat): kilatan tepi layar berwarna. amount 0..1.

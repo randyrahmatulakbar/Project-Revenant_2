@@ -185,8 +185,14 @@ var _cursor_hold := 0.0
 func _input(event: InputEvent) -> void:
 	if not _in_text:
 		return
+	# menu dev (F1 / `) tidak boleh mengskip intro
+	var dm := get_tree().get_first_node_in_group("dev_menu")
+	if dm != null and dm.has_method("is_open") and dm.is_open():
+		return
 	var pressed := false
 	if event is InputEventKey:
+		if event.keycode == KEY_F1 or event.keycode == KEY_QUOTELEFT:
+			return
 		pressed = event.pressed and not event.echo
 	elif event is InputEventMouseButton or event is InputEventJoypadButton:
 		pressed = event.pressed

@@ -16,6 +16,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("CapsuleShape3D_enemy")
 
 [node name="Model" parent="." unique_id=1173265493 instance=ExtResource("2_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00045347214, 0, 0.0047967434)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1279473758]
 path_desired_distance = 0.6

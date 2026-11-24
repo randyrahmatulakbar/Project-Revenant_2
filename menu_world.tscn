@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://coyp54tmnlooe"]
 
 [ext_resource type="FontFile" uid="uid://hyiaromrf2xl" path="res://font/Rajdhani-Bold.ttf" id="2_hb8r4"]
+[ext_resource type="Material" uid="uid://biukr2pf50lj3" path="res://map/textures/yellow_light.tres" id="7_hb8r4"]
 [ext_resource type="Material" path="res://map/textures/menu_board.tres" id="m_board"]
 [ext_resource type="Material" path="res://map/textures/menu_ceiling.tres" id="m_ceil"]
 [ext_resource type="Material" path="res://map/textures/menu_concrete.tres" id="m_conc"]
@@ -25,12 +26,6 @@ fog_density = 0.018
 adjustment_enabled = true
 adjustment_contrast = 1.1
 adjustment_saturation = 0.9
-
-[sub_resource type="StandardMaterial3D" id="Mat_warm"]
-albedo_color = Color(0.3, 0.2, 0.1, 1)
-emission_enabled = true
-emission = Color(1, 0.75, 0.45, 1)
-emission_energy_multiplier = 1.6
 
 [sub_resource type="StandardMaterial3D" id="Mat_red"]
 albedo_color = Color(0.3, 0.02, 0.02, 1)
@@ -344,9 +339,9 @@ size = Vector3(8, 0.5, 0.8)
 material = ExtResource("m_metal")
 
 [node name="DoorBack1" type="CSGBox3D" parent="Hall" unique_id=1508993492]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -38.09746)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -37.03293)
 size = Vector3(6, 4.8, 0.2)
-material = SubResource("Mat_warm")
+material = ExtResource("7_hb8r4")
 
 [node name="TunWall21" type="CSGBox3D" parent="Hall" unique_id=1000623943]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 2.4, -38.2)
@@ -744,12 +739,12 @@ material = ExtResource("m_metal")
 [node name="FloorLine1" type="CSGBox3D" parent="Props" unique_id=1215871403]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.01, -6.0510864)
 size = Vector3(0.12, 0.02, 51.897827)
-material = SubResource("Mat_warm")
+material = ExtResource("7_hb8r4")
 
 [node name="FloorLine2" type="CSGBox3D" parent="Props" unique_id=2082110541]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.01, -5.964081)
 size = Vector3(0.12, 0.02, 52.07184)
-material = SubResource("Mat_warm")
+material = ExtResource("7_hb8r4")
 
 [node name="LampChain1" type="CSGCylinder3D" parent="Props" unique_id=1201020374]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, -16)

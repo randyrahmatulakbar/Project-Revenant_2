@@ -126,11 +126,12 @@ func _ready() -> void:
 	print("StyleMeter siap. player=", _player)
 	if _player == null:
 		push_warning("StyleMeter: player (CharacterBody3D dengan anak 'Health') tidak ketemu, bonus kill & luka tidak jalan")
-	var sp := root.find_child(spawner_node_name, true, false)
-	if sp and sp.has_signal("all_cleared"):
-		sp.connect("all_cleared", _on_all_cleared)
-	if sp and sp.has_signal("wave_started"):
-		sp.connect("wave_started", func(_i, _c): start())      # cadangan kalau pickup tidak terdeteksi
+	# Semua spawner di scene (intro + parkour room): dicari lewat sinyalnya, bukan lewat nama.
+	for sp in root.find_children("*", "", true, false):
+		if sp.has_signal("all_cleared") and sp.has_signal("wave_started"):
+			sp.connect("all_cleared", _on_all_cleared)
+			sp.connect("wave_started", _on_spawner_wave_started)
+			print("StyleMeter: spawner terhubung -> ", sp.get_path())
 	if not start_on_pickup:
 		start()
 		return
@@ -305,6 +306,27 @@ func _on_health(cur: float, _max: float) -> void:
 	_last_hp = cur
 
 
+# Gelombang pertama sebuah ruangan = ruangan baru: statistik & rank dihitung ulang dari nol.
+func _on_spawner_wave_started(idx: int, _count: int) -> void:
+	start()                               # cadangan kalau pickup tidak terdeteksi
+	if idx == 1:
+		_reset_room_stats()
+
+
+func _reset_room_stats() -> void:
+	if _card != null:
+		_close_card()
+	_results_shown = false
+	kills = 0
+	_parries = 0
+	_damage_hits = 0
+	_best_chain = 0
+	_play_time = 0.0
+	_combo = 0
+	points = 0.0
+	best_rank = 0                         # rank tertinggi dihitung per ruangan
+
+
 func _on_all_cleared() -> void:
 	if not enabled or not _active:
 		return
@@ -314,6 +336,9 @@ func _on_all_cleared() -> void:
 	if results_enabled:
 		await get_tree().create_timer(results_delay, true, false, true).timeout
 		if is_inside_tree():
+			_results_shown = false            # laporan boleh tampil lagi di setiap akhir area (awal & akhir)
+			if _card != null:
+				_close_card()
 			_show_results()
 
 

@@ -44,6 +44,7 @@ const ENTRIES := [
 	{"sub": "Aset 3D & Lingkungan"},
 	{"item": "Kenney.nl (Free 3D Assets & Game Assets)"},
 	{"item": "Itch.io Creators (Community Assets)"},
+	{"item": "Sketchfab.com Creators (Community Models)"},
 	{"sub": "Audio & Sound Effects"},
 	{"item": "YouTube Audio Library"},
 	{"item": "Freesound.org & Itch.io Audio Assets"},
@@ -1181,10 +1182,6 @@ func _build_ui() -> void:
 	_prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_prompt.visible = false
 	_ui.add_child(_prompt)
-	var box := DottedBox.new()
-	_frac(box, 0.32, 0.84, 0.68, 0.92)
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_prompt.add_child(box)
 	var pl := _label("press anything to start", 13, Color(0.8, 0.88, 0.9))
 	_frac(pl, 0.32, 0.84, 0.68, 0.92)
 	pl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

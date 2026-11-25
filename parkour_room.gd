@@ -2,10 +2,13 @@ extends Node3D
 # Ruang parkour "poros runtuh" (menggantikan R2 di intro).
 # - checkpoint otomatis (CP0..CPn), jatuh ke dasar poros = balik ke checkpoint terakhir + luka kecil
 # - petunjuk kecil di bawah layar (node Hints, metadata 'hint'), muncul saat masuk zona
-# - Finish = pintu lift di ujung; sinyal `course_finished` dikirim sekali
+# - Finish = area di depan pintu lift di ujung. Pintu hanya terbuka setelah terminal di-hack
+#   (diurus exit_door.gd). `course_finished` dikirim sekali, setelah pintu terbuka & pemain di area Finish
 
 signal course_finished
 
+@export_file("*.tscn") var next_scene: String = "res://ending_world.tscn"
+@export var fade_out_time := 1.4
 @export var fall_damage := 15.0
 @export var respawn_flash := 0.35
 
@@ -25,6 +28,8 @@ func _ready() -> void:
 		cp.body_entered.connect(_on_checkpoint.bind(i, cp))
 	$Hazard.body_entered.connect(_on_hazard)
 	$Finish.body_entered.connect(_on_finish)
+	if has_node("Exit") and $Exit.has_signal("opened"):
+		$Exit.connect("opened", _on_exit_opened)
 
 	var layer := CanvasLayer.new()
 	layer.layer = 90
@@ -82,20 +87,41 @@ func _on_hazard(body: Node) -> void:
 	create_tween().tween_property(_flash, "color:a", 0.0, respawn_flash)
 
 
+func _exit_locked() -> bool:
+	# true selama pintu Exit belum dibuka lewat hack (kalau Exit tak punya exit_door.gd, dianggap terbuka)
+	return has_node("Exit") and $Exit.get("is_open") == false
+
+
 func _on_finish(body: Node) -> void:
 	if _done or not _is_player(body):
 		return
+	if _exit_locked():
+		return                          # pintu masih terkunci: hack terminal dulu
 	_done = true
-	var lamp: CSGBox3D = $Exit/StatusLamp
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.albedo_color = Color(0.3, 1.0, 0.45)
-	m.emission_enabled = true
-	m.emission = Color(0.3, 1.0, 0.45)
-	lamp.material = m
-	$Exit/DoorLight.light_color = Color(0.3, 1.0, 0.45)
-	get_tree().call_group("sfx", "play", "door")
 	course_finished.emit()
+	_go_next(body)
+
+
+# Layar menggelap lalu pindah ke scene ending.
+func _go_next(player: Node) -> void:
+	if next_scene == "" or not ResourceLoader.exists(next_scene):
+		push_warning("ParkourRoom: next_scene '%s' tidak ketemu" % next_scene)
+		return
+	if player is CharacterBody3D:
+		player.velocity = Vector3.ZERO
+		player.set_physics_process(false)
+		player.set_process_unhandled_input(false)
+	var tw := create_tween()
+	tw.tween_property(_flash, "color:a", 1.0, fade_out_time)
+	tw.tween_callback(get_tree().change_scene_to_file.bind(next_scene))
+
+
+# Dipanggil exit_door.gd saat pintu mulai terbuka (lampu & DoorLight sudah diubah di sana).
+func _on_exit_opened() -> void:
+	get_tree().call_group("sfx", "play", "door")
+	# pemain mungkin sudah berdiri di area Finish saat hack selesai
+	for b in $Finish.get_overlapping_bodies():
+		_on_finish(b)
 
 
 func _key(action: String) -> String:

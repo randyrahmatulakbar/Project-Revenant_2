@@ -1,0 +1,2934 @@
+[gd_scene load_steps=48 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Simple.gltf" id="1_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Simple2.gltf" id="2_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Metal.gltf" id="3_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_DarkPlates.gltf" id="4_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Squares.gltf" id="5_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/WallBand_Straight.gltf" id="6_wallba"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/TopSimple_Straight.gltf" id="7_topsim"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/BottomSimple_Straight.gltf" id="8_bottom"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/WallBand_Corner_Square_Inner.gltf" id="9_wallba"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/TopSimple_Corner_Round_Inner.gltf" id="10_topsim"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/BottomSimple_Corner_Square_Inner.gltf" id="11_bottom"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_3Plates.gltf" id="12_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Column_Large_Straight.gltf" id="13_column"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Column_Round.gltf" id="14_column"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Column_Simple.gltf" id="15_column"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/ShortWall_MetalPlates_Straight.gltf" id="16_shortw"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Stairs_4WideTall.gltf" id="17_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Ramp_4Wide.gltf" id="18_platfo"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Door_Frame_Square.gltf" id="19_door_f"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Door_Metal.gltf" id="20_door_m"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Door_Frame_Square_Blocked.gltf" id="21_door_f"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/ShortWall_Metal2_Straight.gltf" id="22_shortw"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/ShortWall_DarkMetal2_Straight.gltf" id="23_shortw"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Prop_Crate3.gltf" id="24_prop_c"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Prop_Crate4.gltf" id="25_prop_c"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Prop_Barrel_Large.gltf" id="26_prop_b"]
+[ext_resource type="PackedScene" path="res://assets/modular_scifi_megakit/Platform_Round1.gltf" id="27_platfo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2"]
+size = Vector3(50, 14, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3"]
+size = Vector3(1, 14, 48)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5"]
+size = Vector3(1.4, 10, 1.96)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_6"]
+height = 5.0
+radius = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7"]
+size = Vector3(0.5, 5, 0.98)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8"]
+size = Vector3(0.3, 1, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_9"]
+size = Vector3(8, 0.5, 16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_10"]
+size = Vector3(8, 0.5, 16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_11"]
+size = Vector3(16, 0.5, 8)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_12"]
+points = PackedVector3Array(-2, 0, 0, 2, 0, 0, -2, 0, 6.08, 2, 0, 6.08, -2, 3, 0, 2, 3, 0)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_13"]
+points = PackedVector3Array(-2, 0, 0, 2, 0, 0, -2, 0, 4, 2, 0, 4, -2, 2, 0, 2, 2, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_14"]
+size = Vector3(0.3, 2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_15"]
+size = Vector3(0.3, 1, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_16"]
+size = Vector3(1.0, 1.0, 1.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17"]
+size = Vector3(1.12, 1.12, 1.12)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_18"]
+height = 1.1
+radius = 0.27
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_19"]
+height = 0.14
+radius = 3.0
+
+[sub_resource type="Environment" id="Environment_20"]
+background_mode = 1
+background_color = Color(0.01, 0.012, 0.016, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.1, 0.12, 0.16, 1)
+ambient_light_energy = 0.55
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.04, 0.05, 0.07, 1)
+fog_density = 0.012
+
+[node name="BossArena" type="Node3D"]
+
+[node name="Environment" parent="." type="Node3D"]
+
+[node name="Floor" parent="Environment" type="Node3D"]
+
+[node name="Collision" parent="Environment/Floor" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Floor/Collision" type="CollisionShape3D"]
+position = Vector3(0, -0.5, 0)
+shape = SubResource("BoxShape3D_1")
+
+[node name="Tiles" parent="Environment/Floor" type="Node3D"]
+
+[node name="Tile_01_01" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-22, 0, -22)
+
+[node name="Tile_01_02" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-18, 0, -22)
+
+[node name="Tile_01_03" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-14, 0, -22)
+
+[node name="Tile_01_04" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-10, 0, -22)
+
+[node name="Tile_01_05" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-6, 0, -22)
+
+[node name="Tile_01_06" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-2, 0, -22)
+
+[node name="Tile_01_07" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(2, 0, -22)
+
+[node name="Tile_01_08" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(6, 0, -22)
+
+[node name="Tile_01_09" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(10, 0, -22)
+
+[node name="Tile_01_10" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(14, 0, -22)
+
+[node name="Tile_01_11" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(18, 0, -22)
+
+[node name="Tile_01_12" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 0, -22)
+
+[node name="Tile_02_01" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-22, 0, -18)
+
+[node name="Tile_02_02" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 0, -18)
+
+[node name="Tile_02_03" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-14, 0, -18)
+
+[node name="Tile_02_04" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-10, 0, -18)
+
+[node name="Tile_02_05" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-6, 0, -18)
+
+[node name="Tile_02_06" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-2, 0, -18)
+
+[node name="Tile_02_07" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(2, 0, -18)
+
+[node name="Tile_02_08" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(6, 0, -18)
+
+[node name="Tile_02_09" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(10, 0, -18)
+
+[node name="Tile_02_10" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(14, 0, -18)
+
+[node name="Tile_02_11" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 0, -18)
+
+[node name="Tile_02_12" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(22, 0, -18)
+
+[node name="Tile_03_01" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 0, -14)
+
+[node name="Tile_03_02" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-18, 0, -14)
+
+[node name="Tile_03_03" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-14, 0, -14)
+
+[node name="Tile_03_04" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-10, 0, -14)
+
+[node name="Tile_03_05" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-6, 0, -14)
+
+[node name="Tile_03_06" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-2, 0, -14)
+
+[node name="Tile_03_07" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(2, 0, -14)
+
+[node name="Tile_03_08" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(6, 0, -14)
+
+[node name="Tile_03_09" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(10, 0, -14)
+
+[node name="Tile_03_10" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(14, 0, -14)
+
+[node name="Tile_03_11" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(18, 0, -14)
+
+[node name="Tile_03_12" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(22, 0, -14)
+
+[node name="Tile_04_01" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-22, 0, -10)
+
+[node name="Tile_04_02" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-18, 0, -10)
+
+[node name="Tile_04_03" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-14, 0, -10)
+
+[node name="Tile_04_04" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-10, 0, -10)
+
+[node name="Tile_04_05" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-6, 0, -10)
+
+[node name="Tile_04_06" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-2, 0, -10)
+
+[node name="Tile_04_07" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(2, 0, -10)
+
+[node name="Tile_04_08" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(6, 0, -10)
+
+[node name="Tile_04_09" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(10, 0, -10)
+
+[node name="Tile_04_10" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(14, 0, -10)
+
+[node name="Tile_04_11" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(18, 0, -10)
+
+[node name="Tile_04_12" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 0, -10)
+
+[node name="Tile_05_01" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-22, 0, -6)
+
+[node name="Tile_05_02" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 0, -6)
+
+[node name="Tile_05_03" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-14, 0, -6)
+
+[node name="Tile_05_04" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-10, 0, -6)
+
+[node name="Tile_05_05" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 0, -6)
+
+[node name="Tile_05_06" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 0, -6)
+
+[node name="Tile_05_07" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 0, -6)
+
+[node name="Tile_05_08" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 0, -6)
+
+[node name="Tile_05_09" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(10, 0, -6)
+
+[node name="Tile_05_10" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(14, 0, -6)
+
+[node name="Tile_05_11" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 0, -6)
+
+[node name="Tile_05_12" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(22, 0, -6)
+
+[node name="Tile_06_01" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 0, -2)
+
+[node name="Tile_06_02" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-18, 0, -2)
+
+[node name="Tile_06_03" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-14, 0, -2)
+
+[node name="Tile_06_04" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-10, 0, -2)
+
+[node name="Tile_06_05" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 0, -2)
+
+[node name="Tile_06_06" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 0, -2)
+
+[node name="Tile_06_07" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 0, -2)
+
+[node name="Tile_06_08" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 0, -2)
+
+[node name="Tile_06_09" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(10, 0, -2)
+
+[node name="Tile_06_10" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(14, 0, -2)
+
+[node name="Tile_06_11" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(18, 0, -2)
+
+[node name="Tile_06_12" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(22, 0, -2)
+
+[node name="Tile_07_01" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-22, 0, 2)
+
+[node name="Tile_07_02" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-18, 0, 2)
+
+[node name="Tile_07_03" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-14, 0, 2)
+
+[node name="Tile_07_04" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-10, 0, 2)
+
+[node name="Tile_07_05" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 0, 2)
+
+[node name="Tile_07_06" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 0, 2)
+
+[node name="Tile_07_07" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 0, 2)
+
+[node name="Tile_07_08" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 0, 2)
+
+[node name="Tile_07_09" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(10, 0, 2)
+
+[node name="Tile_07_10" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(14, 0, 2)
+
+[node name="Tile_07_11" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(18, 0, 2)
+
+[node name="Tile_07_12" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 0, 2)
+
+[node name="Tile_08_01" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-22, 0, 6)
+
+[node name="Tile_08_02" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 0, 6)
+
+[node name="Tile_08_03" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-14, 0, 6)
+
+[node name="Tile_08_04" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-10, 0, 6)
+
+[node name="Tile_08_05" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 0, 6)
+
+[node name="Tile_08_06" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 0, 6)
+
+[node name="Tile_08_07" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 0, 6)
+
+[node name="Tile_08_08" parent="Environment/Floor/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 0, 6)
+
+[node name="Tile_08_09" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(10, 0, 6)
+
+[node name="Tile_08_10" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(14, 0, 6)
+
+[node name="Tile_08_11" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 0, 6)
+
+[node name="Tile_08_12" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(22, 0, 6)
+
+[node name="Tile_09_01" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 0, 10)
+
+[node name="Tile_09_02" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-18, 0, 10)
+
+[node name="Tile_09_03" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-14, 0, 10)
+
+[node name="Tile_09_04" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-10, 0, 10)
+
+[node name="Tile_09_05" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-6, 0, 10)
+
+[node name="Tile_09_06" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(-2, 0, 10)
+
+[node name="Tile_09_07" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(2, 0, 10)
+
+[node name="Tile_09_08" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(6, 0, 10)
+
+[node name="Tile_09_09" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(10, 0, 10)
+
+[node name="Tile_09_10" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(14, 0, 10)
+
+[node name="Tile_09_11" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(18, 0, 10)
+
+[node name="Tile_09_12" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(22, 0, 10)
+
+[node name="Tile_10_01" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-22, 0, 14)
+
+[node name="Tile_10_02" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-18, 0, 14)
+
+[node name="Tile_10_03" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-14, 0, 14)
+
+[node name="Tile_10_04" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-10, 0, 14)
+
+[node name="Tile_10_05" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-6, 0, 14)
+
+[node name="Tile_10_06" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(-2, 0, 14)
+
+[node name="Tile_10_07" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(2, 0, 14)
+
+[node name="Tile_10_08" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(6, 0, 14)
+
+[node name="Tile_10_09" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(10, 0, 14)
+
+[node name="Tile_10_10" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(14, 0, 14)
+
+[node name="Tile_10_11" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(18, 0, 14)
+
+[node name="Tile_10_12" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 0, 14)
+
+[node name="Tile_11_01" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-22, 0, 18)
+
+[node name="Tile_11_02" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 0, 18)
+
+[node name="Tile_11_03" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-14, 0, 18)
+
+[node name="Tile_11_04" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-10, 0, 18)
+
+[node name="Tile_11_05" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-6, 0, 18)
+
+[node name="Tile_11_06" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(-2, 0, 18)
+
+[node name="Tile_11_07" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(2, 0, 18)
+
+[node name="Tile_11_08" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(6, 0, 18)
+
+[node name="Tile_11_09" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(10, 0, 18)
+
+[node name="Tile_11_10" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(14, 0, 18)
+
+[node name="Tile_11_11" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 0, 18)
+
+[node name="Tile_11_12" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(22, 0, 18)
+
+[node name="Tile_12_01" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 0, 22)
+
+[node name="Tile_12_02" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-18, 0, 22)
+
+[node name="Tile_12_03" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(-14, 0, 22)
+
+[node name="Tile_12_04" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-10, 0, 22)
+
+[node name="Tile_12_05" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(-6, 0, 22)
+
+[node name="Tile_12_06" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(-2, 0, 22)
+
+[node name="Tile_12_07" parent="Environment/Floor/Tiles" instance=ExtResource("5_platfo")]
+position = Vector3(2, 0, 22)
+
+[node name="Tile_12_08" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(6, 0, 22)
+
+[node name="Tile_12_09" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(10, 0, 22)
+
+[node name="Tile_12_10" parent="Environment/Floor/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(14, 0, 22)
+
+[node name="Tile_12_11" parent="Environment/Floor/Tiles" instance=ExtResource("1_platfo")]
+position = Vector3(18, 0, 22)
+
+[node name="Tile_12_12" parent="Environment/Floor/Tiles" instance=ExtResource("2_platfo")]
+position = Vector3(22, 0, 22)
+
+[node name="Walls" parent="Environment" type="Node3D"]
+
+[node name="WallNorth" parent="Environment/Walls" type="Node3D"]
+
+[node name="Collision" parent="Environment/Walls/WallNorth" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Walls/WallNorth/Collision" type="CollisionShape3D"]
+position = Vector3(0, 7, -24.5)
+shape = SubResource("BoxShape3D_2")
+
+[node name="Layer1" parent="Environment/Walls/WallNorth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(2, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(6, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(10, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(14, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallNorth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(18, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Layer2" parent="Environment/Walls/WallNorth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(2, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(6, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(10, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(14, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallNorth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(18, 3, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Layer3" parent="Environment/Walls/WallNorth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(2, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(6, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(10, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(14, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallNorth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(18, 6, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Layer4" parent="Environment/Walls/WallNorth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-2, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(2, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(6, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(10, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(14, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallNorth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(18, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="TopTrim" parent="Environment/Walls/WallNorth" type="Node3D"]
+
+[node name="BottomTrim" parent="Environment/Walls/WallNorth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-18, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_01" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-18, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-14, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-14, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-10, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-10, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-6, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-6, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-2, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(2, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(2, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(6, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(6, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(10, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(10, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(14, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(14, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallNorth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(18, 9, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallNorth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(18, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="WallSouth" parent="Environment/Walls" type="Node3D"]
+
+[node name="Collision" parent="Environment/Walls/WallSouth" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Walls/WallSouth/Collision" type="CollisionShape3D"]
+position = Vector3(0, 7, 24.5)
+shape = SubResource("BoxShape3D_2")
+
+[node name="Layer1" parent="Environment/Walls/WallSouth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-2, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(6, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(10, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(14, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallSouth/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(18, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Layer2" parent="Environment/Walls/WallSouth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-2, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(6, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(10, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(14, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallSouth/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(18, 3, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Layer3" parent="Environment/Walls/WallSouth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-2, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(2, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(6, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(10, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(14, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallSouth/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(18, 6, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Layer4" parent="Environment/Walls/WallSouth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-18, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-14, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-10, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-6, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-2, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(2, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(6, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(10, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(14, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallSouth/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(18, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="TopTrim" parent="Environment/Walls/WallSouth" type="Node3D"]
+
+[node name="BottomTrim" parent="Environment/Walls/WallSouth" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-18, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_01" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-18, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-14, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-14, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-10, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-10, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-6, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-6, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-2, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-2, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(2, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(6, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(6, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(10, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(10, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(14, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(14, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallSouth/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(18, 9, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallSouth/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(18, 0, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="WallWest" parent="Environment/Walls" type="Node3D"]
+
+[node name="Collision" parent="Environment/Walls/WallWest" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Walls/WallWest/Collision" type="CollisionShape3D"]
+position = Vector3(-24.5, 7, 0)
+shape = SubResource("BoxShape3D_3")
+
+[node name="Layer1" parent="Environment/Walls/WallWest" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, -18)
+
+[node name="Seg_02" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, -14)
+
+[node name="Seg_03" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, -10)
+
+[node name="Seg_04" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, -6)
+
+[node name="Seg_05" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, -2)
+
+[node name="Seg_06" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, 2)
+
+[node name="Seg_07" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, 6)
+
+[node name="Seg_08" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, 10)
+
+[node name="Seg_09" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, 14)
+
+[node name="Seg_10" parent="Environment/Walls/WallWest/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 0, 18)
+
+[node name="Layer2" parent="Environment/Walls/WallWest" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, -18)
+
+[node name="Seg_02" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, -14)
+
+[node name="Seg_03" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, -10)
+
+[node name="Seg_04" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, -6)
+
+[node name="Seg_05" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, -2)
+
+[node name="Seg_06" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, 2)
+
+[node name="Seg_07" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, 6)
+
+[node name="Seg_08" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, 10)
+
+[node name="Seg_09" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, 14)
+
+[node name="Seg_10" parent="Environment/Walls/WallWest/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 3, 18)
+
+[node name="Layer3" parent="Environment/Walls/WallWest" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, -18)
+
+[node name="Seg_02" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, -14)
+
+[node name="Seg_03" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, -10)
+
+[node name="Seg_04" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, -6)
+
+[node name="Seg_05" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, -2)
+
+[node name="Seg_06" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, 2)
+
+[node name="Seg_07" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, 6)
+
+[node name="Seg_08" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, 10)
+
+[node name="Seg_09" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, 14)
+
+[node name="Seg_10" parent="Environment/Walls/WallWest/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 6, 18)
+
+[node name="Layer4" parent="Environment/Walls/WallWest" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, -18)
+
+[node name="Seg_02" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, -14)
+
+[node name="Seg_03" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, -10)
+
+[node name="Seg_04" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, -6)
+
+[node name="Seg_05" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, -2)
+
+[node name="Seg_06" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, 2)
+
+[node name="Seg_07" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, 6)
+
+[node name="Seg_08" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, 10)
+
+[node name="Seg_09" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, 14)
+
+[node name="Seg_10" parent="Environment/Walls/WallWest/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(-22, 9, 18)
+
+[node name="TopTrim" parent="Environment/Walls/WallWest" type="Node3D"]
+
+[node name="BottomTrim" parent="Environment/Walls/WallWest" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, -18)
+
+[node name="Seg_01" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, -18)
+
+[node name="Seg_02" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, -14)
+
+[node name="Seg_02" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, -14)
+
+[node name="Seg_03" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, -10)
+
+[node name="Seg_03" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, -10)
+
+[node name="Seg_04" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, -6)
+
+[node name="Seg_04" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, -6)
+
+[node name="Seg_05" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, -2)
+
+[node name="Seg_05" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, -2)
+
+[node name="Seg_06" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, 2)
+
+[node name="Seg_06" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, 2)
+
+[node name="Seg_07" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, 6)
+
+[node name="Seg_07" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, 6)
+
+[node name="Seg_08" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, 10)
+
+[node name="Seg_08" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, 10)
+
+[node name="Seg_09" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, 14)
+
+[node name="Seg_09" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, 14)
+
+[node name="Seg_10" parent="Environment/Walls/WallWest/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(-22, 9, 18)
+
+[node name="Seg_10" parent="Environment/Walls/WallWest/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(-22, 0, 18)
+
+[node name="WallEast" parent="Environment/Walls" type="Node3D"]
+
+[node name="Collision" parent="Environment/Walls/WallEast" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Walls/WallEast/Collision" type="CollisionShape3D"]
+position = Vector3(24.5, 7, 0)
+shape = SubResource("BoxShape3D_3")
+
+[node name="Layer1" parent="Environment/Walls/WallEast" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, -18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, -14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, -6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, -2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallEast/Layer1" instance=ExtResource("6_wallba")]
+position = Vector3(22, 0, 18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Layer2" parent="Environment/Walls/WallEast" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, -18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, -14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, -6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, -2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallEast/Layer2" instance=ExtResource("6_wallba")]
+position = Vector3(22, 3, 18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Layer3" parent="Environment/Walls/WallEast" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, -18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, -14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, -6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, -2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallEast/Layer3" instance=ExtResource("6_wallba")]
+position = Vector3(22, 6, 18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Layer4" parent="Environment/Walls/WallEast" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, -18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, -14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, -6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, -2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallEast/Layer4" instance=ExtResource("6_wallba")]
+position = Vector3(22, 9, 18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="TopTrim" parent="Environment/Walls/WallEast" type="Node3D"]
+
+[node name="BottomTrim" parent="Environment/Walls/WallEast" type="Node3D"]
+
+[node name="Seg_01" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, -18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_01" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, -18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, -14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_02" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, -14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_03" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, -10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, -6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_04" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, -6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, -2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_05" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, -2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_06" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_07" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_08" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_09" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallEast/TopTrim" instance=ExtResource("7_topsim")]
+position = Vector3(22, 9, 18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Seg_10" parent="Environment/Walls/WallEast/BottomTrim" instance=ExtResource("8_bottom")]
+position = Vector3(22, 0, 18)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Corners" parent="Environment/Walls" type="Node3D"]
+
+[node name="Corner_NW" parent="Environment/Walls/Corners" type="Node3D"]
+
+[node name="Wall_L1" parent="Environment/Walls/Corners/Corner_NW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 0, -20)
+
+[node name="Wall_L2" parent="Environment/Walls/Corners/Corner_NW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 3, -20)
+
+[node name="Wall_L3" parent="Environment/Walls/Corners/Corner_NW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 6, -20)
+
+[node name="Wall_L4" parent="Environment/Walls/Corners/Corner_NW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 9, -20)
+
+[node name="TopTrim" parent="Environment/Walls/Corners/Corner_NW" instance=ExtResource("10_topsim")]
+position = Vector3(-20, 9, -20)
+
+[node name="BottomTrim" parent="Environment/Walls/Corners/Corner_NW" instance=ExtResource("11_bottom")]
+position = Vector3(-20, 0, -20)
+
+[node name="Corner_NE" parent="Environment/Walls/Corners" type="Node3D"]
+
+[node name="Wall_L1" parent="Environment/Walls/Corners/Corner_NE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 0, -20)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Wall_L2" parent="Environment/Walls/Corners/Corner_NE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 3, -20)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Wall_L3" parent="Environment/Walls/Corners/Corner_NE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 6, -20)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Wall_L4" parent="Environment/Walls/Corners/Corner_NE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 9, -20)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="TopTrim" parent="Environment/Walls/Corners/Corner_NE" instance=ExtResource("10_topsim")]
+position = Vector3(20, 9, -20)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="BottomTrim" parent="Environment/Walls/Corners/Corner_NE" instance=ExtResource("11_bottom")]
+position = Vector3(20, 0, -20)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Corner_SE" parent="Environment/Walls/Corners" type="Node3D"]
+
+[node name="Wall_L1" parent="Environment/Walls/Corners/Corner_SE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Wall_L2" parent="Environment/Walls/Corners/Corner_SE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 3, 20)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Wall_L3" parent="Environment/Walls/Corners/Corner_SE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 6, 20)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Wall_L4" parent="Environment/Walls/Corners/Corner_SE" instance=ExtResource("9_wallba")]
+position = Vector3(20, 9, 20)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="TopTrim" parent="Environment/Walls/Corners/Corner_SE" instance=ExtResource("10_topsim")]
+position = Vector3(20, 9, 20)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="BottomTrim" parent="Environment/Walls/Corners/Corner_SE" instance=ExtResource("11_bottom")]
+position = Vector3(20, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Corner_SW" parent="Environment/Walls/Corners" type="Node3D"]
+
+[node name="Wall_L1" parent="Environment/Walls/Corners/Corner_SW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 0, 20)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Wall_L2" parent="Environment/Walls/Corners/Corner_SW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 3, 20)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Wall_L3" parent="Environment/Walls/Corners/Corner_SW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 6, 20)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Wall_L4" parent="Environment/Walls/Corners/Corner_SW" instance=ExtResource("9_wallba")]
+position = Vector3(-20, 9, 20)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="TopTrim" parent="Environment/Walls/Corners/Corner_SW" instance=ExtResource("10_topsim")]
+position = Vector3(-20, 9, 20)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="BottomTrim" parent="Environment/Walls/Corners/Corner_SW" instance=ExtResource("11_bottom")]
+position = Vector3(-20, 0, 20)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Ceiling" parent="Environment" type="Node3D"]
+
+[node name="Collision" parent="Environment/Ceiling" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Ceiling/Collision" type="CollisionShape3D"]
+position = Vector3(0, 14.5, 0)
+shape = SubResource("BoxShape3D_4")
+
+[node name="Tiles" parent="Environment/Ceiling" type="Node3D"]
+
+[node name="Tile_01_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-22, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-18, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-14, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-10, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-2, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(6, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(10, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(14, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(18, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_01_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(22, 14, -22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-22, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-18, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-14, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-10, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-6, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(2, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(10, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(14, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(18, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_02_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(22, 14, -18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-22, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-18, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-14, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-10, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-2, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(6, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(10, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(14, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(18, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_03_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(22, 14, -14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-22, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-18, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-14, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-10, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-6, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(2, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(10, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(14, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(18, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_04_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(22, 14, -10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-22, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-18, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-14, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-10, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-2, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(6, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(10, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(14, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(18, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_05_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(22, 14, -6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-22, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-18, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-14, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-10, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-6, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(2, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(10, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(14, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(18, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_06_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(22, 14, -2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-22, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-18, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-14, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-10, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-2, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(6, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(10, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(14, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(18, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_07_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(22, 14, 2)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-22, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-18, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-14, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-10, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-6, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(2, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(10, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(14, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(18, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_08_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(22, 14, 6)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-22, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-18, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-14, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-10, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-2, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(6, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(10, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(14, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(18, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_09_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(22, 14, 10)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-22, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-18, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-14, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-10, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-6, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(2, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(10, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(14, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(18, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_10_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(22, 14, 14)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-22, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-18, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-14, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-10, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-6, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-2, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(2, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(6, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(10, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(14, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(18, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_11_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(22, 14, 18)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_01" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-22, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_02" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-18, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_03" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-14, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_04" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-10, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_05" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(-6, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_06" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(-2, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_07" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(2, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_08" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(6, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_09" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(10, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_10" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(14, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_11" parent="Environment/Ceiling/Tiles" instance=ExtResource("12_platfo")]
+position = Vector3(18, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Tile_12_12" parent="Environment/Ceiling/Tiles" instance=ExtResource("4_platfo")]
+position = Vector3(22, 14, 22)
+rotation_degrees = Vector3(180, 0, 0)
+
+[node name="Pillars" parent="Environment" type="Node3D"]
+
+[node name="Pillar_Large_NW" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-18, 0, -20)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Large_NW" instance=ExtResource("13_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Large_NW" type="CollisionShape3D"]
+position = Vector3(0, 5, 0.14)
+shape = SubResource("BoxShape3D_5")
+
+[node name="Pillar_Large_NE" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(18, 0, -20)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Large_NE" instance=ExtResource("13_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Large_NE" type="CollisionShape3D"]
+position = Vector3(0, 5, 0.14)
+shape = SubResource("BoxShape3D_5")
+
+[node name="Pillar_Large_SW" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-18, 0, 20)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Large_SW" instance=ExtResource("13_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Large_SW" type="CollisionShape3D"]
+position = Vector3(0, 5, 0.14)
+shape = SubResource("BoxShape3D_5")
+
+[node name="Pillar_Large_SE" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(18, 0, 20)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Large_SE" instance=ExtResource("13_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Large_SE" type="CollisionShape3D"]
+position = Vector3(0, 5, 0.14)
+shape = SubResource("BoxShape3D_5")
+
+[node name="Pillar_Ring_01" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(9, 0, 0)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Ring_01" instance=ExtResource("14_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Ring_01" type="CollisionShape3D"]
+position = Vector3(0, 2.5, 0)
+shape = SubResource("CylinderShape3D_6")
+
+[node name="Pillar_Ring_02" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(4.5, 0, 7.7942)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Ring_02" instance=ExtResource("14_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Ring_02" type="CollisionShape3D"]
+position = Vector3(0, 2.5, 0)
+shape = SubResource("CylinderShape3D_6")
+
+[node name="Pillar_Ring_03" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-4.5, 0, 7.7942)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Ring_03" instance=ExtResource("14_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Ring_03" type="CollisionShape3D"]
+position = Vector3(0, 2.5, 0)
+shape = SubResource("CylinderShape3D_6")
+
+[node name="Pillar_Ring_04" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-9, 0, 0)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Ring_04" instance=ExtResource("14_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Ring_04" type="CollisionShape3D"]
+position = Vector3(0, 2.5, 0)
+shape = SubResource("CylinderShape3D_6")
+
+[node name="Pillar_Ring_05" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-4.5, 0, -7.7942)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Ring_05" instance=ExtResource("14_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Ring_05" type="CollisionShape3D"]
+position = Vector3(0, 2.5, 0)
+shape = SubResource("CylinderShape3D_6")
+
+[node name="Pillar_Ring_06" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(4.5, 0, -7.7942)
+
+[node name="Model" parent="Environment/Pillars/Pillar_Ring_06" instance=ExtResource("14_column")]
+
+[node name="Collision" parent="Environment/Pillars/Pillar_Ring_06" type="CollisionShape3D"]
+position = Vector3(0, 2.5, 0)
+shape = SubResource("CylinderShape3D_6")
+
+[node name="Support_NW" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-16, 0, -16)
+
+[node name="Model" parent="Environment/Pillars/Support_NW" instance=ExtResource("15_column")]
+
+[node name="Collision" parent="Environment/Pillars/Support_NW" type="CollisionShape3D"]
+position = Vector3(0, 2.5, -0.02)
+shape = SubResource("BoxShape3D_7")
+
+[node name="Support_W" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(-16, 0, 0)
+
+[node name="Model" parent="Environment/Pillars/Support_W" instance=ExtResource("15_column")]
+
+[node name="Collision" parent="Environment/Pillars/Support_W" type="CollisionShape3D"]
+position = Vector3(0, 2.5, -0.02)
+shape = SubResource("BoxShape3D_7")
+
+[node name="Support_E" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(16, 0, 0)
+
+[node name="Model" parent="Environment/Pillars/Support_E" instance=ExtResource("15_column")]
+
+[node name="Collision" parent="Environment/Pillars/Support_E" type="CollisionShape3D"]
+position = Vector3(0, 2.5, -0.02)
+shape = SubResource("BoxShape3D_7")
+
+[node name="Support_SE" parent="Environment/Pillars" type="StaticBody3D"]
+position = Vector3(16, 0, 16)
+
+[node name="Model" parent="Environment/Pillars/Support_SE" instance=ExtResource("15_column")]
+
+[node name="Collision" parent="Environment/Pillars/Support_SE" type="CollisionShape3D"]
+position = Vector3(0, 2.5, -0.02)
+shape = SubResource("BoxShape3D_7")
+
+[node name="Platforms" parent="Environment" type="Node3D"]
+
+[node name="Mezzanine_West" parent="Environment/Platforms" type="Node3D"]
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_West" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Platforms/Mezzanine_West/Collision" type="CollisionShape3D"]
+position = Vector3(-20, 2.75, -8)
+shape = SubResource("BoxShape3D_9")
+
+[node name="Tiles" parent="Environment/Platforms/Mezzanine_West" type="Node3D"]
+
+[node name="Tile_01" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 3, -14)
+
+[node name="Tile_02" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 3, -14)
+
+[node name="Tile_03" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 3, -10)
+
+[node name="Tile_04" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 3, -10)
+
+[node name="Tile_05" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 3, -6)
+
+[node name="Tile_06" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 3, -6)
+
+[node name="Tile_07" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-22, 3, -2)
+
+[node name="Tile_08" parent="Environment/Platforms/Mezzanine_West/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-18, 3, -2)
+
+[node name="Railing" parent="Environment/Platforms/Mezzanine_West" type="Node3D"]
+
+[node name="Rail_01" parent="Environment/Platforms/Mezzanine_West/Railing" type="StaticBody3D"]
+position = Vector3(-16, 3, -14)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_01" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_01" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_02" parent="Environment/Platforms/Mezzanine_West/Railing" type="StaticBody3D"]
+position = Vector3(-16, 3, -10)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_02" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_02" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_03" parent="Environment/Platforms/Mezzanine_West/Railing" type="StaticBody3D"]
+position = Vector3(-16, 3, -6)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_03" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_03" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_04" parent="Environment/Platforms/Mezzanine_West/Railing" type="StaticBody3D"]
+position = Vector3(-16, 3, -2)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_04" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_West/Railing/Rail_04" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Mezzanine_East" parent="Environment/Platforms" type="Node3D"]
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_East" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Platforms/Mezzanine_East/Collision" type="CollisionShape3D"]
+position = Vector3(20, 2.75, 8)
+shape = SubResource("BoxShape3D_10")
+
+[node name="Tiles" parent="Environment/Platforms/Mezzanine_East" type="Node3D"]
+
+[node name="Tile_01" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 3, 2)
+
+[node name="Tile_02" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 3, 2)
+
+[node name="Tile_03" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 3, 6)
+
+[node name="Tile_04" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 3, 6)
+
+[node name="Tile_05" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 3, 10)
+
+[node name="Tile_06" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 3, 10)
+
+[node name="Tile_07" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(18, 3, 14)
+
+[node name="Tile_08" parent="Environment/Platforms/Mezzanine_East/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(22, 3, 14)
+
+[node name="Railing" parent="Environment/Platforms/Mezzanine_East" type="Node3D"]
+
+[node name="Rail_01" parent="Environment/Platforms/Mezzanine_East/Railing" type="StaticBody3D"]
+position = Vector3(16, 3, 2)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_01" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_01" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_02" parent="Environment/Platforms/Mezzanine_East/Railing" type="StaticBody3D"]
+position = Vector3(16, 3, 6)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_02" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_02" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_03" parent="Environment/Platforms/Mezzanine_East/Railing" type="StaticBody3D"]
+position = Vector3(16, 3, 10)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_03" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_03" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_04" parent="Environment/Platforms/Mezzanine_East/Railing" type="StaticBody3D"]
+position = Vector3(16, 3, 14)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Model" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_04" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Mezzanine_East/Railing/Rail_04" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Balcony_North" parent="Environment/Platforms" type="Node3D"]
+
+[node name="Collision" parent="Environment/Platforms/Balcony_North" type="StaticBody3D"]
+
+[node name="Shape" parent="Environment/Platforms/Balcony_North/Collision" type="CollisionShape3D"]
+position = Vector3(0, 1.75, -20)
+shape = SubResource("BoxShape3D_11")
+
+[node name="Tiles" parent="Environment/Platforms/Balcony_North" type="Node3D"]
+
+[node name="Tile_01" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-6, 2, -22)
+
+[node name="Tile_02" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-2, 2, -22)
+
+[node name="Tile_03" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(2, 2, -22)
+
+[node name="Tile_04" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(6, 2, -22)
+
+[node name="Tile_05" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-6, 2, -18)
+
+[node name="Tile_06" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(-2, 2, -18)
+
+[node name="Tile_07" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(2, 2, -18)
+
+[node name="Tile_08" parent="Environment/Platforms/Balcony_North/Tiles" instance=ExtResource("3_platfo")]
+position = Vector3(6, 2, -18)
+
+[node name="Railing" parent="Environment/Platforms/Balcony_North" type="Node3D"]
+
+[node name="Rail_01" parent="Environment/Platforms/Balcony_North/Railing" type="StaticBody3D"]
+position = Vector3(-6, 2, -16)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Model" parent="Environment/Platforms/Balcony_North/Railing/Rail_01" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Balcony_North/Railing/Rail_01" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_02" parent="Environment/Platforms/Balcony_North/Railing" type="StaticBody3D"]
+position = Vector3(-2, 2, -16)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Model" parent="Environment/Platforms/Balcony_North/Railing/Rail_02" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Balcony_North/Railing/Rail_02" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_03" parent="Environment/Platforms/Balcony_North/Railing" type="StaticBody3D"]
+position = Vector3(2, 2, -16)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Model" parent="Environment/Platforms/Balcony_North/Railing/Rail_03" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Balcony_North/Railing/Rail_03" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Rail_04" parent="Environment/Platforms/Balcony_North/Railing" type="StaticBody3D"]
+position = Vector3(6, 2, -16)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Model" parent="Environment/Platforms/Balcony_North/Railing/Rail_04" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Environment/Platforms/Balcony_North/Railing/Rail_04" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_8")
+
+[node name="Stairs" parent="Environment/Platforms" type="Node3D"]
+
+[node name="Stairs_West" parent="Environment/Platforms/Stairs" type="StaticBody3D"]
+position = Vector3(-20, 0, 0)
+
+[node name="Model" parent="Environment/Platforms/Stairs/Stairs_West" instance=ExtResource("17_platfo")]
+
+[node name="Collision" parent="Environment/Platforms/Stairs/Stairs_West" type="CollisionShape3D"]
+shape = SubResource("ConvexPolygonShape3D_12")
+
+[node name="Stairs_East" parent="Environment/Platforms/Stairs" type="StaticBody3D"]
+position = Vector3(20, 0, 0)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Model" parent="Environment/Platforms/Stairs/Stairs_East" instance=ExtResource("17_platfo")]
+
+[node name="Collision" parent="Environment/Platforms/Stairs/Stairs_East" type="CollisionShape3D"]
+shape = SubResource("ConvexPolygonShape3D_12")
+
+[node name="Ramps" parent="Environment/Platforms" type="Node3D"]
+
+[node name="Ramp_West" parent="Environment/Platforms/Ramps" type="StaticBody3D"]
+position = Vector3(-8, 0, -18)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Model" parent="Environment/Platforms/Ramps/Ramp_West" instance=ExtResource("18_platfo")]
+
+[node name="Collision" parent="Environment/Platforms/Ramps/Ramp_West" type="CollisionShape3D"]
+shape = SubResource("ConvexPolygonShape3D_13")
+
+[node name="Ramp_East" parent="Environment/Platforms/Ramps" type="StaticBody3D"]
+position = Vector3(8, 0, -18)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Model" parent="Environment/Platforms/Ramps/Ramp_East" instance=ExtResource("18_platfo")]
+
+[node name="Collision" parent="Environment/Platforms/Ramps/Ramp_East" type="CollisionShape3D"]
+shape = SubResource("ConvexPolygonShape3D_13")
+
+[node name="Doors" parent="Environment" type="Node3D"]
+
+[node name="Gate_South" parent="Environment/Doors" type="Node3D"]
+
+[node name="Frame" parent="Environment/Doors/Gate_South" instance=ExtResource("19_door_f")]
+position = Vector3(2, 0, 24)
+
+[node name="Door_Left" parent="Environment/Doors/Gate_South" instance=ExtResource("20_door_m")]
+position = Vector3(2, 0, 24)
+
+[node name="Door_Right" parent="Environment/Doors/Gate_South" instance=ExtResource("20_door_m")]
+position = Vector3(2, 0, 24)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Filler_Top" parent="Environment/Doors/Gate_South" instance=ExtResource("16_shortw")]
+position = Vector3(2, 5, 22)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Exit_North" parent="Environment/Doors" type="Node3D"]
+
+[node name="Frame_Blocked" parent="Environment/Doors/Exit_North" instance=ExtResource("21_door_f")]
+position = Vector3(-2, 2, -24)
+
+[node name="Filler_Lower" parent="Environment/Doors/Exit_North" instance=ExtResource("22_shortw")]
+position = Vector3(-2, 0, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Filler_Upper" parent="Environment/Doors/Exit_North" instance=ExtResource("22_shortw")]
+position = Vector3(-2, 7, -22)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Obstacles" parent="." type="Node3D"]
+
+[node name="Crates" parent="Obstacles" type="Node3D"]
+
+[node name="Barricades" parent="Obstacles" type="Node3D"]
+
+[node name="Pipes" parent="Obstacles" type="Node3D"]
+
+[node name="Machinery" parent="Obstacles" type="Node3D"]
+
+[node name="Cover_E_High" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(12, 0, 0)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_E_High" instance=ExtResource("22_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_E_High" type="CollisionShape3D"]
+position = Vector3(0, 1, 0)
+shape = SubResource("BoxShape3D_14")
+
+[node name="Cover_S_High" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(0, 0, 12)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_S_High" instance=ExtResource("23_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_S_High" type="CollisionShape3D"]
+position = Vector3(0, 1, 0)
+shape = SubResource("BoxShape3D_14")
+
+[node name="Cover_W_High" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(-12, 0, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_W_High" instance=ExtResource("22_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_W_High" type="CollisionShape3D"]
+position = Vector3(0, 1, 0)
+shape = SubResource("BoxShape3D_14")
+
+[node name="Cover_N_High" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(0, 0, -12)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_N_High" instance=ExtResource("23_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_N_High" type="CollisionShape3D"]
+position = Vector3(0, 1, 0)
+shape = SubResource("BoxShape3D_14")
+
+[node name="Cover_SE_Low" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(8.485, 0, 8.485)
+rotation_degrees = Vector3(0, 135, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_SE_Low" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_SE_Low" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_15")
+
+[node name="Cover_SW_Low" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(-8.485, 0, 8.485)
+rotation_degrees = Vector3(0, 45, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_SW_Low" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_SW_Low" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_15")
+
+[node name="Cover_NW_Low" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(-8.485, 0, -8.485)
+rotation_degrees = Vector3(0, -45, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_NW_Low" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_NW_Low" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_15")
+
+[node name="Cover_NE_Low" parent="Obstacles/Barricades" type="StaticBody3D"]
+position = Vector3(8.485, 0, -8.485)
+rotation_degrees = Vector3(0, -135, 0)
+
+[node name="Model" parent="Obstacles/Barricades/Cover_NE_Low" instance=ExtResource("16_shortw")]
+position = Vector3(2, 0, 0)
+
+[node name="Collision" parent="Obstacles/Barricades/Cover_NE_Low" type="CollisionShape3D"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_15")
+
+[node name="Cluster_1" parent="Obstacles/Crates" type="Node3D"]
+
+[node name="Crate_1" parent="Obstacles/Crates/Cluster_1" type="StaticBody3D"]
+position = Vector3(-9, 0.5, 12)
+rotation_degrees = Vector3(0, 10, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_1/Crate_1" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_1/Crate_1" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Crate_2" parent="Obstacles/Crates/Cluster_1" type="StaticBody3D"]
+position = Vector3(-7.85, 0.5, 12.5)
+rotation_degrees = Vector3(0, -8, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_1/Crate_2" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_1/Crate_2" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Crate_3" parent="Obstacles/Crates/Cluster_1" type="StaticBody3D"]
+position = Vector3(-8.9, 1.56, 12.1)
+rotation_degrees = Vector3(0, 25, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_1/Crate_3" instance=ExtResource("25_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_1/Crate_3" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_17")
+
+[node name="Cluster_2" parent="Obstacles/Crates" type="Node3D"]
+
+[node name="Crate_1" parent="Obstacles/Crates/Cluster_2" type="StaticBody3D"]
+position = Vector3(12, 0.56, 15)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_2/Crate_1" instance=ExtResource("25_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_2/Crate_1" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_17")
+
+[node name="Crate_2" parent="Obstacles/Crates/Cluster_2" type="StaticBody3D"]
+position = Vector3(13.1, 0.5, 15.3)
+rotation_degrees = Vector3(0, 15, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_2/Crate_2" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_2/Crate_2" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Crate_3" parent="Obstacles/Crates/Cluster_2" type="StaticBody3D"]
+position = Vector3(12.1, 1.62, 15.1)
+rotation_degrees = Vector3(0, -20, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_2/Crate_3" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_2/Crate_3" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Cluster_3" parent="Obstacles/Crates" type="Node3D"]
+
+[node name="Crate_1" parent="Obstacles/Crates/Cluster_3" type="StaticBody3D"]
+position = Vector3(-11, 0.5, -12)
+rotation_degrees = Vector3(0, 5, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_3/Crate_1" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_3/Crate_1" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Crate_2" parent="Obstacles/Crates/Cluster_3" type="StaticBody3D"]
+position = Vector3(-9.9, 0.56, -11.7)
+rotation_degrees = Vector3(0, -12, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_3/Crate_2" instance=ExtResource("25_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_3/Crate_2" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_17")
+
+[node name="Crate_3" parent="Obstacles/Crates/Cluster_3" type="StaticBody3D"]
+position = Vector3(-10.5, 0.5, -12.9)
+rotation_degrees = Vector3(0, 30, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_3/Crate_3" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_3/Crate_3" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Cluster_4" parent="Obstacles/Crates" type="Node3D"]
+
+[node name="Crate_1" parent="Obstacles/Crates/Cluster_4" type="StaticBody3D"]
+position = Vector3(8, 0.5, -12)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_4/Crate_1" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_4/Crate_1" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Crate_2" parent="Obstacles/Crates/Cluster_4" type="StaticBody3D"]
+position = Vector3(9.05, 0.5, -12.3)
+rotation_degrees = Vector3(0, 12, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_4/Crate_2" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_4/Crate_2" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Crate_3" parent="Obstacles/Crates/Cluster_4" type="StaticBody3D"]
+position = Vector3(8.1, 1.5, -12.05)
+rotation_degrees = Vector3(0, 20, 0)
+
+[node name="Model" parent="Obstacles/Crates/Cluster_4/Crate_3" instance=ExtResource("24_prop_c")]
+
+[node name="Collision" parent="Obstacles/Crates/Cluster_4/Crate_3" type="CollisionShape3D"]
+shape = SubResource("BoxShape3D_16")
+
+[node name="Barrels" parent="Obstacles/Crates" type="Node3D"]
+
+[node name="Barrel_1" parent="Obstacles/Crates/Barrels" type="StaticBody3D"]
+position = Vector3(10, 0, 20)
+
+[node name="Model" parent="Obstacles/Crates/Barrels/Barrel_1" instance=ExtResource("26_prop_b")]
+
+[node name="Collision" parent="Obstacles/Crates/Barrels/Barrel_1" type="CollisionShape3D"]
+position = Vector3(0, 0.56, 0)
+shape = SubResource("CylinderShape3D_18")
+
+[node name="Barrel_2" parent="Obstacles/Crates/Barrels" type="StaticBody3D"]
+position = Vector3(-10, 0, 21)
+
+[node name="Model" parent="Obstacles/Crates/Barrels/Barrel_2" instance=ExtResource("26_prop_b")]
+
+[node name="Collision" parent="Obstacles/Crates/Barrels/Barrel_2" type="CollisionShape3D"]
+position = Vector3(0, 0.56, 0)
+shape = SubResource("CylinderShape3D_18")
+
+[node name="Decorations" parent="." type="Node3D"]
+
+[node name="Consoles" parent="Decorations" type="Node3D"]
+
+[node name="Cables" parent="Decorations" type="Node3D"]
+
+[node name="Lights" parent="Decorations" type="Node3D"]
+
+[node name="BossArea" parent="." type="Node3D"]
+
+[node name="Dais" parent="BossArea" type="StaticBody3D"]
+
+[node name="Model" parent="BossArea/Dais" instance=ExtResource("27_platfo")]
+
+[node name="Collision" parent="BossArea/Dais" type="CollisionShape3D"]
+position = Vector3(0, 0.07, 0)
+shape = SubResource("CylinderShape3D_19")
+
+[node name="BossSpawn" parent="BossArea" type="Marker3D"]
+position = Vector3(0, 0.14, 0)
+
+[node name="PlayerSpawn" parent="BossArea" type="Marker3D"]
+position = Vector3(0, 0.05, 21)
+
+[node name="Lighting" parent="." type="Node3D"]
+
+[node name="WorldEnv" parent="Lighting" type="WorldEnvironment"]
+environment = SubResource("Environment_20")
+
+[node name="BossSpot" parent="Lighting" type="SpotLight3D"]
+position = Vector3(0, 12.5, 0)
+rotation_degrees = Vector3(-90, 0, 0)
+light_color = Color(0.82, 0.9, 1, 1)
+light_energy = 8.0
+shadow_enabled = true
+spot_range = 24.0
+spot_angle = 50.0
+spot_attenuation = 1.0
+
+[node name="CornerLight_NW" parent="Lighting" type="OmniLight3D"]
+position = Vector3(-16, 8, -16)
+light_color = Color(0.45, 0.6, 0.8, 1)
+light_energy = 1.2
+omni_range = 24.0
+omni_attenuation = 1.0
+
+[node name="CornerLight_NE" parent="Lighting" type="OmniLight3D"]
+position = Vector3(16, 8, -16)
+light_color = Color(0.45, 0.6, 0.8, 1)
+light_energy = 1.2
+omni_range = 24.0
+omni_attenuation = 1.0
+
+[node name="CornerLight_SE" parent="Lighting" type="OmniLight3D"]
+position = Vector3(16, 8, 16)
+light_color = Color(0.45, 0.6, 0.8, 1)
+light_energy = 1.2
+omni_range = 24.0
+omni_attenuation = 1.0
+
+[node name="CornerLight_SW" parent="Lighting" type="OmniLight3D"]
+position = Vector3(-16, 8, 16)
+light_color = Color(0.45, 0.6, 0.8, 1)
+light_energy = 1.2
+omni_range = 24.0
+omni_attenuation = 1.0
+
+[node name="EmergencyRed_N" parent="Lighting" type="OmniLight3D"]
+position = Vector3(0, 4, -20)
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 1.5
+omni_range = 12.0
+omni_attenuation = 1.0
+
+[node name="EmergencyRed_S" parent="Lighting" type="OmniLight3D"]
+position = Vector3(0, 4, 20)
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 1.5
+omni_range = 12.0
+omni_attenuation = 1.0
